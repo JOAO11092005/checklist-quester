@@ -1,0 +1,266 @@
+/* =========================================
+   DASHBOARD - STARLINK / AEROSPACE THEME
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-pure: #000000;
+  --bg-surface: #0a0a0a;
+  --border-subtle: #333333;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+}
+
+.hub-wrapper {
+  background: var(--bg-pure);
+  min-height: 100vh;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  padding-top: 40px; /* Espaçamento do Header Global */
+}
+
+/* Efeito de overlay (Grid Técnico Fino) */
+.hub-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hub-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero Section (Boas Vindas) */
+.hub-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 30px;
+}
+
+.hero-tag {
+  color: var(--text-main);
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+
+.hub-hero h1 { 
+  font-size: 3rem; 
+  font-weight: 700; 
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+.hub-hero p { 
+  color: var(--text-muted); 
+  font-weight: 300;
+}
+
+.hero-stats-quick { 
+  display: flex; 
+  gap: 50px; 
+}
+
+.q-stat { 
+  display: flex; 
+  flex-direction: column; 
+}
+
+.q-label { 
+  font-size: 0.7rem; 
+  color: var(--text-muted); 
+  font-weight: 500; 
+  letter-spacing: 2px;
+}
+
+.q-value { 
+  font-size: 2rem; 
+  font-weight: 700; 
+  color: var(--text-main); 
+}
+
+/* Grid de Cards */
+.hub-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 24px;
+}
+
+/* Cards (Painéis) */
+.hub-card {
+  background: var(--bg-pure);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px; /* Bordas técnicas retas */
+  padding: 30px;
+  transition: border-color 0.3s ease;
+  position: relative;
+}
+
+/* Efeito de hover high-tech nas bordas */
+.hub-card:hover {
+  border-color: var(--text-main);
+}
+
+.chart-main { grid-row: span 2; }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header-title { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+
+.header-title h3 { 
+  font-size: 1rem; 
+  font-weight: 500;
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+}
+
+.header-sub { 
+  font-size: 0.75rem; 
+  color: var(--text-muted); 
+  letter-spacing: 1px;
+}
+
+/* Status da Missão / Progresso */
+.status-content { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 25px; 
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-item span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.v-highlight { 
+  font-size: 2.5rem; 
+  color: var(--text-main); 
+  font-weight: 700; 
+  line-height: 1;
+}
+
+/* Barra de progresso crua/sólida */
+.hub-progress-bar {
+  height: 6px;
+  background: var(--border-subtle);
+  border-radius: 0;
+  margin: 5px 0 10px;
+  width: 100%;
+}
+
+.hub-progress-bar .fill {
+  height: 100%;
+  background: var(--text-main);
+}
+
+.status-item small {
+  color: var(--text-main);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Botão de Ação "Ghost" */
+.hub-action-btn {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--text-main);
+  padding: 16px;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.hub-action-btn:hover {
+  background: var(--text-main);
+  color: var(--bg-pure);
+}
+
+/* Badges / Distintivos */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.badge-item {
+  aspect-ratio: 1/1;
+  background: var(--bg-pure);
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--border-subtle);
+  transition: all 0.3s ease;
+}
+
+.badge-item.active {
+  border-color: var(--text-main);
+  color: var(--bg-pure);
+  background: var(--text-main); /* Fundo branco, ícone preto vazado */
+}
+
+/* Loader Inicial */
+.hub-loader {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-pure);
+  color: var(--text-main);
+  font-weight: 500;
+  letter-spacing: 4px;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .hub-grid { grid-template-columns: 1fr; }
+  .hub-hero { flex-direction: column; align-items: flex-start; gap: 30px; }
+  .hero-stats-quick { width: 100%; justify-content: space-between; }
+}

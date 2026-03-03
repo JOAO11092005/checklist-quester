@@ -1,0 +1,104 @@
+/* =========================================
+   GLOBAL STYLES - CORE OS
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Cores Base do Sistema */
+  color-scheme: dark;
+  --bg-color: #050505;
+  --primary-color: #8257e5;
+  --text-color: rgba(255, 255, 255, 0.87);
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reset básico para layouts Full Screen */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  overflow-x: hidden; /* Evita scroll horizontal indesejado */
+}
+
+/* Links estilizados para o tema */
+a {
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: filter 0.3s;
+}
+
+a:hover {
+  filter: brightness(1.2);
+}
+
+/* Container principal (ajustado para não centralizar tudo forçadamente) */
+#app, #root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Estilo para botões genéricos (se usar fora dos componentes cyber) */
+button {
+  border-radius: 20px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+button:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 15px rgba(130, 87, 229, 0.2);
+}
+
+/* Scrollbar Personalizada (Estilo Hacker/Cyber) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #202020;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* Utilitário para textos com gradiente */
+.text-gradient {
+  background: linear-gradient(90deg, #fff, var(--primary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Removemos o media query de light mode para forçar o Dark Theme 
+   que é a identidade da sua plataforma DevQuest */

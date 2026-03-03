@@ -1,0 +1,650 @@
+:root {
+  /* --- Paleta Premium Dark (Estilo Rocketseat/Ignite) --- */
+  
+  /* Fundos */
+  --bg-deep-black: #09090A; /* Preto profundo, não 100% black */
+  --bg-surface: #121214;    /* Superfície padrão */
+  --bg-card: #202024;       /* Cartões e elementos flutuantes */
+  --bg-hover: #29292E;      /* Estado de hover */
+  
+  /* Identidade Blueviolet */
+  --primary-violet: #8257E5; /* Roxo vibrante (Rocketseat Style) */
+  --primary-dark: #6f42c1;
+  --violet-glow: rgba(130, 87, 229, 0.5);
+  --violet-low: rgba(130, 87, 229, 0.12);
+  
+  /* Cores Semânticas */
+  --color-success: #04D361;
+  --color-error: #F75A68;
+  --color-info: #00B37E;
+  
+  /* Tipografia */
+  --text-bright: #E1E1E6;
+  --text-normal: #C4C4CC;
+  --text-dim: #8D8D99;
+  
+  /* Bordas e Divisores */
+  --border-color: #323238;
+  --border-light: rgba(255, 255, 255, 0.05);
+
+  /* Configurações Globais */
+  --font-family: 'Inter', sans-serif; /* Inter é a fonte padrão desse estilo */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+}
+
+/* --- Reset Básico & Layout --- */
+* {
+  box-sizing: border-box;
+}
+
+.module-page-dark-theme {
+  display: flex;
+  background-color: var(--bg-deep-black);
+  min-height: 100%;
+  color: var(--text-bright);
+  font-family: var(--font-family);
+  overflow-x: hidden;
+}
+
+/* Container para Sidebar + Conteúdo */
+.module-layout-container {
+  display: flex;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* --- Sidebar (Lista de Aulas) --- */
+/* Adicionado para garantir completude do dashboard */
+.module-sidebar {
+  width: 320px;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-title {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lesson-item {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.lesson-item:hover {
+  background: var(--bg-hover);
+}
+
+.lesson-item.active {
+  background: var(--violet-low);
+  border-left: 3px solid var(--primary-violet);
+}
+
+.lesson-item-title {
+  font-size: 0.9rem;
+  color: var(--text-normal);
+  line-height: 1.4;
+}
+
+.lesson-item.active .lesson-item-title {
+  color: var(--primary-violet);
+  font-weight: 600;
+}
+
+/* --- Conteúdo Principal --- */
+.module-main-content {
+  flex: 1;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 1180px; /* Limite para leitura confortável */
+  margin: 0 auto;
+}
+
+/* --- Breadcrumb & Header --- */
+.lesson-header-modern {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.breadcrumb-premium {
+  display: flex;
+  gap: 10px;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  align-items: center;
+}
+
+.breadcrumb-premium a {
+  text-decoration: none;
+  color: var(--text-dim);
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-premium a:hover {
+  color: var(--primary-violet);
+}
+
+.separator {
+  color: var(--border-color);
+}
+
+.module-title-badge {
+  background: var(--violet-low);
+  color: var(--primary-violet);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(130, 87, 229, 0.3);
+}
+
+/* Título Principal */
+.main-lesson-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: var(--text-bright);
+  line-height: 1.2;
+}
+
+/* --- Player de Vídeo (Cinema Mode) --- */
+.video-frame-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.video-frame-glow {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* Aspect Ratio 16:9 */
+  background: #000;
+  border-radius: 8px; /* Rocketseat usa bordas menos arredondadas */
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--border-color);
+  z-index: 2;
+}
+
+/* Brilho ambiente atrás do player */
+.video-frame-container::before {
+  content: '';
+  position: absolute;
+  top: -10%; 
+  left: -10%;
+  width: 120%; 
+  height: 120%;
+  background: radial-gradient(circle, var(--violet-glow) 0%, rgba(0,0,0,0) 60%);
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.video-frame-glow iframe,
+.video-frame-glow video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* --- Barra de Ações (Likes, Navegação) --- */
+.lesson-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.left-actions, .right-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Botões Gerais */
+.action-btn {
+  background: var(--bg-card);
+  border: 0;
+  color: var(--text-normal);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-family);
+}
+
+.action-btn:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-bright);
+  transform: translateY(-2px);
+}
+
+/* Botões de Feedback (Ícones) */
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: var(--radius-md);
+  justify-content: center;
+  background: var(--bg-card);
+  border: 0;
+  color: var(--text-normal);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.icon-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-bright);
+}
+
+/* Estados Ativos */
+.icon-btn.liked {
+  color: var(--primary-violet);
+  background: var(--violet-low);
+}
+
+.icon-btn.disliked {
+  color: var(--color-error);
+  background: rgba(247, 90, 104, 0.1);
+}
+
+/* Botão Marcar como Completo (Unificado e Corrigido) */
+.mark-complete-btn {
+  background: var(--color-success);
+  color: #000; /* Contraste melhor com verde neon */
+  border: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.mark-complete-btn:hover {
+  filter: brightness(0.9);
+  transform: scale(1.02);
+}
+
+/* Estado: Já completado (Botão Outline) */
+.mark-complete-btn.completed {
+  background: transparent;
+  border: 1px solid var(--color-success);
+  color: var(--color-success);
+}
+
+.mark-complete-btn.completed:hover {
+  background: rgba(4, 211, 97, 0.1);
+}
+
+/* Próxima Aula */
+.next-lesson-btn {
+  background-color: var(--primary-violet);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 0 15px var(--violet-glow);
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.next-lesson-btn:hover {
+  background-color: var(--primary-dark);
+  box-shadow: 0 0 25px var(--violet-glow);
+}
+
+/* --- Caixa de Descrição --- */
+.about-lesson-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 32px;
+  border-radius: 8px;
+  margin-bottom: 48px;
+}
+
+.about-lesson-box h3 {
+  font-size: 1.1rem;
+  color: var(--text-bright);
+  margin-bottom: 16px;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lesson-description-text {
+  color: var(--text-normal);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.lesson-description-text a {
+  color: var(--primary-violet);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.lesson-description-text a:hover {
+  text-decoration: underline;
+}
+
+/* --- Seção de Comentários (Habilitada e Estilizada) --- */
+.comments-wrapper-modern {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-color);
+}
+
+.comments-title {
+  font-size: 1.25rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.comments-section {
+  display: block; /* Forçado para aparecer */
+}
+
+/* Área de Input */
+.comment-input-box {
+  margin-bottom: 32px;
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.comments-section textarea {
+  width: 100%;
+  background: var(--bg-deep-black);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 16px;
+  color: var(--text-bright);
+  font-family: var(--font-family);
+  min-height: 100px;
+  resize: vertical;
+  margin-bottom: 16px;
+  transition: 0.2s;
+  font-size: 0.95rem;
+}
+
+.comments-section textarea:focus {
+  outline: none;
+  border-color: var(--primary-violet);
+  box-shadow: 0 0 0 2px var(--violet-low);
+}
+
+.submit-comment-btn {
+  background-color: var(--primary-violet);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: block;
+  margin-left: auto;
+}
+
+.submit-comment-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Lista de Comentários */
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 16px;
+  animation: fadeIn 0.5s ease;
+}
+
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.comment-author {
+  color: var(--text-bright);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.comment-date {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+}
+
+.comment-text {
+  color: var(--text-normal);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Scrollbar Customizada (Fina e Minimalista) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #323238;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4d4d57;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsividade --- */
+@media (max-width: 1024px) {
+  .module-layout-container {
+    flex-direction: column;
+  }
+  
+  .module-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+  }
+
+  .module-main-content {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-lesson-title {
+    font-size: 1.5rem;
+  }
+
+  .lesson-actions {
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
+  
+  .left-actions, .right-actions {
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .next-lesson-btn {
+    width: 100%;
+  }
+
+  .video-frame-glow {
+    border-radius: 4px;
+  }
+}
+.feedback-buttons{
+  display: flex;
+  gap: 10px;
+}
+.navigation-buttons{
+  display: flex;
+  gap: 10px;
+}
+/* Container estilo Notion */
+.notion-exercise-container {
+    background: #121212;
+    padding: 2rem;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    color: #efefef;
+}
+
+.notion-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.notion-label {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.notion-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.notion-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+.notion-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #888;
+}
+
+.notion-link-section {
+    margin: 2.5rem 0;
+    font-size: 1rem;
+}
+
+.notion-link-label {
+    font-weight: 700;
+}
+
+.notion-url {
+    color: #9b51e0; /* Roxo do Notion */
+    text-decoration: underline;
+    word-break: break-all;
+}
+
+.notion-iframe-wrapper {
+    width: 100%;
+    height: 600px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.notion-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

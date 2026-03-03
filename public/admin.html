@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | BlueViolet Theme</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #8A2BE2; /* blueviolet */
+            --primary-color-darker: #7B24CB;
+            --primary-color-glow: rgba(138, 43, 226, 0.4);
+            --background-color: #000000;
+            --surface-color: #141414;
+            --border-color: #2a2a2a;
+            --text-color: #f0f0f0;
+            --text-color-muted: #808080;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --font-body: 'Poppins', sans-serif;
+            --sidebar-width: 260px;
+            --border-radius: 10px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            overflow: hidden;
+            height: 100vh;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--surface-color); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        .loading-screen {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 100vh; width: 100vw; font-size: 1.5em; color: var(--primary-color);
+            position: fixed; top: 0; left: 0; background: var(--background-color); z-index: 9999;
+        }
+        .loading-screen .fa-spinner { font-size: 3em; margin-bottom: 25px; animation: spin 1.5s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .admin-panel { display: none; width: 100%; height: 100vh; }
+
+        .admin-sidebar {
+            width: var(--sidebar-width); height: 100%;
+            background: var(--background-color);
+            border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+            transition: width 0.3s ease;
+        }
+        .sidebar-header { padding: 2rem 1.5rem; text-align: center; }
+        .sidebar-header h2 {
+            font-family: var(--font-body); font-size: 2em; font-weight: 700; color: #fff;
+            text-shadow: 0 0 10px var(--primary-color-glow);
+        }
+        .sidebar-nav { flex-grow: 1; padding-top: 1rem; }
+        .sidebar-nav ul { list-style: none; }
+        .sidebar-nav li a {
+            display: flex; align-items: center; padding: 1rem 2rem;
+            color: var(--text-color-muted); text-decoration: none;
+            font-size: 1em; font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+            margin: 0.5rem 0; cursor: pointer;
+            position: relative;
+        }
+        .sidebar-nav li a .fas { width: 25px; margin-right: 15px; text-align: center; font-size: 1.1em; }
+        .sidebar-nav li a:hover { color: #fff; }
+        .sidebar-nav li a.active {
+            color: #fff;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-color);
+            background: linear-gradient(90deg, rgba(138, 43, 226, 0.15), transparent);
+            text-shadow: 0 0 5px var(--primary-color-glow);
+        }
+        .sidebar-footer { padding: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; }
+
+        .main-panel { width: calc(100% - var(--sidebar-width)); height: 100%; overflow-y: auto; padding: 2.5rem; }
+        .main-panel-header { margin-bottom: 2.5rem; }
+        .main-panel-header h1 { font-size: 2.5rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 1rem; }
+        .main-panel-header h1 .fas { color: var(--primary-color); }
+
+        .admin-section { display: none; animation: fadeIn 0.4s ease-out; }
+        .admin-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem; overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+        .content-card:hover { border-color: #444; }
+        .card-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.2);}
+        .card-header h3 { font-size: 1.5rem; font-weight: 600; display: flex; align-items: center; gap: 1rem; }
+        .card-header h3 .fas { color: var(--primary-color); }
+        .card-content { padding: 2rem; }
+
+        form label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9em; text-transform: uppercase; color: var(--text-color-muted); }
+        form input, form select, form textarea {
+            width: 100%; padding: 0.9rem 1rem; margin-bottom: 1.5rem;
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-color);
+            font-family: var(--font-body); font-size: 1em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        form input:focus, form select:focus, form textarea:focus {
+            outline: none; border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-color-glow);
+        }
+        textarea { min-height: 120px; resize: vertical; }
+
+        .btn {
+            padding: 0.8rem 1.5rem; border: none; border-radius: 6px;
+            cursor: pointer; font-size: 0.9em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 0.7rem; transition: all 0.2s ease;
+            color: #fff;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            box-shadow: 0 0 15px -5px var(--primary-color-glow);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-color-darker);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px -5px var(--primary-color-glow);
+        }
+        .btn-danger { background-color: var(--danger-color); }
+        .btn-warning { background-color: var(--warning-color); color: #000; }
+        .btn-secondary { background-color: #333; }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8em; }
+        .btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+
+        .item-list { list-style: none; margin-top: 1.5rem; }
+        .item-list li {
+            background: var(--background-color); border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem; border-radius: 6px; margin-bottom: 0.8rem;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.2s ease;
+        }
+        .item-list li:hover { border-color: var(--primary-color); background: rgba(138, 43, 226, 0.05); }
+        .item-actions { display: flex; gap: 0.5rem; }
+        
+        .checkbox-item {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 0;
+        }
+
+
+        .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 10000; }
+        .toast {
+            background: var(--surface-color); border: 1px solid var(--border-color);
+            color: white; padding: 1rem 1.5rem; margin-bottom: 1rem;
+            border-radius: var(--border-radius); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-left: 5px solid var(--primary-color);
+            display: flex; align-items: center; gap: 1rem;
+            animation: slideInUp 0.3s ease;
+        }
+        .toast.success { border-left-color: var(--success-color); }
+        .toast.error { border-left-color: var(--danger-color); }
+        @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+            z-index: 9990; display: none; justify-content: center; align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content { width: 90%; max-width: 600px; animation: fadeIn 0.3s ease-out; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Verificando Acesso...</p>
+    </div>
+    
+    <div id="toast-container"></div>
+    
+    <div id="admin-panel" class="admin-panel">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header"><h2>PAINEL ADM</h2></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a data-section="dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a data-section="courses"><i class="fas fa-graduation-cap"></i> Gerenciar Cursos</a></li>
+                    <li><a data-section="modules"><i class="fas fa-cubes"></i> Gerenciar Módulos</a></li>
+                    <li><a data-section="lessons"><i class="fas fa-video"></i> Gerenciar Aulas</a></li>
+                    <li><a data-section="notifications"><i class="fas fa-bell"></i> Notificações</a></li>
+                    <li><a data-section="access-key"><i class="fas fa-key"></i> curso2025</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-button" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="main-panel-header">
+                <h1 id="main-panel-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+            </header>
+
+            <div class="admin-page-content">
+                <section id="section-dashboard" class="admin-section active">
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-rocket"></i> Bem-vindo!</h3></div>
+                        <div class="card-content"><p>Use a navegação à esquerda para gerenciar os conteúdos da plataforma.</p></div>
+                    </div>
+                </section>
+
+                <section id="section-courses" class="admin-section">
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-plus-circle"></i> Adicionar Novo Curso</h3></div>
+                        <div class="card-content">
+                            <form id="add-course-form">
+                                <label for="course-title">Título do Curso</label>
+                                <input type="text" id="course-title" required>
+                                <label for="course-type">Tipo (Ex: Front-End)</label>
+                                <input type="text" id="course-type" required>
+                                <label for="course-image-url">URL da Imagem de Capa</label>
+                                <input type="url" id="course-image-url" placeholder="https://exemplo.com/imagem.jpg">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Curso</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="section-modules" class="admin-section">
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-plus-circle"></i> Adicionar Novo Módulo</h3></div>
+                        <div class="card-content">
+                            <form id="add-module-form">
+                                <label for="module-course-select">Associar ao Curso</label>
+                                <select id="module-course-select" required></select>
+                                <label for="module-title">Título do Módulo</label>
+                                <input type="text" id="module-title" required>
+                                <label for="module-image-url">URL da Imagem do Módulo (Opcional)</label>
+                                <input type="url" id="module-image-url" placeholder="https://exemplo.com/imagem.jpg">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Módulo</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-list-ul"></i> Módulos Cadastrados</h3></div>
+                        <div class="card-content">
+                            <label for="view-modules-course-select">Ver módulos do curso:</label>
+                            <select id="view-modules-course-select"></select>
+                            <ul id="module-list" class="item-list"></ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-lessons" class="admin-section">
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-plus-circle"></i> Adicionar Nova Aula</h3></div>
+                        <div class="card-content">
+                            <form id="add-lesson-form">
+                                <label for="lesson-course-select">Curso</label>
+                                <select id="lesson-course-select" required></select>
+                                <label for="lesson-module-select">Módulo</label>
+                                <select id="lesson-module-select" required></select>
+                                <label for="lesson-title">Título da Aula</label>
+                                <input type="text" id="lesson-title" required>
+                                <label for="lesson-iframe-url">URL do Iframe do Vídeo</label>
+                                <input type="url" id="lesson-iframe-url" placeholder="https://www.youtube.com/embed/..." required>
+                                <label for="lesson-description">Descrição da Aula</label>
+                                <textarea id="lesson-description"></textarea>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Aula</button>
+                            </form>
+                        </div>
+                    </div>
+                     <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-list-ul"></i> Aulas Cadastradas</h3></div>
+                        <div class="card-content">
+                            <label for="view-lessons-course-select">Curso:</label>
+                            <select id="view-lessons-course-select"></select>
+                            <label for="view-lessons-module-select">Módulo:</label>
+                            <select id="view-lessons-module-select"></select>
+                            <ul id="lesson-list" class="item-list"></ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-notifications" class="admin-section">
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-bell"></i> Log de Notificações</h3></div>
+                        <div class="card-content">
+                            <ul id="notifications-list" class="item-list"></ul>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-bullhorn"></i> Enviar Notificação Manual</h3></div>
+                        <div class="card-content">
+                            <form id="send-notification-form">
+                                <label for="send-notif-course-select">Curso</label>
+                                <select id="send-notif-course-select" required></select>
+                                <label for="send-notif-module-select">Módulo (Opcional)</label>
+                                <select id="send-notif-module-select"></select>
+                                <label for="send-notif-message">Mensagem Personalizada (Opcional)</label>
+                                <textarea id="send-notif-message" placeholder="Ex: Adicionamos novas aulas neste módulo!"></textarea>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar Notificação</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="section-access-key" class="admin-section">
+                    <div class="content-card">
+                        <div class="card-header"><h3><i class="fas fa-key"></i> Gerenciar cursos para 'curso2025'</h3></div>
+                        <div class="card-content">
+                            <form id="access-key-form">
+                                <p>Selecione os cursos que serão exibidos para usuários com a chave de acesso 'curso2025'.</p>
+                                <div id="access-key-courses-list">
+                                    </div>
+                                <button type="submit" class="btn btn-primary mt-2"><i class="fas fa-save"></i> Salvar Seleção</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                </div>
+        </main>
+    </div>
+
+    <div id="edit-module-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="content-card">
+                <div class="card-header"><h3><i class="fas fa-edit"></i> Editar Módulo</h3></div>
+                <div class="card-content">
+                    <form id="edit-module-form">
+                        <input type="hidden" id="edit-module-id">
+                        <input type="hidden" id="edit-module-course-id">
+                        <label for="edit-module-title">Título do Módulo</label>
+                        <input type="text" id="edit-module-title" required>
+                        <label for="edit-module-image-url">URL da Imagem do Módulo (Opcional)</label>
+                        <input type="url" id="edit-module-image-url" placeholder="https://exemplo.com/imagem.jpg">
+                        <div class="modal-footer">
+                            <button type="button" id="cancel-edit-module" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-lesson-modal" class="modal-overlay">
+        <div class="modal-content">
+             <div class="content-card">
+                <div class="card-header"><h3><i class="fas fa-edit"></i> Editar Aula</h3></div>
+                <div class="card-content">
+                    <form id="edit-lesson-form">
+                        <input type="hidden" id="edit-lesson-id">
+                        <input type="hidden" id="edit-lesson-module-id">
+                        <input type="hidden" id="edit-lesson-course-id">
+                        <label for="edit-lesson-title">Título da Aula</label>
+                        <input type="text" id="edit-lesson-title" required>
+                        <label for="edit-lesson-iframe-url">URL do Iframe do Vídeo</label>
+                        <input type="url" id="edit-lesson-iframe-url" placeholder="https://www.youtube.com/embed/..." required>
+                        <label for="edit-lesson-description">Descrição da Aula</label>
+                        <textarea id="edit-lesson-description"></textarea>
+                        <div class="modal-footer">
+                            <button type="button" id="cancel-edit-lesson" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+       const firebaseConfig = {
+            apiKey: "AIzaSyA9UUXIt6psEnOluZg530YBqE35Nkzlp0Y",
+            authDomain: "finamceiro-5d9ae.firebaseapp.com",
+            databaseURL: "https://finamceiro-5d9ae-default-rtdb.firebaseio.com",
+            projectId: "finamceiro-5d9ae",
+            storageBucket: "finamceiro-5d9ae.appspot.com",
+            messagingSenderId: "90531422877",
+            appId: "1:90531422877:web:0b9fee54c03ba81d68aa74",
+            measurementId: "G-GQYCPLJ6Q3"
+        };
+    
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+    
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        const ADMIN_EMAIL = "joao@gmail.com";
+
+        const loadingScreen = document.getElementById('loading-screen');
+        const adminPanel = document.getElementById('admin-panel');
+
+        // ✅ CORREÇÃO FINAL: Lógica de autenticação para verificar se o usuário é um admin.
+        auth.onAuthStateChanged(async (user) => { 
+            if (user) {
+                // Obtenha o token do usuário para verificar as permissões
+                const idTokenResult = await user.getIdTokenResult();
+                
+                // Verifique a permissão de admin no token ou o email hardcoded
+                if (idTokenResult.claims.admin === true || user.email === ADMIN_EMAIL) {
+                    loadingScreen.style.display = 'none';
+                    adminPanel.style.display = 'flex';
+                    initializeAppLogic(auth, db);
+                } else {
+                    // Não é um admin, faça logout e redirecione
+                    await auth.signOut(); 
+                    window.location.replace('login.html');
+                }
+            } else {
+                // Nenhum usuário logado, redirecione para a página de login
+                window.location.replace('login.html');
+            }
+        });
+    });
+
+    function initializeAppLogic(auth, db) {
+        
+        const mainPanelTitle = document.getElementById('main-panel-title');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const adminSections = document.querySelectorAll('.admin-section');
+        const toastContainer = document.getElementById('toast-container');
+        
+        const courseSelects = document.querySelectorAll('#module-course-select, #lesson-course-select, #view-modules-course-select, #view-lessons-course-select, #send-notif-course-select');
+        
+        const addLessonModuleSelect = document.getElementById('lesson-module-select');
+        const viewModulesCourseSelect = document.getElementById('view-modules-course-select');
+        const moduleList = document.getElementById('module-list');
+        const editModuleModal = document.getElementById('edit-module-modal');
+        const editModuleForm = document.getElementById('edit-module-form');
+
+        const viewLessonsCourseSelect = document.getElementById('view-lessons-course-select');
+        const viewLessonsModuleSelect = document.getElementById('view-lessons-module-select');
+        const lessonList = document.getElementById('lesson-list');
+        const editLessonModal = document.getElementById('edit-lesson-modal');
+        const editLessonForm = document.getElementById('edit-lesson-form');
+        
+        const sendNotifCourseSelect = document.getElementById('send-notif-course-select');
+        const sendNotifModuleSelect = document.getElementById('send-notif-module-select');
+        const sendNotifMessage = document.getElementById('send-notif-message');
+        const sendNotifButton = document.getElementById('send-notification-form');
+        const notificationsList = document.getElementById('notifications-list');
+
+        const accessKeyCoursesList = document.getElementById('access-key-courses-list');
+        const accessKeyForm = document.getElementById('access-key-form');
+
+
+        const showToast = (message, type = 'info') => {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-times-circle';
+            toast.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
+            toastContainer.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        };
+
+        const setupForm = (formId, submitLogic) => {
+            const form = document.getElementById(formId);
+            if (!form) return;
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonContent = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Salvando...`;
+                try {
+                    await submitLogic(form);
+                    if(formId.startsWith('add-')) form.reset();
+                    showToast('Operação realizada com sucesso!', 'success');
+                } catch (error) {
+                    console.error(`Erro no formulário ${formId}:`, error);
+                    showToast(error.message || 'Falha ao salvar. Verifique o console.', 'error');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonContent;
+                }
+            });
+        };
+        
+        const createNotification = async (title, message, link) => {
+            try {
+                await db.collection('notifications').add({
+                    title: title,
+                    message: message,
+                    link: link,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    readBy: []
+                });
+            } catch (error) {
+                console.error("Erro ao criar notificação:", error);
+            }
+        };
+
+        const displayNotifications = async () => {
+            notificationsList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> Carregando...</li>';
+            try {
+                const snapshot = await db.collection('notifications').orderBy('createdAt', 'desc').limit(20).get();
+                if (snapshot.empty) {
+                    notificationsList.innerHTML = '<li>Nenhuma notificação encontrada.</li>';
+                    return;
+                }
+                notificationsList.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const notif = doc.data();
+                    const li = document.createElement('li');
+                    const formattedDate = notif.createdAt ? notif.createdAt.toDate().toLocaleString() : 'Data desconhecida';
+                    li.innerHTML = `
+                        <span><strong>${notif.title}</strong><br>${notif.message}<br><small>${formattedDate}</small></span>
+                    `;
+                    notificationsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar notificações:", error);
+                showToast("Falha ao carregar notificações.", 'error');
+                notificationsList.innerHTML = '<li>Erro ao carregar.</li>';
+            }
+        };
+
+        const displayAccessKeyCourses = async () => {
+            accessKeyCoursesList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> Carregando cursos...</li>';
+
+            try {
+                const [allCoursesSnap, accessKeyCoursesSnap] = await Promise.all([
+                    db.collection('cursos').orderBy('titulo').get(),
+                    db.collection('accessKeys').doc('curso2025').get()
+                ]);
+
+                const allCourses = allCoursesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const selectedCourseIds = accessKeyCoursesSnap.exists ? accessKeyCoursesSnap.data().courses : [];
+                
+                if (allCourses.length === 0) {
+                    accessKeyCoursesList.innerHTML = '<p>Nenhum curso disponível.</p>';
+                    return;
+                }
+
+                accessKeyCoursesList.innerHTML = '';
+                allCourses.forEach(course => {
+                    const isSelected = selectedCourseIds.includes(course.id);
+                    const div = document.createElement('div');
+                    div.className = 'checkbox-item';
+                    div.innerHTML = `
+                        <input type="checkbox" id="course-${course.id}" value="${course.id}" ${isSelected ? 'checked' : ''}>
+                        <label for="course-${course.id}">${course.titulo}</label>
+                    `;
+                    accessKeyCoursesList.appendChild(div);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar cursos para chave de acesso:", error);
+                showToast("Erro ao carregar cursos.", 'error');
+            }
+        };
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionName = link.dataset.section;
+                navLinks.forEach(l => l.classList.remove('active'));
+                adminSections.forEach(s => s.classList.remove('active'));
+                link.classList.add('active');
+                const targetSection = document.getElementById(`section-${sectionName}`);
+                if (targetSection) targetSection.classList.add('active');
+                const linkIcon = link.querySelector('.fas').outerHTML;
+                mainPanelTitle.innerHTML = `${linkIcon} ${link.innerText}`;
+
+                if (sectionName === 'notifications') {
+                    displayNotifications();
+                } else if (sectionName === 'access-key') {
+                    displayAccessKeyCourses();
+                }
+            });
+        });
+        document.getElementById('logout-button').addEventListener('click', () => auth.signOut());
+
+        const loadCoursesForSelects = async () => {
+            try {
+                const snapshot = await db.collection('cursos').orderBy('titulo').get();
+                const defaultOption = '<option value="">-- Selecione um curso --</option>';
+                courseSelects.forEach(s => {
+                    const currentValue = s.value;
+                    s.innerHTML = defaultOption;
+                    snapshot.forEach(doc => {
+                        const option = `<option value="${doc.id}">${doc.data().titulo}</option>`;
+                        s.innerHTML += option;
+                    });
+                    s.value = currentValue;
+                });
+            } catch (error) {
+                console.error("Erro ao carregar cursos:", error);
+                showToast("Erro ao carregar a lista de cursos.", 'error');
+            }
+        };
+
+        const loadModulesForSelect = async (courseId, targetSelect) => {
+            targetSelect.innerHTML = '<option value="">-- Carregando módulos... --</option>';
+            if (!courseId) {
+                targetSelect.innerHTML = '<option value="">-- Selecione um curso primeiro --</option>';
+                return;
+            }
+            try {
+                const snapshot = await db.collection('cursos').doc(courseId).collection('modulos').orderBy('titulo').get();
+                let options = '<option value="">-- Selecione um módulo --</option>';
+                if (snapshot.empty) {
+                    options = '<option value="">-- Nenhum módulo encontrado --</option>';
+                } else {
+                    snapshot.forEach(doc => {
+                        options += `<option value="${doc.id}">${doc.data().titulo}</option>`;
+                    });
+                }
+                targetSelect.innerHTML = options;
+            } catch (error) {
+                console.error("Erro ao carregar módulos:", error);
+                targetSelect.innerHTML = '<option value="">-- Erro ao carregar --</option>';
+                showToast("Erro ao carregar módulos.", 'error');
+            }
+        };
+
+        setupForm('add-course-form', async (form) => {
+            const titulo = form.querySelector('#course-title').value;
+            if (!titulo) throw new Error("Título do curso é obrigatório.");
+            const docRef = await db.collection('cursos').add({
+                titulo: titulo,
+                tipo: form.querySelector('#course-type').value,
+                imagemUrl: form.querySelector('#course-image-url').value,
+                criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            await loadCoursesForSelects();
+            createNotification('Novo Curso Adicionado!', `O curso "${titulo}" já está disponível.`, `/cursos/${docRef.id}`);
+        });
+
+        setupForm('add-module-form', async (form) => {
+            const courseId = form.querySelector('#module-course-select').value;
+            const titulo = form.querySelector('#module-title').value;
+            if (!courseId || !titulo) throw new Error("Curso e Título do módulo são obrigatórios.");
+            
+            const docRef = await db.collection('cursos').doc(courseId).collection('modulos').add({
+                titulo: titulo,
+                imagemUrl: form.querySelector('#module-image-url').value,
+                criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            if(courseId === viewModulesCourseSelect.value) displayModules(courseId);
+
+            const courseDoc = await db.collection('cursos').doc(courseId).get();
+            const courseTitle = courseDoc.data().titulo;
+            createNotification('Novo Módulo Adicionado!', `O módulo "${titulo}" foi adicionado ao curso "${courseTitle}".`, `/cursos/${courseId}/modulos/${docRef.id}`);
+        });
+
+        setupForm('add-lesson-form', async (form) => {
+            const courseId = form.querySelector('#lesson-course-select').value;
+            const moduleId = form.querySelector('#lesson-module-select').value;
+            const titulo = form.querySelector('#lesson-title').value;
+            const iframeUrl = form.querySelector('#lesson-iframe-url').value;
+            if (!courseId || !moduleId || !titulo || !iframeUrl) throw new Error("Todos os campos, exceto descrição, são obrigatórios.");
+            
+            const docRef = await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).collection('aulas').add({
+                titulo: titulo,
+                iframeUrl: iframeUrl,
+                descricao: form.querySelector('#lesson-description').value,
+                criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            if(courseId === viewLessonsCourseSelect.value && moduleId === viewLessonsModuleSelect.value) {
+                displayLessons(courseId, moduleId);
+            }
+
+            const courseDoc = await db.collection('cursos').doc(courseId).get();
+            const moduleDoc = await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).get();
+            const courseTitle = courseDoc.data().titulo;
+            const moduleTitle = moduleDoc.data().titulo;
+            createNotification('Nova Aula Disponível!', `A aula "${titulo}" foi adicionada ao módulo "${moduleTitle}" no curso "${courseTitle}".`, `/cursos/${courseId}/modulos/${moduleId}/aulas/${docRef.id}`);
+        });
+        
+        setupForm('edit-module-form', async(form) => {
+            const courseId = form.querySelector('#edit-module-course-id').value;
+            const moduleId = form.querySelector('#edit-module-id').value;
+            const titulo = form.querySelector('#edit-module-title').value;
+            if(!courseId || !moduleId || !titulo) throw new Error("Dados inválidos para edição.");
+            await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).update({
+                titulo: titulo,
+                imagemUrl: form.querySelector('#edit-module-image-url').value
+            });
+            editModuleModal.classList.remove('active');
+            displayModules(courseId);
+        });
+
+        setupForm('edit-lesson-form', async(form) => {
+            const courseId = form.querySelector('#edit-lesson-course-id').value;
+            const moduleId = form.querySelector('#edit-lesson-module-id').value;
+            const lessonId = form.querySelector('#edit-lesson-id').value;
+            const titulo = form.querySelector('#edit-lesson-title').value;
+            const iframeUrl = form.querySelector('#edit-lesson-iframe-url').value;
+            if(!courseId || !moduleId || !lessonId || !titulo || !iframeUrl) throw new Error("Dados inválidos para edição.");
+            
+            await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).collection('aulas').doc(lessonId).update({
+                titulo: titulo,
+                iframeUrl: iframeUrl,
+                descricao: form.querySelector('#edit-lesson-description').value
+            });
+            editLessonModal.classList.remove('active');
+            displayLessons(courseId, moduleId);
+        });
+
+        setupForm('access-key-form', async(form) => {
+            const checkboxes = accessKeyCoursesList.querySelectorAll('input[type="checkbox"]:checked');
+            const selectedCourseIds = Array.from(checkboxes).map(cb => cb.value);
+
+            await db.collection('accessKeys').doc('curso2025').set({
+                courses: selectedCourseIds
+            });
+            showToast('Cursos da chave de acesso atualizados!', 'success');
+        });
+
+        const displayModules = async (courseId) => {
+            moduleList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> Carregando...</li>';
+            if(!courseId) {
+                moduleList.innerHTML = '<li>Selecione um curso para ver os módulos.</li>';
+                return;
+            }
+            try {
+                const snapshot = await db.collection('cursos').doc(courseId).collection('modulos').orderBy('titulo').get();
+                if(snapshot.empty) {
+                    moduleList.innerHTML = '<li>Nenhum módulo encontrado para este curso.</li>';
+                    return;
+                }
+                moduleList.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const module = doc.data();
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${module.titulo}</span>
+                        <div class="item-actions">
+                            <button class="btn btn-warning btn-sm btn-edit-module" data-course-id="${courseId}" data-module-id="${doc.id}"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-sm btn-delete-module" data-course-id="${courseId}" data-module-id="${doc.id}"><i class="fas fa-trash-alt"></i></button>
+                        </div>`;
+                    moduleList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Erro ao exibir módulos: ", error);
+                showToast("Falha ao carregar módulos.", 'error');
+                moduleList.innerHTML = '<li>Erro ao carregar.</li>';
+            }
+        };
+
+        const displayLessons = async (courseId, moduleId) => {
+            lessonList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> Carregando...</li>';
+            if(!courseId || !moduleId) {
+                lessonList.innerHTML = '<li>Selecione um curso e um módulo para ver as aulas.</li>';
+                return;
+            }
+             try {
+                const snapshot = await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).collection('aulas').orderBy('titulo').get();
+                if(snapshot.empty) {
+                    lessonList.innerHTML = '<li>Nenhuma aula encontrada para este módulo.</li>';
+                    return;
+                }
+                lessonList.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const lesson = doc.data();
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${lesson.titulo}</span>
+                        <div class="item-actions">
+                            <button class="btn btn-warning btn-sm btn-edit-lesson" data-course-id="${courseId}" data-module-id="${moduleId}" data-lesson-id="${doc.id}"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-sm btn-delete-lesson" data-course-id="${courseId}" data-module-id="${moduleId}" data-lesson-id="${doc.id}"><i class="fas fa-trash-alt"></i></button>
+                        </div>`;
+                    lessonList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Erro ao exibir aulas: ", error);
+                showToast("Falha ao carregar aulas.", 'error');
+                lessonList.innerHTML = '<li>Erro ao carregar.</li>';
+            }
+        };
+        
+        document.getElementById('lesson-course-select').addEventListener('change', (e) => loadModulesForSelect(e.target.value, addLessonModuleSelect));
+        viewModulesCourseSelect.addEventListener('change', (e) => displayModules(e.target.value));
+        viewLessonsCourseSelect.addEventListener('change', (e) => {
+            lessonList.innerHTML = '';
+            loadModulesForSelect(e.target.value, viewLessonsModuleSelect);
+        });
+        viewLessonsModuleSelect.addEventListener('change', (e) => displayLessons(viewLessonsCourseSelect.value, e.target.value));
+
+        sendNotifCourseSelect.addEventListener('change', (e) => {
+            loadModulesForSelect(e.target.value, sendNotifModuleSelect);
+        });
+
+        sendNotifButton.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const courseId = sendNotifCourseSelect.value;
+            const moduleId = sendNotifModuleSelect.value;
+            const customMessage = sendNotifMessage.value;
+            
+            if (!courseId) {
+                showToast("Por favor, selecione um curso.", "error");
+                return;
+            }
+
+            const submitButton = sendNotifButton.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Enviando...`;
+
+            try {
+                const courseDoc = await db.collection('cursos').doc(courseId).get();
+                const courseTitle = courseDoc.data().titulo;
+                let notificationTitle = '';
+                let notificationMessage = '';
+                let notificationLink = '';
+
+                if (moduleId) {
+                    const moduleDoc = await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).get();
+                    const moduleTitle = moduleDoc.data().titulo;
+                    notificationTitle = 'Novas Atualizações!';
+                    notificationMessage = customMessage || `O módulo "${moduleTitle}" do curso "${courseTitle}" foi atualizado!`;
+                    notificationLink = `/cursos/${courseId}/modulos/${moduleId}`;
+                } else {
+                    notificationTitle = 'Novo Curso Atualizado!';
+                    notificationMessage = customMessage || `O curso "${courseTitle}" recebeu novas aulas ou atualizações!`;
+                    notificationLink = `/cursos/${courseId}`;
+                }
+
+                await createNotification(notificationTitle, notificationMessage, notificationLink);
+                showToast("Notificação enviada com sucesso!", "success");
+                sendNotifButton.reset();
+            } catch (error) {
+                console.error("Erro ao enviar notificação:", error);
+                showToast("Erro ao enviar notificação. Verifique o console.", "error");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> Enviar Notificação`;
+            }
+        });
+        
+        moduleList.addEventListener('click', async (e) => {
+            const editBtn = e.target.closest('.btn-edit-module');
+            const deleteBtn = e.target.closest('.btn-delete-module');
+
+            if (editBtn) {
+                const courseId = editBtn.dataset.courseId;
+                const moduleId = editBtn.dataset.moduleId;
+                const doc = await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    editModuleForm.querySelector('#edit-module-id').value = doc.id;
+                    editModuleForm.querySelector('#edit-module-course-id').value = courseId;
+                    editModuleForm.querySelector('#edit-module-title').value = data.titulo;
+                    editModuleForm.querySelector('#edit-module-image-url').value = data.imagemUrl || '';
+                    editModuleModal.classList.add('active');
+                }
+            }
+
+            if (deleteBtn) {
+                const courseId = deleteBtn.dataset.courseId;
+                const moduleId = deleteBtn.dataset.moduleId;
+                if(confirm('Tem certeza que deseja excluir este módulo? TODAS AS AULAS DENTRO DELE SERÃO PERDIDAS.')) {
+                    try {
+                        const aulasSnapshot = await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).collection('aulas').get();
+                        const batch = db.batch();
+                        aulasSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+                        await batch.commit();
+                        await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).delete();
+                        showToast('Módulo e suas aulas foram excluídos.', 'success');
+                        displayModules(courseId);
+                    } catch(error) {
+                        console.error("Erro ao excluir módulo:", error);
+                        showToast('Falha ao excluir o módulo.', 'error');
+                    }
+                }
+            }
+        });
+
+        lessonList.addEventListener('click', async (e) => {
+            const editBtn = e.target.closest('.btn-edit-lesson');
+            const deleteBtn = e.target.closest('.btn-delete-lesson');
+
+            if (editBtn) {
+                const { courseId, moduleId, lessonId } = editBtn.dataset;
+                const doc = await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).collection('aulas').doc(lessonId).get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    editLessonForm.querySelector('#edit-lesson-course-id').value = courseId;
+                    editLessonForm.querySelector('#edit-lesson-module-id').value = moduleId;
+                    editLessonForm.querySelector('#edit-lesson-id').value = doc.id;
+                    editLessonForm.querySelector('#edit-lesson-title').value = data.titulo;
+                    editLessonForm.querySelector('#edit-lesson-iframe-url').value = data.iframeUrl;
+                    editLessonForm.querySelector('#edit-lesson-description').value = data.descricao || '';
+                    editLessonModal.classList.add('active');
+                }
+            }
+            if (deleteBtn) {
+                const { courseId, moduleId, lessonId } = deleteBtn.dataset;
+                if(confirm('Tem certeza que deseja excluir esta aula?')) {
+                     try {
+                        await db.collection('cursos').doc(courseId).collection('modulos').doc(moduleId).collection('aulas').doc(lessonId).delete();
+                        showToast('Aula excluída com sucesso.', 'success');
+                        displayLessons(courseId, moduleId);
+                    } catch(error) {
+                        console.error("Erro ao excluir aula:", error);
+                        showToast('Falha ao excluir a aula.', 'error');
+                    }
+                }
+            }
+        });
+
+        document.getElementById('cancel-edit-module').addEventListener('click', () => editModuleModal.classList.remove('active'));
+        document.getElementById('cancel-edit-lesson').addEventListener('click', () => editLessonModal.classList.remove('active'));
+
+        loadCoursesForSelects();
+    }
+    </script>
+</body>
+</html>

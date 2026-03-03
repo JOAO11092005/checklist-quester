@@ -1,0 +1,231 @@
+/* =========================================
+   HOME PAGE - STARLINK / AEROSPACE DESIGN
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg-pure: #000000;
+  --bg-surface: #0a0a0a;
+  --border-subtle: #333333;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+}
+
+.home-master-container {
+  background-color: var(--bg-pure);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Fundo Grid Técnico (substitui as partículas coloridas) */
+.home-tech-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --- HERO SECTION --- */
+.home-hero {
+  position: relative;
+  height: 65vh;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  padding: 0 8%;
+  z-index: 2;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-pure);
+}
+
+
+/* --- FUNDOS ORIGINAIS COM FILTRO TÉCNICO --- */
+.hero-standard {
+  background-color: #000000; /* Fundo preto para o modo de mesclagem */
+  background-image: url('https://cdn.areademembros.com/files/instancia_3760/image/KMviLJ89quCpIRGPpsCskf0slMD4XUH2yA63Rb0d.jpg');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: luminosity; /* Converte a imagem para Preto e Branco */
+}
+
+.hero-premium {
+  background-color: #000000;
+  background-image: url('https://i.pinimg.com/originals/90/70/32/9070324cdfc07c68d60eed0c39e77573.gif');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: luminosity; /* Converte o GIF animado para Preto e Branco */
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  /* Gradiente mais forte para escurecer as imagens e dar foco ao texto */
+  background: linear-gradient(to right, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.7) 60%, transparent 100%),
+              linear-gradient(to top, rgba(0,0,0,1) 5%, transparent 40%);
+}
+
+.hero-main-content {
+  position: relative;
+  z-index: 3;
+  max-width: 800px;
+  animation: slideUp 0.6s ease-out;
+}
+
+.hero-badge {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  padding: 6px 14px;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.hero-display-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 25px;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+
+.text-highlight {
+  color: var(--text-muted); /* Em vez de gradiente colorido, usamos contraste de cinza e branco */
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 45px;
+  line-height: 1.6;
+  font-weight: 300;
+  max-width: 600px;
+}
+
+/* Botão Hero - Estilo Terminal / Starlink */
+.btn-hero-tech {
+  display: inline-flex;
+  align-items: center;
+  background: var(--text-main);
+  color: var(--bg-pure);
+  padding: 16px 32px;
+  border-radius: 2px;
+  border: 1px solid var(--text-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-hero-tech:hover {
+  background: transparent;
+  color: var(--text-main);
+}
+
+/* --- CONTEÚDO / LISTA DE CURSOS --- */
+.home-content {
+  padding: 60px 8%;
+  position: relative;
+  z-index: 2;
+  background: var(--bg-pure);
+}
+
+.section-header {
+  margin-bottom: 50px;
+  display: flex;
+  align-items: flex-end; /* Alinha o texto na base com a linha */
+  gap: 30px;
+}
+
+.subtitle-tech {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+}
+
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.header-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+  margin-bottom: 8px; /* Levanta a linha para alinhar com o texto */
+}
+
+/* Grid de Cursos */
+.courses-grid-wrapper {
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* Estado Vazio */
+.empty-state-card {
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-subtle);
+  padding: 80px 40px;
+  border-radius: 2px;
+  text-align: center;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .home-hero {
+    padding: 0 5%;
+    height: auto;
+    min-height: 80vh;
+    text-align: left;
+    justify-content: center;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(to right, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.6) 100%),
+                linear-gradient(to top, rgba(0,0,0,1) 5%, transparent 40%);
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .header-line {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}

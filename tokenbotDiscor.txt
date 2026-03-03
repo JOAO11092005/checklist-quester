@@ -1,0 +1,11 @@
+MTQxNjkyMjAyMTIzNjgzODQyMQ.Gcy-Lv.knI2s1zERrA5dylFMV5ABfBqzOHHc4NPvDpQEs
+
+
+1086272202019708978
+
+git init 
+git add .
+
+git commit -m "alinhamento da logo"
+
+git push origin main

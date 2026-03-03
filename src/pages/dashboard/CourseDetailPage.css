@@ -1,0 +1,69 @@
+.lesson-page-layout {
+  display: flex;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  min-width: 0; /* Previne que o conteúdo empurre a sidebar */
+}
+
+.breadcrumb {
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+}
+
+.breadcrumb a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.main-content h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: var(--color-text-primary);
+}
+
+.video-player-container {
+  position: relative;
+  padding-bottom: 56.25%; /* Proporção 16:9 */
+  height: 0;
+  overflow: hidden;
+  margin-bottom: 25px;
+  background-color: black;
+  border-radius: 8px;
+}
+
+.video-player-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lesson-description {
+  background-color: var(--color-surface);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.lesson-description h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--color-text-primary);
+}
+
+.lesson-description p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Para o caso de curso não encontrado */
+.course-detail-container {
+  padding: 40px;
+}

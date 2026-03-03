@@ -1,0 +1,174 @@
+/* src/components/layout/Footer.css */
+
+:root {
+  --rocket-black: #09090a;       /* Fundo quase preto */
+  --rocket-gray: #202024;        /* Cinza escuro para hover/cards */
+  --rocket-text: #e1e1e6;        /* Branco suave para texto */
+  --rocket-text-sec: #a8a8b3;    /* Cinza para texto secundário */
+  --rocket-purple: blueviolet;   /* A cor de destaque pedida */
+  --rocket-purple-glow: rgba(138, 43, 226, 0.4);
+}
+
+.main-footer {
+  background-color: var(--rocket-black);
+  /* Borda superior com brilho neon */
+  border-top: 1px solid var(--rocket-purple);
+  /* box-shadow: 0 -4px 30px var(--rocket-purple-glow);  */
+  padding: 32px 24px;
+  /* margin-top: 80px; */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito de luz sutil no fundo (opcional) */
+.main-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 1px;
+  background: radial-gradient(circle, var(--rocket-purple) 0%, transparent 100%);
+  opacity: 0.8;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Alinhamento ao topo fica mais elegante */
+  max-width: 1120px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+/* --- Tipografia e Info --- */
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-info p {
+  color: var(--rocket-text-sec);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Fonte recomendada, ou a do seu sistema */
+}
+
+/* Destaque no nome da marca */
+.highlight {
+  color: var(--rocket-text);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.powered-by {
+  font-size: 0.75rem !important;
+  color: #555 !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+/* --- Links e Social --- */
+.footer-links-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--rocket-gray);
+  border-radius: 8px; /* Borda levemente arredondada estilo app moderno */
+  color: var(--rocket-text);
+  font-size: 20px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.social-icons a:hover {
+  background-color: var(--rocket-black);
+  color: var(--rocket-purple);
+  border-color: var(--rocket-purple);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px var(--rocket-purple-glow);
+}
+
+.footer-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-nav a {
+  color: var(--rocket-text-sec);
+  font-size: 0.875rem;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.footer-nav a:hover {
+  color: var(--rocket-purple);
+}
+
+/* Efeito de underline animado nos links de texto */
+.footer-nav a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--rocket-purple);
+  transition: width 0.3s ease-in-out;
+}
+
+.footer-nav a:hover::after {
+  width: 100%;
+}
+
+.mobile-break {
+    display: none;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-links-container {
+    align-items: center;
+    width: 100%;
+  }
+
+  .social-icons {
+    margin-bottom: 10px;
+  }
+  
+  .footer-nav {
+    flex-direction: column; /* Links um abaixo do outro no mobile */
+    gap: 12px;
+  }
+
+  .mobile-break {
+      display: block;
+  }
+}

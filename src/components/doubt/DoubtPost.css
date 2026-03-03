@@ -1,0 +1,150 @@
+/* src/components/doubt/DoubtPost.css */
+
+.doubt-post-card {
+    background: #1a1a2e; /* Fundo do card */
+    border-radius: 12px;
+    border: 1px solid #33334d; /* Borda sutil */
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    max-width: 680px;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Cabeçalho do Post --- */
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.post-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid blueviolet;
+}
+
+.post-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-username {
+    font-weight: bold;
+    color: #fff;
+}
+
+.post-timestamp {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+/* --- Conteúdo e Mídia --- */
+.post-content {
+    color: #e0e0e0;
+    line-height: 1.6;
+    white-space: pre-wrap; /* Mantém as quebras de linha e espaços */
+    word-wrap: break-word; /* Evita que o texto estoure o container */
+    margin-bottom: 1rem;
+}
+
+.mention-link {
+    color: blueviolet;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 2px 4px;
+    background-color: rgba(138, 43, 226, 0.15);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.mention-link:hover {
+    background-color: rgba(138, 43, 226, 0.3);
+    text-decoration: underline;
+}
+
+.post-media {
+    margin-top: 1rem;
+}
+
+.post-video-wrapper, .post-link-preview {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.post-link-preview {
+    border: 1px solid #33334d;
+    background-color: #0d0d1a;
+    transition: background-color 0.2s ease;
+}
+
+.post-link-preview:hover {
+    background-color: #22223a;
+}
+
+.post-link-preview a {
+    text-decoration: none;
+    display: flex;
+    color: inherit;
+}
+
+.post-link-preview img {
+    width: 120px;
+    height: 100%;
+    object-fit: cover;
+}
+
+.link-preview-info {
+    padding: 12px;
+    flex: 1;
+}
+
+.link-preview-info strong {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+.link-preview-info h5 {
+    margin: 4px 0;
+    font-size: 1rem;
+    color: #fff;
+}
+.link-preview-info p {
+    font-size: 0.9rem;
+    color: #ccc;
+    -webkit-line-clamp: 2; /* Limita a descrição a 2 linhas */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* --- Ações do Post --- */
+.post-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #33334d;
+    display: flex;
+    gap: 1rem;
+}
+
+.action-button {
+    background: none;
+    border: 1px solid #444;
+    color: #aaa;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: rgba(138, 43, 226, 0.1);
+    color: blueviolet;
+    border-color: blueviolet;
+}

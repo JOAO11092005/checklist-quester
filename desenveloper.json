@@ -1,0 +1,30 @@
+{
+  "name": "meu-app-de-cursos",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prebuild": "python app.py"
+  },
+  "dependencies": {
+    "@giphy/react-components": "^10.1.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "date-fns": "^3.6.0",
+    "emoji-picker-react": "^4.13.3",
+    "firebase": "^10.12.2",
+    "hls.js": "^1.6.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.2.1",
+    "react-player": "^2.16.0",
+    "react-router-dom": "^6.24.1",
+    "react-toastify": "^10.0.5",
+    "vite": "^5.3.3"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}

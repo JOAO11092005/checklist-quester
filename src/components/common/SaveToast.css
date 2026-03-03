@@ -1,0 +1,24 @@
+/* src/components/common/SaveToast.css */
+.save-toast {
+  position: fixed;
+  top: 6rem; /* ou 'top: 2rem;' se preferir no topo */
+  right: 3rem;
+  background-color: #2f3d30; /* Verde escuro */
+  color: #a4f5ab; /* Verde claro */
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  border: 1px solid #4d6e50;
+  font-weight: 600;
+  
+  /* Animação */
+  opacity: 0;
+  transform: translateY(20px);
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.save-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}

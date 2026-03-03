@@ -1,0 +1,49 @@
+/* Customização completa do Toastify para estilo Rocketseat/Elite */
+
+:root {
+  --toastify-color-dark: #121214;
+  --toastify-color-error: #ff0055;
+  --toastify-color-success: #04d361;
+  --toastify-text-color-dark: #e1e1e6;
+}
+
+.Toastify__toast {
+  background-color: var(--toastify-color-dark) !important;
+  border: 1px solid #29292e !important;
+  border-radius: 12px !important;
+  font-family: 'Inter', sans-serif !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Notificação de Erro (E-mail/Senha incorretos) */
+.Toastify__toast--error {
+  border-bottom: 3px solid var(--toastify-color-error) !important;
+}
+
+.Toastify__toast--error .Toastify__toast-icon svg {
+  fill: var(--toastify-color-error) !important;
+}
+
+/* Notificação de Sucesso */
+.Toastify__toast--success {
+  border-bottom: 3px solid var(--toastify-color-success) !important;
+}
+
+.Toastify__toast--success .Toastify__toast-icon svg {
+  fill: var(--toastify-color-success) !important;
+}
+
+/* Barra de progresso */
+.Toastify__progress-bar--error {
+  background: var(--toastify-color-error) !important;
+}
+
+.Toastify__progress-bar--success {
+  background: var(--toastify-color-success) !important;
+}
+
+.Toastify__close-button {
+  color: #a8a8b3 !important;
+  align-self: center;
+}

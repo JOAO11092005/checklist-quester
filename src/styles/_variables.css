@@ -1,0 +1,17 @@
+/* /src/styles/_variables.css */
+:root {
+  /* Cores */
+  --color-background: #000000;
+  --color-surface: #1E1E22;
+  --color-primary: #8A2BE2; /* Roxo principal */
+  --color-secondary: #00FF7F; /* Verde neon */
+  --color-text-primary: #E1E1E6;
+  --color-text-secondary: #A8A8B3;
+  --color-border: #2A2A2E;
+
+  /* Fontes */
+  --font-family-main: 'Roboto', sans-serif; /* Use a fonte que preferir */
+
+  /* Efeitos */
+  --glow-effect: 0 0 5px var(--color-primary), 0 0 10px var(--color-primary), 0 0 15px var(--color-primary);
+}

@@ -1,0 +1,28 @@
+/* src/components/layout/DashboardLayout.css */
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #121212; /* Fundo escuro principal */
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #1f1f1f; /* Cor do header */
+  border-bottom: 1px solid #333;
+  color: white;
+  height: 60px; /* Altura fixa para o header */
+}
+
+.dashboard-header .logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.dashboard-content {
+  flex-grow: 1; /* Faz o conteúdo principal ocupar todo o espaço restante */
+  padding: 1rem 2rem;
+}

@@ -1,0 +1,34 @@
+/* Estilo Base do Card */
+.Toastify__toast {
+  border-radius: 12px !important;
+  background: rgba(18, 18, 20, 0.95) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  font-weight: 500;
+}
+
+/* Erro (Login Incorreto) - Rosa Neon */
+.toast-error-custom {
+  border-bottom: 3px solid #ff0055 !important;
+  box-shadow: 0 4px 20px rgba(255, 0, 85, 0.2);
+}
+
+.Toastify__progress-bar--error {
+  background: #ff0055 !important;
+}
+
+/* Sucesso - Verde Neon */
+.toast-success-custom {
+  border-bottom: 3px solid #04d361 !important;
+  box-shadow: 0 4px 20px rgba(4, 211, 97, 0.2);
+}
+
+.Toastify__progress-bar--success {
+  background: #04d361 !important;
+}
+
+/* Ícone de erro */
+.Toastify__toast--error svg {
+  fill: #ff0055 !important;
+}

@@ -1,0 +1,346 @@
+/* =========================================
+   LOGIN PAGE - STARLINK / AEROSPACE THEME
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-pure: #000000;
+  --bg-surface: #0a0a0a;
+  --border-subtle: #333333;
+  --border-focus: #ffffff;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  --font-body: 'Inter', sans-serif;
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0;
+}
+
+.login-master-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-pure);
+  font-family: var(--font-body);
+  overflow: hidden;
+  color: var(--text-main);
+}
+
+/* --- LADO ESQUERDO (VISUAL) --- */
+.login-visual-panel {
+  flex: 1.2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 60px;
+  background: var(--bg-pure);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.video-viewport {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.main-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Filtro para deixar o vídeo com aspecto técnico e escuro */
+  filter: grayscale(100%) contrast(1.2) brightness(0.6); 
+}
+
+/* Sobreposição escura para garantir leitura do texto */
+.video-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--bg-pure) 0%, transparent 70%, var(--bg-pure) 100%),
+              linear-gradient(to right, var(--bg-pure) 0%, transparent 100%);
+}
+
+.visual-overlay-text {
+  position: relative;
+  z-index: 10;
+  max-width: 600px;
+}
+
+.system-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.tech-title {
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--text-main);
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+}
+
+.typing-effect {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+.feature-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+  font-weight: 400;
+  font-size: 0.85rem;
+  padding: 10px 16px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(0,0,0,0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.f-icon { 
+  color: var(--text-main); 
+  font-size: 1.2rem;
+}
+
+/* --- LADO DIREITO (FORM) --- */
+.login-form-panel {
+  flex: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-pure);
+  padding: 40px;
+}
+
+.glass-form-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--text-main);
+  margin-bottom: 30px;
+}
+
+.form-header h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-header p {
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  font-weight: 300;
+  font-size: 0.95rem;
+}
+
+/* Inputs */
+.tech-input-group {
+  margin-bottom: 24px;
+}
+
+.tech-input-group label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-wrapper {
+  position: relative;
+  background: var(--bg-pure);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--border-focus);
+}
+
+.input-icon {
+  margin-left: 16px;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.input-wrapper:focus-within .input-icon {
+  color: var(--text-main);
+}
+
+.input-wrapper input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 16px;
+  color: var(--text-main);
+  outline: none;
+  font-size: 1rem;
+  font-family: var(--font-body);
+}
+
+.input-wrapper input::placeholder {
+  color: #444;
+}
+
+/* Botão Preto com Letras Brancas */
+.login-button-tech {
+  width: 100%;
+  padding: 18px;
+  background: var(--bg-pure);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.login-button-tech:hover:not(:disabled) {
+  border-color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.login-button-tech:disabled {
+  color: #555;
+  border-color: #222;
+  cursor: not-allowed;
+}
+
+/* Opções Extras */
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  font-size: 0.85rem;
+}
+
+.tech-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.check-custom {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-subtle);
+  display: grid;
+  place-items: center;
+  transition: 0.2s;
+  background: var(--bg-pure);
+}
+
+.tech-checkbox input { display: none; }
+.tech-checkbox input:checked + .check-custom {
+  border-color: var(--text-main);
+  background: var(--text-main);
+}
+.tech-checkbox input:checked + .check-custom::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--bg-pure);
+}
+
+.recover-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.recover-link:hover { 
+  color: var(--text-main); 
+  text-decoration: underline;
+}
+
+.auth-footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 20px;
+}
+
+.auth-footer a {
+  color: var(--text-main);
+  text-decoration: none;
+  margin-left: 5px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.auth-footer a:hover {
+  border-color: var(--text-main);
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .login-visual-panel { display: none; }
+  .login-form-panel { flex: 1; }
+}
+/* Layout para inputs lado a lado (Usado na página de Registro) */
+.form-row-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .form-row-split {
+    grid-template-columns: 1fr;
+  }
+}

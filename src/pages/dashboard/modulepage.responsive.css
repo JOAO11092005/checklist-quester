@@ -1,0 +1,48 @@
+/* ========================================= */
+/* ESTILOS DE RESPONSIVIDADE PARA MODULEPAGE */
+/* ========================================= */
+
+
+@media (max-width: 1024px) {
+   
+   .module-page-layout{
+    flex-direction: column;
+    width: 100%;
+   }
+   .video-player-container{
+      width: 100%;
+   }
+   .video-player-container iframe{
+    width: 100%;
+   }
+   .lesson-actions{
+    flex-direction: column;
+    gap: 20px;
+   }
+   .feedback-buttons{
+    display: flex;
+    gap: 20px;
+   }
+   .feedback-buttons .action-btn svg{
+    transform: scale(2);
+    width: 19px;
+  height: 32px;
+  
+   }
+   .lesson-sidebar {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   }
+   .breadcrumb{
+    font-size: 15px;
+   }
+   .main-content h1{
+    font-size: 25px;
+   }
+   .main-content{
+    margin-left: 0px;
+   }
+}

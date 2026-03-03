@@ -1,0 +1,216 @@
+/* ==========================================================================
+   TEMA CLARO E SOFISTICADO PARA SIDEBAR DE AULAS
+   ========================================================================== */
+
+/* --- Paleta de Cores e Variáveis de Design --- */
+:root {
+    /* Cores */
+    --color-primary: #7D40F7;         /* Roxo vibrante para acentos */
+    --color-primary-light: #F1EBFF; /* Roxo bem claro para fundos de destaque */
+    --color-surface: #FFFFFF;         /* Fundo principal da sidebar (branco) */
+    --color-background: #F8F8FA;      /* Fundo do corpo da página (cinza claro) */
+    --color-border: #EDEDF0;          /* Cor de bordas ultra sutis */
+    --color-success: #1DB954;         /* Verde vibrante para status de concluído */
+    
+    /* Tipografia */
+    --font-family: 'Inter', sans-serif;
+    --color-text-primary: #111111;    /* Texto principal (preto/cinza escuro) */
+    --color-text-secondary: #6A6A6A;  /* Texto secundário (cinza médio) */
+}
+
+/* --- Estilos Gerais da Sidebar --- */
+body {
+    background-color: var(--color-background); /* Dando contraste à sidebar branca */
+}
+
+.lesson-sidebar {
+    width: 400px;
+    min-width: 400px;
+    height: 100vh;
+    /* background-color: var(--color-surface); */
+    
+    padding: 30px 10px 30px 25px; /* Mais padding à esquerda */
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.module-nav-list {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 15px; /* Espaço para a scrollbar */
+}
+
+/* --- Animação de Entrada (Mantida) --- */
+.module-item {
+    opacity: 0;
+    animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    padding: 20px;
+}
+
+@keyframes fade-in-up {
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
+/* ==========================================================================
+   Estilos de Módulos e Aulas (Tema Claro)
+   ========================================================================== */
+.module-nav-list,
+.module-nav-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.module-item {
+    position: relative;
+    padding-left: 11px;
+    margin-bottom: 25px;
+    transform: translateY(20px); /* Posição inicial para animação */
+}
+
+.module-header, .progress-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.module-header { margin-left: -11px; margin-bottom: 15px; }
+
+/* Anel de Progresso - versão light mode */
+.module-icon-wrapper {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--color-primary);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 2;
+}
+.module-icon-wrapper .module-icon-inner {
+    width: 18px; height: 18px;
+    background: var(--color-surface);
+    border-radius: 50%;
+}
+.module-icon-wrapper.progress {
+    background: conic-gradient(var(--color-primary) 72.5%, var(--color-border) 0%);
+}
+
+.progress-title, .module-title {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    font-size: 16px;
+}
+.progress-subtitle, .module-lesson-count {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
+
+/* --- Linhas de Conexão Delicadas --- */
+.module-item:not(:last-child)::before,
+.lesson-list::before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    background-color: var(--color-border);
+    z-index: 0;
+}
+.module-item:not(:last-child)::before {
+    top: 22px; left: 11px; height: calc(100% - 11px);
+}
+.lesson-list::before {
+    top: 5px; left: 0; height: calc(100% - 10px);
+}
+.lesson-list {
+    position: relative;
+    padding-left: 37px;
+}
+
+/* --- Links de Aulas - O Foco da Interação --- */
+.lesson-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+    border-radius: 8px;
+    position: relative;
+    padding-left: 30px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+}
+
+.lesson-link:hover {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    transform: translateX(0px);
+}
+
+.lesson-link.active {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border-color: #E2D4FF;
+    font-weight: 600;
+}
+
+/* --- Ícones de Aula - Nítidos e Intencionais --- */
+
+/* 1. Ícone Padrão (Círculo Vazado) */
+.lesson-link::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid #CDCDD0;
+    background-color: var(--color-surface);
+    z-index: 1;
+    transition: all 0.25s ease;
+}
+.lesson-link:hover::before {
+    border-color: var(--color-text-primary);
+}
+
+/* 2. Ícone Ativo (Círculo Preenchido) */
+.lesson-link.active::before {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+/* 3. Ícone Concluído (SVG Verde) */
+.lesson-link .lesson-icon {
+    font-size: 22px;
+    color: white;
+    position: absolute;
+    left: 4px;
+    border-radius: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--color-surface);
+    z-index: 1;
+    padding: 2px; /* Adiciona respiro ao redor do ícone */
+}
+.lesson-link:has(.lesson-icon)::before {
+    display: none; /* Esconde o ícone padrão quando o SVG está presente */
+}
+
+/* --- Scrollbar Customizada (Toque Final) --- */
+.module-nav-list::-webkit-scrollbar {
+    width: 6px;
+}
+.module-nav-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+.module-nav-list::-webkit-scrollbar-thumb {
+    background: #DCDCE0;
+    border-radius: 3px;
+}
+.module-nav-list::-webkit-scrollbar-thumb:hover {
+    background: #C8C8CF;
+}

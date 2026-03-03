@@ -1,0 +1,46 @@
+/* Estiliza o parágrafo da descrição para melhor legibilidade */
+.lesson-description-text {
+  font-size: 1rem;
+  line-height: 1.7; /* Aumenta o espaçamento entre as linhas */
+  white-space: pre-wrap; /* Respeita as quebras de linha e espaços do texto original */
+  color: #e0e0e0; /* Cor de texto suave para temas escuros */
+}
+
+/* Estiliza os links detectados automaticamente */
+.lesson-link {
+  /* color: #4dabf7; Um azul claro que se destaca, mas é suave */
+  /* text-decoration: underline; */
+  text-decoration-color: #4dabf73a; /* Deixa o sublinhado mais sutil */
+  word-break: break-all; /* Impede que URLs muito longas quebrem o layout da página */
+  transition: color 0.2s ease-in-out; /* Adiciona uma transição suave ao passar o mouse */
+  
+  /* AJUSTE: Melhora o alinhamento e o comportamento do link com o texto ao redor */
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+/* Efeito ao passar o mouse sobre o link */
+.lesson-link:hover {
+  /* color: #74c0fc; Deixa o link um pouco mais claro */
+  text-decoration-color: #74c0fc8e;
+}
+
+/* NOVO: Estilos para a lista de extensões */
+.lesson-description-text ul {
+  list-style-type: '✓'; /* Usa um check como marcador */
+  padding-left: 25px;   /* Adiciona um recuo à lista */
+  margin-top: 10px;     /* Espaçamento acima da lista */
+}
+
+.lesson-description-text li {
+  margin-bottom: 8px; /* Espaçamento entre os itens da lista */
+  padding-left: 10px; /* Espaçamento entre o marcador e o texto */
+}
+
+.lesson-description-text li::marker {
+    color: #2ecc71; /* Cor verde para o marcador */
+}
+
+.lesson-description-text li strong {
+  color: #ffffff; /* Destaca o nome da extensão */
+}

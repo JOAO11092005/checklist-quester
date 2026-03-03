@@ -1,0 +1,161 @@
+/* src/components/layout/header.responsive.css */
+.homepagenotebook{
+    display: none;
+}
+/* Tablet & Mobile Styles */
+@media (max-width: 768px) {
+  .main-header {
+    padding: 10px 20px;
+    /* Adiciona uma transição para a altura quando o menu está aberto */
+    transition: height 0.3s ease-out;
+    height: 60px; /* Altura padrão para telas menores */
+    align-items: flex-start; /* Alinha o conteúdo ao topo para acomodar o menu */
+  }
+
+  .main-header.menu-open {
+    height: 100vh; /* Ocupa a altura total da tela quando o menu está aberto */
+    align-items: flex-start;
+  }
+
+  .header-left {
+    gap: 15px; /* Reduz o espaço entre o logo e o botão de menu */
+  }
+
+  .main-header .logo-container img,
+  .main-header .logo-text {
+    height: 25px; /* Reduz o tamanho do logo */
+  }
+
+  /* Exibe o botão de menu e oculta os links de navegação e perfil no topo */
+  .menu-toggle-button {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    padding: 5px;
+  }
+
+  /* Estilos para o menu de navegação em modo mobile */
+  .main-header .main-nav{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* Abaixo do header */
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.628);
+    border-top: 1px solid var(--color-border);
+    padding: 20px;
+    z-index: 999;
+  }
+
+  .main-nav.open {
+    display: flex;
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  /* Animação para deslizar o menu */
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .main-nav a {
+    font-size: 18px; /* Aumenta o tamanho da fonte para melhor leitura */
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .main-nav a:last-child {
+    border-bottom: none;
+  }
+
+  .main-nav a.active::after {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  /* Esconde o menu de perfil e outros ícones no topo quando o menu principal está aberto */
+  .user-profile {
+    display: none;
+  }
+
+  /* Força a exibição dos ícones de perfil quando o menu hamburguer estiver aberto */
+  .main-header .user-profile.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    position: absolute;
+    top: 60px; /* Abaixo do header */
+    right: 0;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    background-color: var(--color-background);
+    border-top: 1px solid var(--color-border);
+    z-index: 999;
+    animation: slideIn 0.3s ease-out forwards;
+  }
+.main-header .user-profile.open button ,.main-header .user-profile.open .profile-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile-menu{
+    flex-direction: column;
+    gap: 20px;
+}
+.dropdown{
+    width: 100%;
+}
+  .user-profile .icon-button,
+  .user-profile .profile-menu {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .notifications-menu,
+  .profile-menu {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .dropdown {
+    position: static; /* Ajusta o dropdown para ocupar o fluxo do documento */
+    width: 70%;
+    border: none;
+    box-shadow: none;
+    border-top: 1px solid var(--color-border);
+  }
+.dropdown-item{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+  .notifications-dropdown {
+    position: static;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+/* Oculta o botão de menu por padrão em telas maiores */
+@media (min-width: 769px) {
+  .menu-toggle-button {
+    display: none;
+  }
+}

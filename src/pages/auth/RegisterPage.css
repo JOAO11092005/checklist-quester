@@ -1,0 +1,257 @@
+/* =========================================
+   REGISTER PAGE (Cyberpunk / Glassmorphism)
+   ========================================= */
+:root {
+  --reg-bg: #000000;
+  --reg-primary: #8257e5; /* Roxo */
+  --reg-primary-hover: #9466ff;
+  --reg-glass: rgba(18, 18, 20, 0.75);
+  --reg-border: rgba(255, 255, 255, 0.1);
+  --reg-text: #e1e1e6;
+  --reg-text-dim: #a8a8b3;
+}
+
+.register-page-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--reg-bg);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* --- PAINEL ESQUERDO (VISUAL) --- */
+.register-left-panel {
+  flex: 1.1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px;
+  overflow: hidden;
+}
+
+/* Imagem de Fundo (Código/Tech) */
+.bg-image-wrapper {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  /* Imagem Dark Code */
+  background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop'); 
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%) contrast(1.2) brightness(0.6);
+  z-index: 0;
+  transition: transform 10s ease;
+}
+
+/* Efeito sutil de zoom ao carregar */
+.register-left-panel:hover .bg-image-wrapper {
+  transform: scale(1.05);
+}
+
+.overlay-gradient-reg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(5,5,5,0.8) 0%, rgba(130, 87, 229, 0.2) 100%);
+  z-index: 1;
+}
+
+.reg-content-text {
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.reg-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff;
+  margin-bottom: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.reg-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.highlight-neon {
+  color: var(--reg-primary);
+  text-shadow: 0 0 20px rgba(130, 87, 229, 0.4);
+}
+
+.reg-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.8);
+  max-width: 480px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.feature-list {
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.feature-item {
+  color: #fff; font-weight: 500; font-size: 0.95rem;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0.9;
+}
+
+/* --- PAINEL DIREITO (FORM) --- */
+.register-right-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #050505;
+}
+
+.ambient-glow-reg {
+  position: absolute;
+  top: 30%; right: 20%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(130, 87, 229, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.register-glass-card {
+  width: 100%;
+  max-width: 480px; /* Um pouco mais largo que o login */
+  padding: 40px;
+  background: var(--reg-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--reg-border);
+  border-radius: 24px;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 10;
+  animation: fadeInRight 0.8s ease-out;
+}
+
+.reg-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.reg-header h2 { font-size: 2rem; color: #fff; margin-bottom: 8px; }
+.reg-header p { color: var(--reg-text-dim); }
+
+.register-form {
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+/* Inputs Modernos (Reutilizando estilo, mas garantindo especificidade) */
+.input-field-modern {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-slot {
+  position: absolute;
+  left: 16px;
+  color: var(--reg-text-dim);
+  font-size: 1.2rem;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.input-field-modern input {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--reg-border);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.input-field-modern input:focus {
+  border-color: var(--reg-primary);
+  background: rgba(130, 87, 229, 0.05);
+  box-shadow: 0 0 0 4px rgba(130, 87, 229, 0.1);
+}
+
+.input-field-modern input:focus + .icon-slot { color: var(--reg-primary); }
+
+/* Row Split para Senhas */
+.form-row-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Botão Register */
+.btn-register-glow {
+  background: var(--reg-primary);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 0 20px rgba(130, 87, 229, 0.3);
+  margin-top: 10px;
+}
+
+.btn-register-glow:hover {
+  background: var(--reg-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(130, 87, 229, 0.5);
+}
+
+.btn-register-glow:disabled { opacity: 0.7; cursor: wait; transform: none; }
+
+/* Footer */
+.reg-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--reg-text-dim);
+}
+
+.login-link-btn {
+  color: var(--reg-primary);
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+.login-link-btn:hover { color: #fff; text-decoration: underline; }
+
+/* Spinner */
+.spinner-mini {
+  width: 20px; height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .register-page-container { flex-direction: column; }
+  .register-left-panel { display: none; /* Mobile foca no form */ }
+  .register-right-panel { padding: 20px; }
+  .register-glass-card { padding: 30px 20px; box-shadow: none; border: none; background: transparent; }
+  .form-row-split { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,45 @@
+/src
+|-- /assets
+|   |-- images
+|   |-- icons
+|-- /components
+|   |-- /common
+|   |   |-- Button.jsx
+|   |   |-- Card.jsx
+|   |   |-- Input.jsx
+|   |-- /layout
+|   |   |-- Header.jsx
+|   |   |-- Footer.jsx
+|   |   |-- Sidebar.jsx
+|   |-- /course
+|   |   |-- CourseCard.jsx
+|   |   |-- CourseList.jsx
+|   |-- /ranking
+|       |-- RankingList.jsx
+|-- /pages
+|   |-- /auth
+|   |   |-- LoginPage.jsx
+|   |   |-- RegisterPage.jsx
+|   |-- /dashboard
+|   |   |-- HomePage.jsx
+|   |   |-- RankingPage.jsx
+|   |   |-- CertificatesPage.jsx
+|-- /services
+|   |-- api.js
+|   |-- authService.js
+|   |-- courseService.js
+|-- /styles
+|   |-- main.css
+|   |-- _variables.css
+|-- /utils
+|   |-- helpers.js
+|-- App.jsx
+|-- main.jsx
+
+
+https://i.pinimg.com/originals/73/e5/c0/73e5c056efd74e7e53269e1e88026eb4.gif
+
+Accelerator
+
+
+gogetafusionkamehameha@gmail.com

@@ -1,0 +1,62 @@
+/* src/pages/dashboard/ChatPage.responsive.css */
+
+/*
+  Este arquivo contém APENAS os estilos para adaptar o chat
+  para telas menores, como tablets e celulares.
+*/
+@media (max-width: 1500px){
+    .chat-input-container {
+    /* padding: 0 1px 0px 2px 2px; */
+    margin-top: 50px;
+    flex-shrink: 1;
+    position: relative;
+}
+}
+@media (max-width: 768px) {
+  /* Ocupa a tela toda no celular, removendo margens e max-width */
+  .main-chat-area {
+    height: 100vh;
+    max-width: 100%;
+    margin: 0;
+    /* Remove a dependência do header global, se houver */
+    height: 100dvh; /* dvh é uma unidade mais moderna para altura de tela em mobile */
+  }
+
+  /* Reduz os espaçamentos laterais para economizar espaço */
+  .chat-header, .messages-list, .chat-input-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Diminui um pouco as fontes do header */
+  .chat-header h2 {
+    font-size: 1.1rem;
+  }
+  .chat-header p {
+    font-size: 0.8rem;
+  }
+
+  /* Diminui a fonte das mensagens e o espaçamento do avatar */
+  .chat-message {
+    gap: 0.75rem;
+  }
+  .message-author strong, .message-bubble, .chat-input-form input {
+    font-size: 0.95rem;
+  }
+
+  /* Garante que mídias grandes não quebrem o layout */
+  .message-media-wrapper, .message-gif-wrapper {
+    max-width: 100%;
+  }
+
+  /* Centraliza os seletores de Emoji/GIF e faz ocuparem a largura da tela */
+  .picker-container {
+    width: 94vw;
+    left: 3vw; /* Centraliza com um pequeno espaçamento */
+    bottom: 90px; /* Sobe um pouco para não ficar colado no teclado */
+  }
+
+  .gif-picker {
+    width: 100%;
+  }
+}

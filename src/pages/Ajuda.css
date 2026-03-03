@@ -1,0 +1,131 @@
+/* src/pages/Ajuda.css */
+
+.ajuda-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* Subtrai a altura do header */
+  padding: 40px 20px;
+  background-color: #0c0c0c; /* Fundo bem escuro, como nas imagens */
+  color: #f0f0f0;
+  font-family: 'Poppins', sans-serif; /* Use uma fonte moderna se tiver */
+}
+
+.ajuda-card {
+  background: linear-gradient(145deg, #1e102f, #13131d);
+  border: 1px solid #8A2BE2; /* Roxo vibrante igual ao botão "Matricule-se" */
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.header-icon {
+  color: #8A2BE2;
+}
+
+.ajuda-card h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.card-intro {
+  font-size: 1.1rem;
+  color: #c7c7c7;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+}
+
+.card-intro strong {
+  color: #f0f0f0;
+  font-weight: 600;
+}
+
+.steps-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 40px;
+}
+
+.steps-container h2 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #8A2BE2;
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+.steps-list {
+  list-style: none;
+  padding-left: 0;
+  text-align: left;
+  display: inline-block;
+}
+
+.steps-list li {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  padding-left: 30px;
+  position: relative;
+}
+
+/* Cria o contador customizado */
+.steps-list li::before {
+  content: counter(list-item);
+  counter-increment: list-item;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #8A2BE2;
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.adblock-button {
+  display: inline-block;
+  background-color: #8A2BE2;
+  color: #ffffff;
+  padding: 14px 35px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+}
+
+.adblock-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.8);
+}
