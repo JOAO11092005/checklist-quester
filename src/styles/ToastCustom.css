@@ -1,49 +1,99 @@
-/* Customização completa do Toastify para estilo Rocketseat/Elite */
+/* =========================================
+   TOASTIFY - SPACEX / COMMAND CENTER THEME
+   ========================================= */
 
-:root {
-  --toastify-color-dark: #121214;
-  --toastify-color-error: #ff0055;
-  --toastify-color-success: #04d361;
-  --toastify-text-color-dark: #e1e1e6;
-}
+   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
-.Toastify__toast {
-  background-color: var(--toastify-color-dark) !important;
-  border: 1px solid #29292e !important;
-  border-radius: 12px !important;
-  font-family: 'Inter', sans-serif !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(10px);
-}
-
-/* Notificação de Erro (E-mail/Senha incorretos) */
-.Toastify__toast--error {
-  border-bottom: 3px solid var(--toastify-color-error) !important;
-}
-
-.Toastify__toast--error .Toastify__toast-icon svg {
-  fill: var(--toastify-color-error) !important;
-}
-
-/* Notificação de Sucesso */
-.Toastify__toast--success {
-  border-bottom: 3px solid var(--toastify-color-success) !important;
-}
-
-.Toastify__toast--success .Toastify__toast-icon svg {
-  fill: var(--toastify-color-success) !important;
-}
-
-/* Barra de progresso */
-.Toastify__progress-bar--error {
-  background: var(--toastify-color-error) !important;
-}
-
-.Toastify__progress-bar--success {
-  background: var(--toastify-color-success) !important;
-}
-
-.Toastify__close-button {
-  color: #a8a8b3 !important;
-  align-self: center;
-}
+   :root {
+     --toastify-color-dark: #000000;
+     --toastify-color-error: #ff3333; /* Vermelho Crítico SpaceX */
+     --toastify-color-success: #ffffff; /* Branco Puro / Alto Contraste */
+     --toastify-color-info: #888888;
+     --toastify-color-warning: #ffcc00;
+     --toastify-text-color-dark: #ffffff;
+     --sx-toast-border: #222222;
+   }
+   
+   /* Base do Toast (Aparência de Terminal) */
+   .Toastify__toast {
+     background-color: var(--toastify-color-dark) !important;
+     border: 1px solid var(--sx-toast-border) !important;
+     border-radius: 2px !important; /* Cantos retos industriais */
+     font-family: 'JetBrains Mono', monospace !important;
+     font-size: 0.75rem !important;
+     font-weight: 700 !important;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9) !important;
+     padding: 12px 16px !important;
+   }
+   
+   /* --- ESTADOS (ERRO, SUCESSO, AVISO) --- */
+   
+   /* Notificação de Erro (Alerta Crítico) */
+   .Toastify__toast--error {
+     border-left: 4px solid var(--toastify-color-error) !important;
+   }
+   .Toastify__toast--error .Toastify__toast-icon svg {
+     fill: var(--toastify-color-error) !important;
+   }
+   
+   /* Notificação de Sucesso (Confirmação de Sistema) */
+   .Toastify__toast--success {
+     border-left: 4px solid var(--toastify-color-success) !important;
+   }
+   .Toastify__toast--success .Toastify__toast-icon svg {
+     fill: var(--toastify-color-success) !important;
+   }
+   
+   /* Notificação de Informação/Aviso */
+   .Toastify__toast--info {
+     border-left: 4px solid var(--toastify-color-info) !important;
+   }
+   .Toastify__toast--info .Toastify__toast-icon svg {
+     fill: var(--toastify-color-info) !important;
+   }
+   
+   .Toastify__toast--warning {
+     border-left: 4px solid var(--toastify-color-warning) !important;
+   }
+   .Toastify__toast--warning .Toastify__toast-icon svg {
+     fill: var(--toastify-color-warning) !important;
+   }
+   
+   /* --- BARRA DE PROGRESSO (TIMELINE DO ALERTA) --- */
+   .Toastify__progress-bar {
+     height: 2px !important; /* Barra bem fininha e técnica */
+   }
+   .Toastify__progress-bar--error {
+     background: var(--toastify-color-error) !important;
+   }
+   .Toastify__progress-bar--success {
+     background: var(--toastify-color-success) !important;
+   }
+   .Toastify__progress-bar--info {
+     background: var(--toastify-color-info) !important;
+   }
+   .Toastify__progress-bar--warning {
+     background: var(--toastify-color-warning) !important;
+   }
+   
+   /* Botão de Fechar [X] */
+   .Toastify__close-button {
+     color: #666666 !important;
+     align-self: center;
+     opacity: 1;
+     transition: color 0.2s;
+   }
+   .Toastify__close-button:hover {
+     color: #ffffff !important;
+   }
+   
+   /* Ajuste no corpo do texto */
+   .Toastify__toast-body {
+     padding: 0 12px !important;
+     margin: 0 !important;
+   }
+   .Toastify__toast-body > div:last-child {
+     line-height: 1.4;
+   }

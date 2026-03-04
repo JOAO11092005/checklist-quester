@@ -1,132 +1,138 @@
 /* =========================================
-   LOADER ULTIMATE (Entrance & Exit FX)
+   STARLINK PRE-LOADER (INDUSTRIAL VERSION)
+   (Isolado com prefixo .star-load-)
    ========================================= */
-:root {
-    --loader-bg: #050505;
-    --loader-primary: #8257e5;    /* Roxo Rocket */
-    --loader-secondary: #a57aff;  /* Roxo mais claro */
-    --loader-glow: rgba(130, 87, 229, 0.6);
-}
-  
-/* O Overlay principal */
-.loader-overlay-premium {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: radial-gradient(circle at center, #1a1a20 0%, var(--loader-bg) 80%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    overflow: hidden;
-    /* Animação de Entrada Padrão */
-    animation: overlayEnter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
+   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
-/* CLASSE DE SAÍDA - Será ativada pelo React */
-.loader-overlay-premium.is-exiting {
-    animation: overlayExit 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
-    pointer-events: none;
-}
-
-.loader-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    position: relative;
-    z-index: 10;
-    /* O conteúdo também entra suavemente */
-    animation: contentFadeIn 1s ease-out 0.3s both;
-}
-
-/* --- BARRAS NEON (EQUALIZADOR) --- */
-.glitch-bars {
-    display: flex;
-    gap: 10px;
-    height: 70px;
-    align-items: center;
-    justify-content: center;
-}
-
-.bar-neon {
-    width: 10px;
-    height: 100%;
-    background: linear-gradient(to top, var(--loader-primary), var(--loader-secondary));
-    border-radius: 6px;
-    box-shadow: 0 0 25px var(--loader-glow);
-    animation: soundWave 1.4s ease-in-out infinite;
-}
-
-/* Staggering (Atrasos) */
-.bar-neon:nth-child(1) { animation-delay: 0.0s; height: 40%; }
-.bar-neon:nth-child(2) { animation-delay: 0.15s; height: 70%; }
-.bar-neon:nth-child(3) { animation-delay: 0.3s; height: 100%; }
-.bar-neon:nth-child(4) { animation-delay: 0.45s; height: 70%; }
-.bar-neon:nth-child(5) { animation-delay: 0.6s; height: 40%; }
-
-@keyframes soundWave {
-    0%, 100% { transform: scaleY(1); opacity: 1; filter: brightness(1); }
-    50% { transform: scaleY(0.3); opacity: 0.6; filter: brightness(1.3); box-shadow: 0 0 5px var(--loader-glow); }
-}
-
-/* --- TEXTO MODERNO --- */
-.loader-text-modern {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: white;
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    display: flex;
-}
-
-.loader-text-modern span {
-    display: inline-block;
-    opacity: 0;
-    animation: charEnter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-@keyframes charEnter {
-    0% { opacity: 0; transform: translateY(20px) scale(0.8); filter: blur(8px); }
-    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); text-shadow: 0 0 20px var(--loader-glow); }
-}
-
-/* --- SCANLINE SUTIL (BACKGROUND) --- */
-.loader-scanline {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to bottom, transparent, rgba(130, 87, 229, 0.03) 50%, transparent);
-    background-size: 100% 4px;
-    animation: scanDown 6s linear infinite;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.5;
-}
-
-/* ================= ANIMAÇÕES DE ENTRADA E SAÍDA ================= */
-
-/* Entrada: Zoom Out + Fade In */
-@keyframes overlayEnter {
-    from { opacity: 0; transform: scale(1.1); filter: blur(10px); }
-    to { opacity: 1; transform: scale(1); filter: blur(0); }
-}
-
-/* Saída: Colapso de Energia */
-@keyframes overlayExit {
-    0% { opacity: 1; transform: scale(1); }
-    30% { opacity: 1; transform: scale(1.02); filter: brightness(1.5); /* Pequeno "respiro" antes de sumir */ }
-    100% { opacity: 0; transform: scale(0.8); filter: blur(20px) brightness(0); }
-}
-
-@keyframes contentFadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scanDown {
-    from { background-position: 0 0; }
-    to { background-position: 0 100vh; }
-}
+   :root {
+       --star-load-bg: #000000;
+       --star-load-accent: #ffffff;
+       --star-load-muted: #333333;
+       --star-load-dim: #111111;
+   }
+   
+   .star-load-overlay {
+       position: fixed;
+       inset: 0;
+       background: var(--star-load-bg);
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       z-index: 99999; /* Prioridade máxima absoluta */
+       overflow: hidden;
+       font-family: 'JetBrains Mono', monospace;
+   }
+   
+   /* --- ANIMAÇÃO DE SAÍDA (AERO-ZOOM) --- */
+   .star-load-overlay.is-exiting {
+       animation: star-load-exit 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+       pointer-events: none;
+   }
+   
+   @keyframes star-load-exit {
+       0% { opacity: 1; transform: scale(1); filter: brightness(1); }
+       100% { opacity: 0; transform: scale(1.5); filter: brightness(2) blur(10px); }
+   }
+   
+   /* --- CONTEÚDO --- */
+   .star-load-content {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       gap: 30px;
+       z-index: 10;
+   }
+   
+   /* --- SCANNER DE HARDWARE --- */
+   .star-load-scanner {
+       display: flex;
+       gap: 8px;
+       height: 40px;
+       align-items: center;
+   }
+   
+   .star-load-bar {
+       width: 3px;
+       height: 100%;
+       background: var(--star-load-accent);
+       animation: star-bar-load 1.2s ease-in-out infinite;
+       box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+   }
+   
+   /* Escalonamento de animação (Ritmo de dados) */
+   .star-load-bar:nth-child(1) { animation-delay: 0.0s; }
+   .star-load-bar:nth-child(2) { animation-delay: 0.1s; }
+   .star-load-bar:nth-child(3) { animation-delay: 0.2s; }
+   .star-load-bar:nth-child(4) { animation-delay: 0.3s; }
+   .star-load-bar:nth-child(5) { animation-delay: 0.4s; }
+   
+   @keyframes star-bar-load {
+       0%, 100% { transform: scaleY(0.3); opacity: 0.2; }
+       50% { transform: scaleY(1); opacity: 1; }
+   }
+   
+   /* --- TEXTO TÉCNICO --- */
+   .star-load-text {
+       font-size: 0.9rem;
+       font-weight: 700;
+       color: var(--star-load-accent);
+       letter-spacing: 6px;
+       text-transform: uppercase;
+       display: flex;
+   }
+   
+   .star-load-text span {
+       display: inline-block;
+       opacity: 0;
+       animation: star-text-reveal 0.4s ease-out forwards;
+   }
+   
+   @keyframes star-text-reveal {
+       from { opacity: 0; transform: translateX(-10px); filter: blur(5px); }
+       to { opacity: 1; transform: translateX(0); filter: blur(0); }
+   }
+   
+   /* --- SUBTEXTO --- */
+   .star-load-subtext {
+       font-size: 0.65rem;
+       color: var(--star-load-muted);
+       letter-spacing: 2px;
+   }
+   
+   .star-load-blink {
+       animation: star-blink 0.8s step-end infinite;
+       color: var(--star-load-accent);
+   }
+   
+   @keyframes star-blink { 50% { opacity: 0; } }
+   
+   /* --- RADAR / SCANLINE --- */
+   .star-load-radar {
+       position: absolute;
+       inset: 0;
+       background: linear-gradient(
+           to bottom,
+           transparent 0%,
+           rgba(255, 255, 255, 0.03) 50%,
+           transparent 100%
+       );
+       background-size: 100% 200%;
+       animation: star-radar-sweep 4s linear infinite;
+       pointer-events: none;
+       z-index: 1;
+   }
+   
+   @keyframes star-radar-sweep {
+       from { background-position: 0 -100%; }
+       to { background-position: 0 100%; }
+   }
+   
+   /* Linhas de Grade de fundo (HUD) */
+   .star-load-overlay::before {
+       content: '';
+       position: absolute;
+       inset: 0;
+       background-image: radial-gradient(var(--star-load-dim) 1px, transparent 1px);
+       background-size: 30px 30px;
+       opacity: 0.5;
+   }

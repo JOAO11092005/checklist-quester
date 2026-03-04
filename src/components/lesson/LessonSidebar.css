@@ -1,304 +1,298 @@
 /* =========================================
-   SIDEBAR PREMIUM (Next-Gen Style)
+   LESSON SIDEBAR - STARLINK / AEROSPACE
+   (Isolado: Prefixo .star-sb-)
    ========================================= */
-:root {
-  --sb-bg: #09090b;           /* Fundo ultra dark */
-  --sb-surface: #121214;      /* Superfície dos cards */
-  --sb-border: #27272a;       /* Bordas sutis */
-  --sb-accent: #8257e5;       /* Roxo Rocketseat */
-  --sb-accent-glow: rgba(130, 87, 229, 0.5);
-  --sb-text-main: #e4e4e7;
-  --sb-text-muted: #a1a1aa;
-  --sb-success: #10b981;      /* Verde Emerald */
-}
-
-.sidebar-container {
-  width: 400px;
-  min-width: 400px;
-  height: 100vh;
-  background-color: var(--sb-bg);
-  border-right: 1px solid var(--sb-border);
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;
-}
-
-/* --- Header Estilizado --- */
-.sidebar-header {
-  padding: 32px 24px 24px;
-  background: linear-gradient(180deg, rgba(9,9,11,1) 0%, rgba(9,9,11,0.8) 100%);
-  border-bottom: 1px solid var(--sb-border);
-  backdrop-filter: blur(8px);
-  z-index: 10;
-}
-
-.module-overline {
-  display: block;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--sb-accent);
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.module-title {
-  font-size: 1.25rem;
-  color: var(--sb-text-main);
-  font-weight: 700;
-  margin: 0 0 24px 0;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-/* Barra de Progresso "Laser" */
-.progress-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.progress-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  gap: 10px;
-  color: var(--sb-text-muted);
-  font-weight: 500;
-}
-.lesson-row.active{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}  
-.progress-track {
-  width: 100%;
-  height: 4px;
-  background: var(--sb-surface);
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--sb-accent);
-  border-radius: 4px;
-  position: relative;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.progress-glow {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  background: white;
-  box-shadow: 0 0 10px 2px white, 0 0 20px 5px var(--sb-accent);
-  border-radius: 20px;
-  border-radius: 50%;
-  opacity: 0.8;
-}
-
-/* --- Área de Scroll --- */
-.lessons-scroll-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px 0;
-}
-
-/* Custom Scrollbar */
-.lessons-scroll-area::-webkit-scrollbar {
-  width: 5px;
-}
-.lessons-scroll-area::-webkit-scrollbar-track {
-  background: transparent;
-}
-.lessons-scroll-area::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 10px;
-}
-.lessons-scroll-area::-webkit-scrollbar-thumb:hover {
-  background: var(--sb-accent);
-}
-
-/* --- Lista e Timeline --- */
-.lessons-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.lesson-row {
-  display: flex;
-  align-items: stretch;
-  background: transparent;
-  border: none;
-  padding: 0 24px;
-  cursor: pointer;
-  text-align: left;
-  position: relative;
-  transition: background 0.2s;
-  min-height: 72px; /* Altura confortável */
-}
-
-.lesson-row:hover .lesson-name {
-  color: white;
-}
-
-.lesson-row.active.completed{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 19px;
-  border-radius: 20px;
-} 
-
-/* Estado Locked */
-.lesson-row.locked {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-/* --- Coluna Visual (Timeline) --- */
-.timeline-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 20px;
-  min-width: 24px;
-  position: relative;
-}
-
-/* Linha da Timeline */
-.timeline-line {
-  position: absolute;
-  top: 30px;
-  bottom: -42px; /* Conecta com o próximo */
-  width: 2px;
-  background: #1f1f22;
-  z-index: 0;
-}
-
-.active .timeline-line, .completed .timeline-line {
-  background: rgba(130, 87, 229, 0.2); /* Linha levemente roxa se já passou */
-}
-
-/* Indicador (Bolinha/Ícone) */
-.status-indicator {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--sb-surface);
-  border: 2px solid #27272a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  transition: all 0.3s ease;
-  margin-top: 4px; /* Alinha com o título */
-}
-
-.step-number {
-  font-size: 0.7rem;
-  color: var(--sb-text-muted);
-  font-weight: 600;
-}
-
-/* Ícones Específicos */
-.icon-check { color: var(--sb-success); font-size: 14px; }
-.icon-lock { color: var(--sb-text-muted); font-size: 12px; }
-.icon-play { color: white; font-size: 9px; margin-left: 1px; }
-
-/* Estilos do Indicador por Estado */
-.completed .status-indicator {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: var(--sb-success);
-}
-
-.active .status-indicator {
-  /* background: var(--sb-accent); */
-  border-color: var(--sb-accent);
-  box-shadow: 0 0 15px var(--sb-accent-glow);
-  transform: scale(1.1);
-}
-
-.icon-play-wrapper {
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  animation: pulse-play 2s infinite;
-}
-
-/* --- Coluna de Conteúdo --- */
-.content-col {
-  flex: 1;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding-top: 4px; /* Alinha com a bolinha */
-}
-
-.lesson-name {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--sb-text-muted);
-  transition: color 0.2s;
-  margin-bottom: 6px;
-  line-height: 1.4;
-}
-
-.active .lesson-name {
-  color: white;
-  font-weight: 600;
-}
-
-.completed .lesson-name {
-  color: #71717a; /* Texto mais apagado se já viu */
-}
-
-.lesson-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.duration-badge {
-  font-size: 0.65rem;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: #18181b;
-  color: #71717a;
-  font-weight: 600;
-  border: 1px solid #27272a;
-}
-
-.type-text {
-  font-size: 0.7rem;
-  color: #52525b;
-}
-
-/* --- Fundo Brilhante na Ativa --- */
-.active-background-glow {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: #170d4f;
-background: linear-gradient(90deg, rgba(23, 13, 79, 0.22) 0%, rgba(130, 87, 229, 0) 47%, rgba(23, 13, 79, 0.17) 100%);
-  border-left: 3px solid var(--sbaccent-);
-  pointer-events: none;
-  z-index: 1;
-  border-radius: 0px;
-  transition: 0.5s ease-in-out;
-}
-
-/* Animações */
-@keyframes pulse-play {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
-}
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+   
+   :root {
+     --star-sb-bg: #000000;
+     --star-sb-surface: #0a0a0a;
+     --star-sb-border: #333333;
+     --star-sb-accent: #ffffff;
+     --star-sb-text-main: #ffffff;
+     --star-sb-text-muted: #888888;
+     --star-sb-text-dim: #444444;
+   }
+   
+   .star-sb-container {
+     width: 400px;
+     min-width: 400px;
+     height: 100vh;
+     background-color: var(--star-sb-bg);
+     border-left: 1px solid var(--star-sb-border); /* Fixado para a esquerda (quando usado na direita da tela) */
+     display: flex;
+     flex-direction: column;
+     position: sticky;
+     top: 0;
+     z-index: 50;
+     font-family: 'Inter', sans-serif;
+     overflow: hidden;
+   }
+   
+   /* --- Header Estilizado --- */
+   .star-sb-header {
+     padding: 32px 24px 24px;
+     background: var(--star-sb-bg);
+     border-bottom: 1px solid var(--star-sb-border);
+     z-index: 10;
+   }
+   
+   .star-sb-header-content {
+     display: flex;
+     flex-direction: column;
+     width: 80%;
+   }
+   
+   .star-sb-overline {
+     display: block;
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.7rem;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+     color: var(--star-sb-text-muted);
+     font-weight: 600;
+     margin-bottom: 8px;
+   }
+   
+   .star-sb-title {
+     font-size: 1.25rem;
+     color: var(--star-sb-text-main);
+     font-weight: 600;
+     margin: 0 0 24px 0;
+     line-height: 1.2;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+   }
+   
+   /* Barra de Progresso "Scanner" */
+   .star-sb-prog-wrapper {
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+   }
+   
+   .star-sb-prog-labels {
+     display: flex;
+     justify-content: space-between;
+     font-size: 0.7rem;
+     color: var(--star-sb-text-main);
+     font-weight: 600;
+     font-family: 'JetBrains Mono', monospace;
+     letter-spacing: 1px;
+   }
+   
+   .star-sb-prog-track {
+     width: 100%;
+     height: 4px;
+     background: var(--star-sb-border);
+     border-radius: 0;
+     overflow: hidden;
+     position: relative;
+   }
+   
+   .star-sb-prog-fill {
+     height: 100%;
+     background: var(--star-sb-accent);
+     position: relative;
+     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+   }
+   
+   /* O brilho verde foi substituído por uma "cabeça de leitura" reta */
+   .star-sb-prog-scanner {
+     position: absolute;
+     right: 0;
+     top: 0;
+     bottom: 0;
+     width: 4px;
+     background: var(--star-sb-accent);
+     box-shadow: -2px 0 5px rgba(255, 255, 255, 0.8);
+   }
+   
+   /* --- Área de Scroll --- */
+   .star-sb-scroll-area {
+     flex: 1;
+     overflow-y: auto;
+     padding: 24px 0;
+   }
+   
+   .star-sb-scroll-area::-webkit-scrollbar { width: 4px; }
+   .star-sb-scroll-area::-webkit-scrollbar-track { background: transparent; }
+   .star-sb-scroll-area::-webkit-scrollbar-thumb { background: var(--star-sb-border); border-radius: 0; }
+   .star-sb-scroll-area::-webkit-scrollbar-thumb:hover { background: var(--star-sb-text-muted); }
+   
+   /* --- Lista e Timeline --- */
+   .star-sb-list {
+     display: flex;
+     flex-direction: column;
+   }
+   
+   .star-sb-row {
+     display: flex;
+     align-items: stretch;
+     background: transparent;
+     border: none;
+     padding: 0 24px;
+     cursor: pointer;
+     text-align: left;
+     position: relative;
+     transition: background 0.2s;
+     min-height: 72px;
+   }
+   
+   .star-sb-row:hover:not(.locked) .star-sb-lesson-name {
+     color: var(--star-sb-text-main);
+   }
+   
+   /* Estado Locked */
+   .star-sb-row.locked {
+     cursor: not-allowed;
+     opacity: 0.4;
+   }
+   
+   /* --- Coluna Visual (Timeline) --- */
+   .star-sb-timeline-col {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     margin-right: 20px;
+     min-width: 24px;
+     position: relative;
+   }
+   
+   /* Linha da Timeline */
+   .star-sb-timeline-line {
+     position: absolute;
+     top: 30px;
+     bottom: -42px;
+     width: 1px;
+     background: var(--star-sb-border);
+     z-index: 0;
+   }
+   
+   .star-sb-row.active .star-sb-timeline-line, 
+   .star-sb-row.completed .star-sb-timeline-line {
+     background: var(--star-sb-text-muted); 
+   }
+   
+   /* Indicador (Caixa de Hardware) */
+   .star-sb-status-box {
+     width: 24px;
+     height: 24px;
+     border-radius: 2px; /* Corte reto tecnológico */
+     background: var(--star-sb-bg);
+     border: 1px solid var(--star-sb-border);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 2;
+     transition: all 0.3s ease;
+     margin-top: 4px; 
+   }
+   
+   .star-sb-step-number {
+     font-size: 0.7rem;
+     color: var(--star-sb-text-muted);
+     font-weight: 600;
+     font-family: 'JetBrains Mono', monospace;
+   }
+   
+   /* Ícones Específicos */
+   .star-sb-icon-check { color: var(--star-sb-bg); font-size: 14px; font-weight: bold; }
+   .star-sb-icon-lock { color: var(--star-sb-text-dim); font-size: 12px; }
+   .star-sb-icon-play { color: var(--star-sb-bg); font-size: 12px; margin-left: 2px; }
+   
+   /* Estilos do Indicador por Estado */
+   .star-sb-row.completed .star-sb-status-box {
+     background: var(--star-sb-accent);
+     border-color: var(--star-sb-accent);
+   }
+   
+   .star-sb-row.active .star-sb-status-box {
+     background: var(--star-sb-accent);
+     border-color: var(--star-sb-accent);
+     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+   }
+   
+   .star-sb-icon-play-wrapper {
+     display: flex; 
+     align-items: center; 
+     justify-content: center;
+     animation: star-sb-pulse 2s infinite;
+   }
+   
+   /* --- Coluna de Conteúdo --- */
+   .star-sb-content-col {
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
+     padding-top: 4px;
+     position: relative;
+     z-index: 2;
+   }
+   
+   .star-sb-lesson-name {
+     font-size: 0.85rem;
+     font-weight: 500;
+     color: var(--star-sb-text-muted);
+     transition: color 0.2s;
+     margin-bottom: 6px;
+     line-height: 1.4;
+     text-transform: uppercase;
+   }
+   
+   .star-sb-row.active .star-sb-lesson-name {
+     color: var(--star-sb-text-main);
+     font-weight: 600;
+   }
+   
+   .star-sb-row.completed .star-sb-lesson-name {
+     color: var(--star-sb-text-dim); 
+   }
+   
+   .star-sb-lesson-meta {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+   }
+   
+   .star-sb-type-text {
+     font-size: 0.65rem;
+     color: var(--star-sb-text-muted);
+     font-family: 'JetBrains Mono', monospace;
+     letter-spacing: 1px;
+   }
+   
+   .star-sb-row.completed .star-sb-type-text {
+     color: var(--star-sb-accent); /* Destaque branco para "VERIFICADO" */
+   }
+   
+   /* --- Fundo na Aula Ativa --- */
+   .star-sb-active-bg {
+     position: absolute;
+     top: 0; left: 0; right: 0; bottom: 0;
+     background: var(--star-sb-surface);
+     border-left: 2px solid var(--star-sb-accent);
+     pointer-events: none;
+     z-index: 1;
+     transition: 0.3s ease-in-out;
+   }
+   
+   /* Animações */
+   @keyframes star-sb-pulse {
+     0% { transform: scale(1); opacity: 1; }
+     50% { transform: scale(1.1); opacity: 0.8; }
+     100% { transform: scale(1); opacity: 1; }
+   }
+   
+   /* Responsividade Básica (Herdada do layout principal caso necessário) */
+   @media (max-width: 1024px) {
+     .star-sb-container {
+       width: 100%;
+       min-width: 100%;
+       height: auto;
+       border-left: none;
+       border-top: 1px solid var(--star-sb-border);
+     }
+   }

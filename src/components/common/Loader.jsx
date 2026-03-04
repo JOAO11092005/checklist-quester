@@ -1,33 +1,39 @@
 import React from 'react';
 import './Loader.css';
 
-// Aceita uma prop 'isExiting' para controlar a animação de saída
-const Loader = ({ title = "INICIALIZANDO SISTEMA", isExiting = false }) => {
+const Loader = ({ title = "SINC_SISTEMA_STARLINK", isExiting = false }) => {
     return (
-        // Adiciona a classe 'is-exiting' se a prop for verdadeira
-        <div className={`loader-overlay-premium ${isExiting ? 'is-exiting' : ''}`}>
+        <div className={`star-load-overlay ${isExiting ? 'is-exiting' : ''}`}>
             
-            <div className="loader-scanline"></div>
+            {/* Efeito de Scanline de Radar */}
+            <div className="star-load-radar"></div>
 
-            <div className="loader-content">
-                <div className="glitch-bars">
-                    <div className="bar-neon"></div>
-                    <div className="bar-neon"></div>
-                    <div className="bar-neon"></div>
-                    <div className="bar-neon"></div>
-                    <div className="bar-neon"></div>
+            <div className="star-load-content">
+                {/* Scanner de Hardware (Substitui as barras neon) */}
+                <div className="star-load-scanner">
+                    <div className="star-load-bar"></div>
+                    <div className="star-load-bar"></div>
+                    <div className="star-load-bar"></div>
+                    <div className="star-load-bar"></div>
+                    <div className="star-load-bar"></div>
                 </div>
                 
-                <h1 className="loader-text-modern">
+                <h1 className="star-load-text">
                     {title.split('').map((char, index) => (
                         <span 
                             key={index} 
-                            style={{ animationDelay: `${0.2 + index * 0.08}s` }}
+                            style={{ animationDelay: `${0.1 + index * 0.05}s` }}
                         >
                             {char === ' ' ? '\u00A0' : char}
                         </span>
                     ))}
                 </h1>
+
+                {/* Status de Telemetria inferior */}
+                <div className="star-load-subtext">
+                    <span>ESTADO: OTIMIZANDO_NODES</span>
+                    <span className="star-load-blink">_</span>
+                </div>
             </div>
         </div>
     );

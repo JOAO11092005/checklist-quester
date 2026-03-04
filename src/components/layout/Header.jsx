@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { auth } from '../../firebase/config';
+import { auth, db } from '../../firebase/config'; // Adicionado db aqui
 import { signOut } from 'firebase/auth';
+import { collection, query, where, onSnapshot } from 'firebase/firestore'; // Imports do Firestore
 import { 
   IoSearch, 
   IoNotificationsOutline, 
@@ -20,8 +21,12 @@ const Header = () => {
   const { currentUser } = useAuth();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0); // Estado para guardar qtd de e-mails
   const profileDropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  // Alias de email do usuário (ex: joao@devweb.com)
+  const myDevEmail = currentUser?.email ? `${currentUser.email.split('@')[0].toLowerCase()}@devweb.com` : '';
 
   // Fecha dropdown ao clicar fora
   useEffect(() => {
@@ -33,6 +38,26 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Busca emails não lidos em TEMPO REAL
+  useEffect(() => {
+    if (!myDevEmail) return;
+
+    // Procura na caixa de entrada e-mails que são PARA mim e que estão como read: false
+    const qUnread = query(
+      collection(db, 'emails'), 
+      where('to', '==', myDevEmail),
+      where('read', '==', false)
+    );
+
+    const unsubscribe = onSnapshot(qUnread, (snapshot) => {
+      setUnreadCount(snapshot.docs.length);
+    }, (error) => {
+      console.error("Erro ao buscar notificações: ", error);
+    });
+
+    return () => unsubscribe();
+  }, [myDevEmail]);
 
   const handleLogout = async () => {
     try {
@@ -72,16 +97,19 @@ const Header = () => {
 
           {/* Busca e Notificações */}
           <div className="action-icons">
-            <NavLink to="/search">
+            <NavLink to="/search" className="icon-link">
               <button className="icon-btn" title="Buscar no Banco de Dados">
-              <IoSearch />
-            </button>
+                <IoSearch />
+              </button>
             </NavLink>
-            <NavLink to="/notificacao">
+            <NavLink to="/notificacao" className="icon-link">
               <button className="icon-btn notification-btn" title="Alertas de Sistema">
-              <IoNotificationsOutline />
-              <span className="notification-dot"></span>
-            </button>
+                <IoNotificationsOutline />
+                {/* Se houver e-mails não lidos, exibe o Badge numérico */}
+                {unreadCount > 0 && (
+                  <span className="notification-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>
+                )}
+              </button>
             </NavLink>
           </div>
 
@@ -106,7 +134,7 @@ const Header = () => {
               <div className={`dropdown-menu-tech ${isProfileDropdownOpen ? 'open' : ''}`}>
                 <div className="dropdown-header">
                   <span className="user-full-name">{currentUser.displayName || 'OPERADOR NÃO IDENTIFICADO'}</span>
-                  <span className="user-email">{currentUser.email}</span>
+                  <span className="user-email">{myDevEmail || currentUser.email}</span>
                 </div>
 
                 <div className="dropdown-divider" />

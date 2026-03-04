@@ -1,86 +1,140 @@
-/* src/components/module/ModuleCard.css */
+/* =========================================
+   MODULE CARD - STARLINK / AEROSPACE THEME
+   ========================================= */
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-.module-card {
-  position: relative;
-  display: block;
-  border-radius: 8px;
-  overflow: hidden;
-  text-decoration: none;
-  border: 1px solid rgba(253, 253, 253, 0.3);
-  transition: all 0.3s ease;
-}
-
-.module-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-}
-
-.module-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 20%, transparent 60%);
-  z-index: 1;
-}
-
-.module-card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.module-card:hover .module-card-image {
-  transform: scale(1.05);
-}
-
-.module-card-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  z-index: 2;
-  color: #ffffff;
-  text-align: center;
-}
-
-.module-card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
-  line-height: 1.2;
-}
-@media (max-width: 768px) {
-  .module-card {
-    border-radius: 6px;
-  }
-  
-  .module-card:hover {
-    transform: none; /* Desativa a transição de elevação no hover para mobile */
-    box-shadow: none; /* Remove a sombra no hover */
-  }
-
-  .module-card-content {
-    padding: 0.75rem;
-  }
-  
-  .module-card-title {
-    font-size: 1rem; /* Diminui o tamanho da fonte para melhor visualização */
-  }
-}
-
-@media (max-width: 480px) {
-  .module-card-content {
-    padding: 0.5rem;
-  }
-
-  .module-card-title {
-    font-size: 0.9rem; /* Fonte ainda menor para telas muito pequenas */
-  }
-}
+   :root {
+     --bg-pure: #000000;
+     --border-subtle: #333333;
+     --text-main: #ffffff;
+     --text-muted: #888888;
+   }
+   
+   .module-card-tech {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     background-color: var(--bg-pure);
+     border: 1px solid var(--border-subtle);
+     border-radius: 2px; /* Cantos técnicos retilíneos */
+     overflow: hidden;
+     text-decoration: none;
+     transition: all 0.3s ease;
+     height: 100%;
+     min-height: 220px;
+   }
+   
+   /* Efeito Hover Seco e Preciso */
+   .module-card-tech:hover {
+     border-color: var(--text-main);
+     transform: translateY(-4px);
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+   }
+   
+   .module-image-container {
+     position: relative;
+     width: 100%;
+     height: 340px;
+     overflow: hidden;
+     border-bottom: 1px solid var(--border-subtle);
+   }
+   
+   .module-image-tech {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     display: block;
+     /* Imagem em tons de cinza por padrão */
+     filter: grayscale(100%) contrast(1.2) brightness(0.5);
+     transition: all 0.5s ease;
+   }
+   
+   .module-card-tech:hover .module-image-tech {
+     transform: scale(1.05);
+     /* Revela cor e brilho ao passar o mouse */
+     filter: grayscale(0%) contrast(1.1) brightness(0.8);
+   }
+   
+   .module-overlay-tech {
+     position: absolute;
+     inset: 0;
+     background: linear-gradient(to top, var(--bg-pure) 0%, transparent 60%);
+     pointer-events: none;
+   }
+   
+   /* Badge indicadora de Módulo */
+   .module-badge-tech {
+     position: absolute;
+     top: 10px;
+     left: 10px;
+     background: rgba(0, 0, 0, 0.8);
+     border: 1px solid var(--border-subtle);
+     color: var(--text-muted);
+     padding: 4px 8px;
+     font-size: 0.65rem;
+     font-weight: 600;
+     letter-spacing: 2px;
+     display: none;
+     align-items: center;
+     gap: 6px;
+     transition: all 0.3s ease;
+   }
+   
+   .module-card-tech:hover .module-badge-tech {
+     color: var(--text-main);
+     border-color: var(--text-main);
+   }
+   
+   /* Conteúdo de Texto */
+   .module-content-tech {
+     padding: 16px;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     flex-grow: 1;
+     background: var(--bg-pure);
+   }
+   
+   .module-title-tech {
+     color: var(--text-main);
+     font-size: 0.95rem;
+     font-weight: 500;
+     margin: 0 0 16px 0;
+     line-height: 1.4;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+   }
+   
+   .module-status-tech {
+     font-size: 0.75rem;
+     color: var(--text-muted);
+     font-family: monospace; /* Fonte tipo prompt de comando */
+     letter-spacing: 2px;
+     transition: color 0.3s ease;
+   }
+   
+   .module-card-tech:hover .module-status-tech {
+     color: var(--text-main);
+   }
+   
+   /* Responsividade */
+   @media (max-width: 768px) {
+     .module-card-tech:hover {
+       transform: none; /* Estabilidade no mobile */
+       box-shadow: none;
+     }
+   
+     .module-content-tech {
+       padding: 12px;
+     }
+     
+     .module-title-tech {
+       font-size: 0.85rem;
+     }
+   }
+   
+   @media (max-width: 480px) {
+     .module-image-container {
+       height: 120px;
+     }
+   }

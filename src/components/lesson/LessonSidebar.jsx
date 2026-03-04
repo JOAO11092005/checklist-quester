@@ -1,6 +1,5 @@
 import React from 'react';
 import { IoCheckmark, IoPlay, IoLockClosed } from 'react-icons/io5';
-import { FaPlay } from 'react-icons/fa';
 import './LessonSidebar.css';
 
 const LessonSidebar = ({ lessons, onLessonClick, activeLessonId, moduleTitle }) => {
@@ -10,33 +9,34 @@ const LessonSidebar = ({ lessons, onLessonClick, activeLessonId, moduleTitle }) 
   const percentage = total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
   return (
-    <aside className="sidebar-container">
-      {/* --- Header com Efeito Glass --- */}
-      <div className="sidebar-header">
-        <div className="header-content">
-          <span className="module-overline">Módulo Atual</span>
-          <h2 className="module-title">{moduleTitle || "Masterizando React"}</h2>
+    <aside className="star-sb-container">
+      {/* --- Header Técnico --- */}
+      <div className="star-sb-header">
+        <div className="star-sb-header-content">
+          <span className="star-sb-overline">DIRETÓRIO ATUAL</span>
+          <h2 className="star-sb-title">{moduleTitle || "SISTEMA PRINCIPAL"}</h2>
           
-          <div className="progress-wrapper">
-            <div className="progress-labels">
-              <span>{percentage}% Concluído </span>
-              <span> { completedCount }  /  {total} Aulas</span>
+          <div className="star-sb-prog-wrapper">
+            <div className="star-sb-prog-labels">
+              <span>{percentage}% PROCESSADO</span>
+              <span>{completedCount} / {total} ARQUIVOS</span>
             </div>
-            <div className="progress-track">
+            <div className="star-sb-prog-track">
               <div 
-                className="progress-fill" 
+                className="star-sb-prog-fill" 
                 style={{ width: `${percentage}%` }}
               >
-                <div className="progress-glow"></div>
+                {/* Feixe de leitura (Scanner) */}
+                <div className="star-sb-prog-scanner"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* --- Lista de Aulas (Timeline) --- */}
-      <div className="lessons-scroll-area">
-        <div className="lessons-list">
+      {/* --- Lista de Aulas (Timeline Técnica) --- */}
+      <div className="star-sb-scroll-area">
+        <div className="star-sb-list">
           {lessons.map((lesson, index) => {
             const isActive = lesson.id === activeLessonId;
             const isDone = lesson.completed;
@@ -45,46 +45,43 @@ const LessonSidebar = ({ lessons, onLessonClick, activeLessonId, moduleTitle }) 
             return (
               <button 
                 key={lesson.id} 
-                className={`lesson-row ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}`}
+                className={`star-sb-row ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}`}
                 onClick={() => !isLocked && onLessonClick(lesson)}
                 disabled={isLocked}
               >
                 {/* Coluna Visual (Timeline) */}
-                <div className="timeline-col">
+                <div className="star-sb-timeline-col">
                   {/* Linha conectora (exceto no último) */}
-                  {index !== lessons.length - 1 && <div className="timeline-line" />}
+                  {index !== lessons.length - 1 && <div className="star-sb-timeline-line" />}
                   
-                  {/* Ícone de Status */}
-                  <div className="status-indicator">
+                  {/* Ícone de Status (Caixa de Hardware) */}
+                  <div className="star-sb-status-box">
                     {isDone ? (
-                      <IoCheckmark className="icon-check" />
+                      <IoCheckmark className="star-sb-icon-check" />
                     ) : isActive ? (
-                      <div className="icon-play-wrapper">
-                        <FaPlay className="icon-play" />
+                      <div className="star-sb-icon-play-wrapper">
+                        <IoPlay className="star-sb-icon-play" />
                       </div>
                     ) : isLocked ? (
-                      <IoLockClosed className="icon-lock" />
+                      <IoLockClosed className="star-sb-icon-lock" />
                     ) : (
-                      <span className="step-number">{index + 1}</span>
+                      <span className="star-sb-step-number">{index + 1}</span>
                     )}
                   </div>
                 </div>
 
                 {/* Coluna de Conteúdo */}
-                <div className="content-col">
-                  <span className="lesson-name">{lesson.titulo}</span>
-                  <div className="lesson-meta">
-                    {/* <span className="duration-badge">
-                      {lesson.duration || "10 min"}
-                    </span> */}
-                    <span className="type-text">
-                      {isLocked ? "Bloqueado" : isDone ? "Assistido" : "Videoaula"}
+                <div className="star-sb-content-col">
+                  <span className="star-sb-lesson-name">{lesson.titulo}</span>
+                  <div className="star-sb-lesson-meta">
+                    <span className="star-sb-type-text">
+                      {isLocked ? "ACESSO NEGADO" : isDone ? "VERIFICADO" : "ARQUIVO DE VÍDEO"}
                     </span>
                   </div>
                 </div>
 
-                {/* Efeito de Brilho Ativo (Fundo) */}
-                {isActive && <div className="active-background-glow" />}
+                {/* Fundo de Linha Ativa */}
+                {isActive && <div className="star-sb-active-bg" />}
               </button>
             );
           })}

@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../firebase/config';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext';
-import { FaCrown, FaTrophy, FaRocket, FaBolt, FaStar, FaFire, FaTerminal } from 'react-icons/fa';
-import confetti from 'canvas-confetti'; // Certifique-se de ter instalado: npm install canvas-confetti
+import { FaTerminal } from 'react-icons/fa';
+import { IoHardwareChipOutline, IoShieldCheckmarkOutline, IoAnalyticsOutline } from 'react-icons/io5';
+import confetti from 'canvas-confetti'; 
 
 import userAvatarPlaceholder from '../../assets/images/user-avatar.png';
 import './RankingPage.css';
@@ -13,6 +14,7 @@ const RankingPage = () => {
   const [ranking, setRanking] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Confete adaptado para parecer "Sparks/Dados" em branco, cinza e prata
   const fireCelebration = useCallback(() => {
     const duration = 3 * 1000;
     const end = Date.now() + duration;
@@ -23,14 +25,14 @@ const RankingPage = () => {
         angle: 60,
         spread: 55,
         origin: { x: 0, y: 0.6 },
-        colors: ['#8257e5', '#04d361']
+        colors: ['#ffffff', '#aaaaaa', '#555555']
       });
       confetti({
         particleCount: 3,
         angle: 120,
         spread: 55,
         origin: { x: 1, y: 0.6 },
-        colors: ['#ff008e', '#8257e5']
+        colors: ['#dddddd', '#888888', '#333333']
       });
 
       if (Date.now() < end) requestAnimationFrame(frame);
@@ -54,7 +56,7 @@ const RankingPage = () => {
             const lessonsCount = Object.keys(progressDoc.data().lessons || {}).length;
             return {
               id: userId,
-              displayName: userData.displayName || 'Dev Explorer',
+              displayName: userData.displayName || 'OP. DESCONHECIDO',
               photoURL: userData.photoURL,
               score: lessonsCount,
               xp: lessonsCount * 150,
@@ -71,7 +73,7 @@ const RankingPage = () => {
         setRanking(resolvedData);
         if (resolvedData.length > 0) fireCelebration();
       } catch (err) {
-        console.error("Erro ao carregar ranking:", err);
+        console.error("Erro ao carregar log de usuários:", err);
       } finally {
         setLoading(false);
       }
@@ -81,11 +83,10 @@ const RankingPage = () => {
   }, [fireCelebration]);
 
   if (loading) return (
-    <div className="ranking-loader-container">
-      <div className="cyber-loader">
-        <FaTerminal className="loader-icon" />
-        <div className="loader-bar"></div>
-        <span>SINCRONIZANDO NODES...</span>
+    <div className="star-rk-loader-container">
+      <div className="star-rk-loader">
+        <FaTerminal className="star-rk-loader-icon" />
+        <span className="star-rk-blink-text">SINCRONIZANDO NODES DO SISTEMA...</span>
       </div>
     </div>
   );
@@ -94,72 +95,74 @@ const RankingPage = () => {
   const others = ranking.slice(3);
 
   return (
-    <div className="ranking-page-v3">
-      <div className="bg-elements">
-        <div className="glow-orb purple"></div>
-        <div className="glow-orb blue"></div>
-      </div>
-
-      <div className="ranking-content">
-        <header className="ranking-hero">
-          <div className="badge-live"><span className="dot"></span> LIVE UPDATES</div>
-          <h1 className="title-gradient">HALL DA FAMA</h1>
-          <p>Os arquitetos do futuro que estão dominando o código.</p>
+    <div className="star-rk-page">
+      <div className="star-rk-content">
+        
+        {/* HERO SECTION TÉCNICA */}
+        <header className="star-rk-hero">
+          <div className="star-rk-live-badge">
+            <span className="star-rk-dot"></span> FEED EM TEMPO REAL
+          </div>
+          <h1 className="star-rk-title">REGISTRO DE OPERAÇÕES</h1>
+          <p className="star-rk-subtitle">Classificação de performance e extração de dados dos Desenvolvedores.</p>
         </header>
 
-        {/* PODIUM SECTION */}
-        <section className="podium-section">
-          <div className="podium-grid">
-            {topThree[1] && <PodiumCard user={topThree[1]} pos="second" icon={<FaTrophy />} title="Prodigy" />}
-            {topThree[0] && <PodiumCard user={topThree[0]} pos="first" icon={<FaCrown />} title="Legendary" />}
-            {topThree[2] && <PodiumCard user={topThree[2]} pos="third" icon={<FaStar />} title="Elite" />}
+        {/* TOP 3 - ARQUITETURA DE HARDWARE */}
+        <section className="star-rk-top-section">
+          <div className="star-rk-top-grid">
+            {topThree[1] && <TopCard user={topThree[1]} pos="second" icon={<IoHardwareChipOutline />} title="[LEAD.OP]" />}
+            {topThree[0] && <TopCard user={topThree[0]} pos="first" icon={<IoShieldCheckmarkOutline />} title="[MASTER.OP]" />}
+            {topThree[2] && <TopCard user={topThree[2]} pos="third" icon={<IoAnalyticsOutline />} title="[SENIOR.OP]" />}
           </div>
         </section>
 
-        {/* LIST SECTION */}
-        <section className="list-section">
-          <div className="list-container">
-            <div className="list-header-grid">
-              <span>RANK</span>
-              <span>DEVELOPER</span>
-              <span className="hide-mobile">PROGRESSO</span>
-              <span>XP</span>
+        {/* REGISTRY LIST */}
+        <section className="star-rk-list-section">
+          <div className="star-rk-list-container">
+            
+            <div className="star-rk-list-header">
+              <span>POS</span>
+              <span>IDENTIFICAÇÃO</span>
+              <span className="star-rk-hide-mobile">CAPACIDADE</span>
+              <span>DATA (XP)</span>
               <span>LVL</span>
             </div>
 
-            <div className="list-scroll">
+            <div className="star-rk-list-scroll">
               {others.map((user, i) => (
-                <div key={user.id} className={`list-row-card ${currentUser?.uid === user.id ? 'is-me' : ''}`}>
-                  <div className="user-rank">#{i + 4}</div>
+                <div key={user.id} className={`star-rk-list-row ${currentUser?.uid === user.id ? 'is-me' : ''}`}>
+                  <div className="star-rk-rank-num">
+                    {String(i + 4).padStart(2, '0')}
+                  </div>
                   
-                  <div className="user-info">
-                    <div className="avatar-frame">
+                  <div className="star-rk-user-info">
+                    <div className="star-rk-avatar">
                       <img src={user.photoURL || userAvatarPlaceholder} alt="" />
                     </div>
-                    <div className="name-box">
-                      <span className="name">{user.displayName}</span>
-                      {currentUser?.uid === user.id && <span className="me-badge">VOCÊ</span>}
+                    <div className="star-rk-name-box">
+                      <span className="star-rk-name">{user.displayName}</span>
+                      {currentUser?.uid === user.id && <span className="star-rk-me-badge">VOCÊ</span>}
                     </div>
                   </div>
 
-                  <div className="user-progress hide-mobile">
-                    <div className="mini-bar-bg">
-                      <div className="mini-bar-fill" style={{ width: `${Math.min(user.score * 5, 100)}%` }}></div>
+                  <div className="star-rk-progress star-rk-hide-mobile">
+                    <div className="star-rk-bar-bg">
+                      <div className="star-rk-bar-fill" style={{ width: `${Math.min(user.score * 5, 100)}%` }}></div>
                     </div>
-                    <span className="count">{user.score} aulas</span>
+                    <span className="star-rk-count">{String(user.score).padStart(3, '0')} Lidos</span>
                   </div>
 
-                  <div className="user-xp">
-                    <FaFire className="xp-icon" />
-                    {user.xp.toLocaleString()}
+                  <div className="star-rk-xp">
+                    {user.xp.toLocaleString()} <span>PTS</span>
                   </div>
 
-                  <div className="user-lvl">
-                    <span className="lvl-text">{user.level}</span>
+                  <div className="star-rk-lvl">
+                    <span className="star-rk-lvl-text">V.{user.level}</span>
                   </div>
                 </div>
               ))}
             </div>
+            
           </div>
         </section>
       </div>
@@ -167,23 +170,22 @@ const RankingPage = () => {
   );
 };
 
-const PodiumCard = ({ user, pos, icon, title }) => (
-  <div className={`podium-card ${pos}`}>
-    <div className="card-inner">
-      <div className="rank-icon">{icon}</div>
-      <div className="avatar-wrapper">
-        <div className="avatar-ring-test"></div>
-        <img src={user.photoURL || userAvatarPlaceholder} alt="" />
-        <div className="number-tag">{pos === 'first' ? '1' : pos === 'second' ? '2' : '3'}</div>
+const TopCard = ({ user, pos, icon, title }) => (
+  <div className={`star-rk-card ${pos}`}>
+    <div className="star-rk-card-inner">
+      <div className="star-rk-rank-icon">{icon}</div>
+      <div className="star-rk-avatar-wrapper">
+        <img src={user.photoURL || userAvatarPlaceholder} alt="Operator" />
+        <div className="star-rk-number-tag">{pos === 'first' ? '01' : pos === 'second' ? '02' : '03'}</div>
       </div>
-      <div className="info">
-        <span className="rank-title">{title}</span>
+      <div className="star-rk-card-info">
+        <span className="star-rk-rank-title">{title}</span>
         <h3>{user.displayName}</h3>
-        <div className="stats">
-          <div className="stat-item">
-            <FaBolt /> {user.score} Aulas
+        <div className="star-rk-stats">
+          <div className="star-rk-stat-item">
+            PROTOCOLOS: {user.score}
           </div>
-          <div className="xp-tag">{user.xp.toLocaleString()} XP</div>
+          <div className="star-rk-xp-tag">{user.xp.toLocaleString()} XP</div>
         </div>
       </div>
     </div>

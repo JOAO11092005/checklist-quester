@@ -1,335 +1,315 @@
 /* =========================================
-   HEADER TECH (Starlink / Aerospace Theme)
+   HEADER TECH (SpaceX / Command Center Theme)
    ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
-:root {
-  --bg-pure: #000000;
-  --bg-surface: #0a0a0a;
-  --border-subtle: #333333;
-  --text-main: #ffffff;
-  --text-muted: #888888;
-  --danger-color: #ff4444;
-}
-
-.header-tech {
-  height: 80px;
-  background-color: var(--bg-pure);
-  border-bottom: 1px solid var(--border-subtle);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  width: 100%;
-  font-family: 'Inter', sans-serif;
-}
-
-.logo {
-  width: 160px;
-  filter: grayscale(100%) contrast(1.2); /* Força a logo a combinar com o tema monocromático */
-  transition: opacity 0.3s ease;
-}
-
-.logo:hover {
-  opacity: 0.8;
-}
-
-.header-content {
-  max-width: 1600px;
-  margin: 0 auto;
-  height: 100%;
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* --- Lado Esquerdo: Logo & Nav --- */
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 60px;
-}
-
-.logo-brand {
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-}
-
-/* Menu Desktop */
-.desktop-nav {
-  display: flex;
-  gap: 32px;
-}
-
-.nav-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.2s;
-  position: relative;
-  padding: 8px 0;
-}
-
-.nav-link:hover {
-  color: var(--text-main);
-}
-
-.nav-link.active {
-  color: var(--text-main);
-  font-weight: 600;
-}
-
-/* Linha sólida abaixo do link ativo (Técnico e limpo) */
-.nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; /* Alinha com a borda do header */
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--text-main);
-}
-
-/* --- Lado Direito: Ações & Perfil --- */
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-/* Botões de Ícone */
-.action-icons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.icon-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  font-size: 1.25rem;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 2px; /* Canto quase reto */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.icon-btn:hover {
-  border-color: var(--border-subtle);
-  color: var(--text-main);
-}
-
-.notification-dot {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 6px;
-  height: 6px;
-  background-color: var(--text-main); /* Ponto branco */
-  border-radius: 0; /* Ponto quadrado, mais tecnológico */
-}
-
-.separator-vertical {
-  width: 1px;
-  height: 24px;
-  background-color: var(--border-subtle);
-}
-
-/* Perfil Wrapper */
-.profile-wrapper {
-  position: relative;
-}
-
-.profile-trigger {
-  background: transparent;
-  border: 1px solid transparent;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  padding: 4px 12px 4px 4px;
-  border-radius: 2px;
-  transition: all 0.2s;
-}
-
-.profile-trigger:hover, .profile-trigger.active {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--border-subtle);
-}
-
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 2px; /* Avatares quadrados/bordas duras */
-  object-fit: cover;
-  border: 1px solid var(--border-subtle);
-}
-
-.user-name-short {
-  color: var(--text-main);
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* --- Dropdown Técnico --- */
-.dropdown-menu-tech {
-  position: absolute;
-  top: calc(100% + 15px);
-  right: 0;
-  width: 280px;
-  background: var(--bg-pure);
-  border: 1px solid var(--border-subtle);
-  border-radius: 2px;
-  padding: 0; /* Remove padding externo para colar as bordas */
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9);
-
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.2s ease;
-}
-
-.dropdown-menu-tech.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.dropdown-header {
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-surface);
-}
-
-.user-full-name {
-  color: var(--text-main);
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.user-email {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  margin-top: 6px;
-}
-
-.dropdown-divider {
-  height: 1px;
-  background: var(--border-subtle);
-  margin: 0;
-}
-
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.2s;
-  background: transparent;
-  border: none;
-  border-left: 2px solid transparent; /* Indicador de hover lateral */
-  width: 100%;
-  text-align: left;
-  font-family: var(--font-body);
-  cursor: pointer;
-}
-
-.dropdown-item:hover {
-  background: var(--bg-surface);
-  color: var(--text-main);
-  border-left-color: var(--text-main);
-}
-
-.dropdown-item svg {
-  font-size: 1.1rem;
-}
-
-/* Botão de Logout de emergência (Vermelho escuro) */
-.logout-item {
-  color: var(--text-muted);
-}
-
-.logout-item:hover {
-  background: rgba(255, 68, 68, 0.1);
-  color: var(--danger-color);
-  border-left-color: var(--danger-color);
-}
-
-/* Botão de Login quando deslogado */
-.login-btn-tech {
-  padding: 10px 24px;
-  background: var(--text-main);
-  color: var(--bg-pure);
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  border-radius: 2px;
-  border: 1px solid var(--text-main);
-  transition: all 0.3s ease;
-}
-
-.login-btn-tech:hover {
-  background: transparent;
-  color: var(--text-main);
-}
-
-/* Mobile Toggle */
-.mobile-toggle {
-  display: none;
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  border-radius: 2px;
-  color: var(--text-main);
-  font-size: 1.5rem;
-  padding: 6px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.mobile-toggle:hover {
-  background: var(--bg-surface);
-}
-
-/* --- Responsividade --- */
-@media (max-width: 900px) {
-  .desktop-nav {
-    display: none;
-  }
-
-  .user-name-short {
-    display: none;
-  }
-
-  .separator-vertical {
-    display: none;
-  }
-
-  .mobile-toggle {
-    display: block;
-  }
-
-  .header-content {
-    padding: 0 20px;
-  }
-}
+   :root {
+     --hd-bg-pure: #000000;
+     --hd-bg-surface: #0a0a0a;
+     --hd-border: #222222;
+     --hd-text-main: #ffffff;
+     --hd-text-muted: #888888;
+     --hd-accent: #ffffff;
+     --hd-danger: #ff3333;
+   }
+   
+   .header-tech {
+     height: 64px; /* Mais fino, estilo barra de navegação de software nativo */
+     background-color: var(--hd-bg-pure);
+     border-bottom: 1px solid var(--hd-border);
+     position: sticky;
+     top: 0;
+     z-index: 1000;
+     width: 100%;
+     font-family: 'Inter', sans-serif;
+   }
+   
+   .logo {
+     width: 140px;
+     filter: grayscale(100%) contrast(1.2); 
+     transition: opacity 0.2s ease;
+   }
+   
+   .logo:hover { opacity: 0.8; }
+   
+   .header-content {
+     max-width: 1600px;
+     margin: 0 auto;
+     height: 100%;
+     padding: 0 24px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+   }
+   
+   /* --- Lado Esquerdo: Logo & Nav --- */
+   .header-left {
+     display: flex;
+     align-items: center;
+     gap: 40px;
+   }
+   
+   .logo-brand {
+     text-decoration: none;
+     display: flex;
+     align-items: center;
+   }
+   
+   /* Menu Desktop */
+   .desktop-nav {
+     display: flex;
+     gap: 24px;
+     height: 64px; /* Preenche a altura para o hover pegar a barra inteira */
+   }
+   
+   .nav-link {
+     color: var(--hd-text-muted);
+     text-decoration: none;
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.75rem;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+     display: flex;
+     align-items: center;
+     transition: all 0.2s;
+     position: relative;
+     height: 100%;
+   }
+   
+   .nav-link:hover { color: var(--hd-text-main); }
+   .nav-link.active { color: var(--hd-text-main); }
+   
+   /* Linha indicadora Ativa */
+   .nav-link.active::after {
+     content: '';
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+     height: 3px;
+     background: var(--hd-accent);
+   }
+   
+   /* --- Lado Direito: Ações & Perfil --- */
+   .header-right {
+     display: flex;
+     align-items: center;
+     gap: 20px;
+   }
+   
+   .action-icons {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+   }
+   
+   .icon-link {
+     text-decoration: none;
+     display: flex;
+   }
+   
+   .icon-btn {
+     background: transparent;
+     border: 1px solid transparent;
+     color: var(--hd-text-muted);
+     font-size: 1.3rem;
+     cursor: pointer;
+     padding: 8px;
+     border-radius: 2px; /* Canto reto/industrial */
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: all 0.2s ease;
+     position: relative;
+   }
+   
+   .icon-btn:hover {
+     border-color: var(--hd-border);
+     color: var(--hd-text-main);
+     background: rgba(255, 255, 255, 0.05);
+   }
+   
+   /* Badge Numérico (Substituindo o antigo ponto) */
+   .notification-badge {
+     position: absolute;
+     top: 2px;
+     right: 2px;
+     background-color: var(--hd-danger); /* Vermelho crítico SpaceX */
+     color: #fff;
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.55rem;
+     font-weight: 700;
+     padding: 2px 4px;
+     border-radius: 2px;
+     min-width: 16px;
+     text-align: center;
+     border: 1px solid var(--hd-bg-pure); /* Cria um espaço entre o ícone e o badge */
+     pointer-events: none;
+   }
+   
+   .separator-vertical {
+     width: 1px;
+     height: 24px;
+     background-color: var(--hd-border);
+   }
+   
+   /* Perfil Wrapper */
+   .profile-wrapper { position: relative; }
+   
+   .profile-trigger {
+     background: transparent;
+     border: 1px solid transparent;
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     cursor: pointer;
+     padding: 4px 12px 4px 4px;
+     border-radius: 2px;
+     transition: all 0.2s;
+   }
+   
+   .profile-trigger:hover, .profile-trigger.active {
+     background: rgba(255, 255, 255, 0.05);
+     border-color: var(--hd-border);
+   }
+   
+   .user-avatar {
+     width: 28px;
+     height: 28px;
+     border-radius: 2px;
+     object-fit: cover;
+     border: 1px solid var(--hd-border);
+     filter: grayscale(100%);
+   }
+   .profile-trigger:hover .user-avatar { filter: grayscale(0%); }
+   
+   .user-name-short {
+     color: var(--hd-text-main);
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.8rem;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+   }
+   
+   /* --- Dropdown Técnico --- */
+   .dropdown-menu-tech {
+     position: absolute;
+     top: calc(100% + 12px);
+     right: 0;
+     width: 260px;
+     background: var(--hd-bg-pure);
+     border: 1px solid var(--hd-border);
+     border-radius: 2px;
+     padding: 0;
+     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+     opacity: 0;
+     visibility: hidden;
+     transform: translateY(-10px);
+     transition: all 0.2s ease;
+   }
+   
+   .dropdown-menu-tech.open {
+     opacity: 1; visibility: visible; transform: translateY(0);
+   }
+   
+   .dropdown-header {
+     padding: 16px;
+     display: flex;
+     flex-direction: column;
+     background: #050505;
+   }
+   
+   .user-full-name {
+     color: var(--hd-text-main);
+     font-family: 'JetBrains Mono', monospace;
+     font-weight: 700;
+     font-size: 0.8rem;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+   }
+   
+   .user-email {
+     color: var(--hd-text-muted);
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.7rem;
+     margin-top: 6px;
+   }
+   
+   .dropdown-divider { height: 1px; background: var(--hd-border); margin: 0; }
+   
+   .dropdown-item {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     padding: 14px 16px;
+     color: var(--hd-text-muted);
+     text-decoration: none;
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.75rem;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     transition: all 0.2s;
+     background: transparent;
+     border: none;
+     border-left: 2px solid transparent; 
+     width: 100%;
+     text-align: left;
+     cursor: pointer;
+   }
+   
+   .dropdown-item:hover {
+     background: rgba(255,255,255,0.03);
+     color: var(--hd-text-main);
+     border-left-color: var(--hd-text-main);
+   }
+   
+   .dropdown-item svg { font-size: 1.1rem; }
+   
+   /* Logout */
+   .logout-item:hover {
+     background: rgba(255, 51, 51, 0.05);
+     color: var(--hd-danger);
+     border-left-color: var(--hd-danger);
+   }
+   
+   /* Botão de Login (Quando deslogado) */
+   .login-btn-tech {
+     padding: 8px 20px;
+     background: var(--hd-text-main);
+     color: var(--hd-bg-pure);
+     text-decoration: none;
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.75rem;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     border-radius: 2px;
+     transition: all 0.2s ease;
+   }
+   
+   .login-btn-tech:hover { background: #cccccc; }
+   
+   /* Mobile Toggle */
+   .mobile-toggle {
+     display: none;
+     background: transparent;
+     border: 1px solid var(--hd-border);
+     border-radius: 2px;
+     color: var(--hd-text-main);
+     font-size: 1.5rem;
+     padding: 6px;
+     cursor: pointer;
+     transition: background 0.2s ease;
+   }
+   
+   .mobile-toggle:hover { background: rgba(255,255,255,0.05); }
+   
+   /* --- Responsividade --- */
+   @media (max-width: 900px) {
+     .desktop-nav, .user-name-short, .separator-vertical { display: none; }
+     .mobile-toggle { display: none; }
+     .header-content { padding: 0 16px; }
+   }

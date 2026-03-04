@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
-import { FaGithub, FaLinkedin, FaDiscord, FaHeart } from 'react-icons/fa'; // Adicionei o coração para o "Powered by"
+import { FaGithub, FaLinkedin, FaDiscord, FaHeart } from 'react-icons/fa'; 
 import './Footer.css';
 
 const Footer = () => {
@@ -24,7 +24,7 @@ const Footer = () => {
           setHasAccessKey(false);
         }
       } catch (error) {
-        console.error("Erro ao verificar a chave de acesso:", error);
+        console.error("Erro ao verificar credenciais:", error);
         setHasAccessKey(false);
       }
     };
@@ -32,26 +32,26 @@ const Footer = () => {
   }, [currentUser]);
 
   return (
-    <footer className="main-footer">
+    <footer className="main-footer-tech">
       <div className="footer-content">
         
         {/* Seção da Esquerda: Copyright e Marca */}
         <div className="footer-info">
           {hasAccessKey ? (
             <p>
-              Copyright © {currentYear} <span className="highlight">Desenvolvimento Web</span>.
-              <br className="mobile-break" /> Todos os direitos reservados.
+              COPYRIGHT © {currentYear} <span className="highlight-tech">DEVSTREAM SYSTEMS</span>.
+              <br className="mobile-break" /> TODOS OS DIREITOS RESERVADOS.
             </p>
           ) : (
             <p>
-              Copyright © {currentYear} <span className="highlight">Dev em Dobro</span>.
-              <br className="mobile-break" /> Todos os direitos reservados.
+              COPYRIGHT © {currentYear} <span className="highlight-tech">DEV EM DOBRO</span>.
+              <br className="mobile-break" /> TODOS OS DIREITOS RESERVADOS.
             </p>
           )}
           
           {hasAccessKey && (
              <p className="powered-by">
-               Code with <FaHeart size={12} color="blueviolet" /> by You
+               CODIFICADO COM <FaHeart size={12} color="#ffffff" style={{ margin: '0 5px' }} /> POR VOCÊ
              </p>
           )}
         </div>
@@ -59,7 +59,7 @@ const Footer = () => {
         {/* Seção da Direita: Links e Redes */}
         <div className="footer-links-container">
           {hasAccessKey && (
-            <div className="social-icons">
+            <div className="social-icons-tech">
               <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <FaGithub />
               </a>
@@ -72,9 +72,9 @@ const Footer = () => {
             </div>
           )}
           
-          <nav className="footer-nav">
-            <a href="/termos">Termos de Uso</a>
-            <a href="/privacidade">Política de Privacidade</a>
+          <nav className="footer-nav-tech">
+            <a href="/termos">DIRETRIZES DE USO</a>
+            <a href="/privacidade">POLÍTICA DE PRIVACIDADE</a>
           </nav>
         </div>
 

@@ -15,15 +15,13 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   
-  // Estado do formulário
   const [formData, setFormData] = useState({ 
     displayName: '', 
     photoURL: '',
-    role: 'Estudante', // Default
+    role: 'OPERADOR PADRÃO', 
     accessKey: ''
   });
 
-  // Busca dados iniciais
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!currentUser) return;
@@ -40,8 +38,8 @@ const ProfilePage = () => {
             email: currentUser.email,
             displayName: firestoreData.displayName || currentUser.displayName || '',
             photoURL: firestoreData.photoURL || currentUser.photoURL || '',
-            role: firestoreData.role || 'Desenvolvedor',
-            accessKey: firestoreData.accessKey || 'Gratuito',
+            role: firestoreData.role || 'DESENVOLVEDOR',
+            accessKey: firestoreData.accessKey || 'ACESSO PADRÃO',
             createdAt: currentUser.metadata.creationTime
           };
 
@@ -54,7 +52,7 @@ const ProfilePage = () => {
           });
         }
       } catch (error) {
-        console.error("Erro ao carregar perfil:", error);
+        console.error("Erro na leitura do dossiê:", error);
       } finally {
         setLoading(false);
       }
@@ -73,20 +71,17 @@ const ProfilePage = () => {
     setIsSaving(true);
 
     try {
-      // 1. Atualiza no Firebase Auth
       await updateProfile(currentUser, {
         displayName: formData.displayName,
         photoURL: formData.photoURL
       });
 
-      // 2. Atualiza no Firestore
       const userDocRef = doc(db, 'users', currentUser.uid);
       await updateDoc(userDocRef, {
         displayName: formData.displayName,
         photoURL: formData.photoURL
       });
 
-      // Atualiza estado local
       setProfileData(prev => ({
         ...prev,
         displayName: formData.displayName,
@@ -95,99 +90,109 @@ const ProfilePage = () => {
       
       setIsEditing(false);
     } catch (error) {
-      console.error("Erro ao salvar perfil:", error);
-      alert("Erro ao salvar alterações. Tente novamente.");
+      console.error("Erro na gravação de dados:", error);
+      alert("Falha na gravação. Verifique a conexão.");
     } finally {
       setIsSaving(false);
     }
   };
 
-  if (loading) return <div className="profile-loading"><div className="spinner-profile"></div></div>;
+  if (loading) return (
+    <div className="star-pf-loading">
+      <div className="star-pf-spinner"></div>
+      <span>CARREGANDO DOSSIÊ...</span>
+    </div>
+  );
 
-  // Formata data de entrada
-  const joinDate = profileData?.createdAt ? new Date(profileData.createdAt).toLocaleDateString('pt-BR') : 'Data desconhecida';
+  const joinDate = profileData?.createdAt ? new Date(profileData.createdAt).toLocaleDateString('pt-BR') : 'DESCONHECIDA';
 
   return (
-    <div className="profile-page-wrapper">
-      <div className="profile-glow-bg"></div>
-
-      <div className="profile-glass-card">
+    <div className="star-pf-wrapper">
+      
+      <div className="star-pf-card">
         
-        {/* --- Header do Card (Avatar e Capa) --- */}
-        <div className="profile-header-section">
-          <div className="header-cover-decoration"></div>
-          
-          <div className="avatar-container">
-            <div className="avatar-ring">
+        {/* --- Header do Card (Identificação) --- */}
+        <div className="star-pf-header">
+          <div className="star-pf-avatar-section">
+            <div className="star-pf-avatar-target">
               <img 
                 src={isEditing ? (formData.photoURL || userAvatarPlaceholder) : (profileData?.photoURL || userAvatarPlaceholder)} 
-                alt="Profile" 
-                className="profile-img-lg"
+                alt="Operador" 
+                className="star-pf-img"
                 onError={(e) => e.target.src = userAvatarPlaceholder}
               />
             </div>
             {isEditing && (
-              <div className="avatar-edit-hint">
-                <IoCamera /> Cole a URL abaixo
+              <div className="star-pf-avatar-hint">
+                <IoCamera /> INSERIR URL
               </div>
             )}
           </div>
 
-          <div className="profile-title-block">
-            <h1>{profileData?.displayName || 'Usuário Sem Nome'}</h1>
-            <span className="user-role-badge">{profileData?.role}</span>
+          <div className="star-pf-title-block">
+            <span className="star-pf-overline">REGISTRO DE OPERADOR</span>
+            <h1>{profileData?.displayName || 'NÃO IDENTIFICADO'}</h1>
+            <span className="star-pf-badge">{profileData?.role}</span>
           </div>
         </div>
 
-        {/* --- Área de Conteúdo (View vs Edit) --- */}
-        <div className="profile-content-body">
+        {/* --- Área de Conteúdo --- */}
+        <div className="star-pf-body">
           
           {!isEditing ? (
-            // MODO VISUALIZAÇÃO
-            <div className="view-mode-grid">
+            /* MODO VISUALIZAÇÃO */
+            <div className="star-pf-view-mode">
               
-              {/* Stats Rápidos */}
-              <div className="quick-stats-row">
-                <div className="stat-pill">
-                  <IoMail className="stat-icon" />
-                  <span>{profileData?.email}</span>
+              <div className="star-pf-stats-grid">
+                <div className="star-pf-stat-box">
+                  <IoMail className="star-pf-icon" />
+                  <div className="star-pf-stat-data">
+                    <small>ENDEREÇO DE COMUNICAÇÃO</small>
+                    <span>{profileData?.email}</span>
+                  </div>
                 </div>
-                <div className="stat-pill">
-                  <IoCalendarOutline className="stat-icon" />
-                  <span>Membro desde {joinDate}</span>
+                
+                <div className="star-pf-stat-box">
+                  <IoCalendarOutline className="star-pf-icon" />
+                  <div className="star-pf-stat-data">
+                    <small>DATA DE ENGAJAMENTO</small>
+                    <span>{joinDate}</span>
+                  </div>
                 </div>
-                <div className="stat-pill gold">
-                  <IoKeyOutline className="stat-icon" />
-                  <span>Acesso: {profileData?.accessKey}</span>
+                
+                <div className="star-pf-stat-box highlight-box">
+                  <IoKeyOutline className="star-pf-icon" />
+                  <div className="star-pf-stat-data">
+                    <small>NÍVEL DE CREDENCIAL</small>
+                    <span>{profileData?.accessKey}</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="action-row-center">
-                <button className="btn-edit-profile" onClick={() => setIsEditing(true)}>
-                  <IoPencil /> Editar Perfil
+              <div className="star-pf-action-row">
+                <button className="star-pf-btn-primary" onClick={() => setIsEditing(true)}>
+                  <IoPencil /> ATUALIZAR PARÂMETROS
                 </button>
               </div>
             </div>
           ) : (
-            // MODO EDIÇÃO
-            <form className="edit-mode-form" onSubmit={handleSave}>
-              <div className="form-grid">
+            /* MODO EDIÇÃO */
+            <form className="star-pf-edit-form" onSubmit={handleSave}>
+              <div className="star-pf-form-grid">
                 
-                {/* Campo Nome */}
-                <div className="input-group">
-                  <label><IoPerson /> Nome de Exibição</label>
+                <div className="star-pf-input-group">
+                  <label><IoPerson /> IDENTIFICAÇÃO (NOME)</label>
                   <input 
                     type="text" 
                     name="displayName" 
                     value={formData.displayName} 
                     onChange={handleInputChange}
-                    placeholder="Como quer ser chamado?"
+                    placeholder="Insira o nome de exibição..."
                   />
                 </div>
 
-                {/* Campo Foto URL */}
-                <div className="input-group">
-                  <label><IoCamera /> URL da Foto (Avatar)</label>
+                <div className="star-pf-input-group">
+                  <label><IoCamera /> FONTE VISUAL (URL DA FOTO)</label>
                   <input 
                     type="text" 
                     name="photoURL" 
@@ -195,33 +200,32 @@ const ProfilePage = () => {
                     onChange={handleInputChange}
                     placeholder="https://..."
                   />
-                  <small className="input-helper">Cole um link direto de imagem (Imgur, GitHub, etc).</small>
+                  <small className="star-pf-helper">Forneça o link direto para a imagem do servidor externo.</small>
                 </div>
 
-                {/* Campos Read-Only */}
-                <div className="input-group disabled">
-                  <label><IoMail /> E-mail (Não editável)</label>
+                <div className="star-pf-input-group disabled">
+                  <label><IoMail /> COMUNICAÇÃO (TRAVADO)</label>
                   <input type="text" value={profileData?.email} disabled />
                 </div>
               </div>
 
-              <div className="form-actions-footer">
+              <div className="star-pf-footer-actions">
                 <button 
                   type="button" 
-                  className="btn-cancel" 
+                  className="star-pf-btn-ghost" 
                   onClick={() => {
                     setIsEditing(false);
-                    setFormData({ // Reseta formulário
+                    setFormData({
                       displayName: profileData.displayName,
                       photoURL: profileData.photoURL
                     });
                   }}
                 >
-                  <IoClose /> Cancelar
+                  <IoClose /> ABORTAR
                 </button>
                 
-                <button type="submit" className="btn-save" disabled={isSaving}>
-                  {isSaving ? 'Salvando...' : <><IoSave /> Salvar Alterações</>}
+                <button type="submit" className="star-pf-btn-primary" disabled={isSaving}>
+                  {isSaving ? 'GRAVANDO...' : <><IoSave /> CONFIRMAR DADOS</>}
                 </button>
               </div>
             </form>

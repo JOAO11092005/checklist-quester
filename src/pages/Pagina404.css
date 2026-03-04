@@ -1,197 +1,203 @@
 /* =========================================
-   404 PAGE (Cyberpunk Glitch Theme)
+   404 PAGE - STARLINK / AEROSPACE THEME
+   (Baseado no glitch original)
    ========================================= */
-:root {
-  --nf-bg: #050505;
-  --nf-primary: #8257e5; /* Roxo Rocketseat */
-  --nf-secondary: #00ff41; /* Verde Matrix/Terminal */
-  --nf-accent: #ff0055;    /* Rosa Glitch */
-  --nf-text: #e1e1e6;
-  --nf-glass: rgba(18, 18, 20, 0.6);
-}
-
-.not-found-wrapper {
-  min-height: 100vh;
-  background-color: var(--nf-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Inter', sans-serif;
-}
-
-/* --- Background Effects --- */
-.grid-overlay {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.nf-glow-spot {
-  position: absolute;
-  width: 500px; height: 500px;
-  background: var(--nf-primary);
-  filter: blur(150px);
-  opacity: 0.15;
-  border-radius: 50%;
-  z-index: 0;
-}
-.top-left { top: -200px; left: -200px; }
-.bottom-right { bottom: -200px; right: -200px; background: var(--nf-accent); }
-
-/* --- Glass Content --- */
-.nf-content-glass {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  max-width: 600px;
-  padding: 20px;
-}
-
-/* --- GLITCH 404 EFFECT --- */
-.glitch-container {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.nf-code {
-  font-size: 10rem;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: -10px;
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  line-height: 1;
-}
-
-/* O efeito Glitch usa pseudo-elementos duplicados */
-.nf-code::before,
-.nf-code::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: var(--nf-bg);
-}
-
-.nf-code::before {
-  left: 2px;
-  text-shadow: -2px 0 var(--nf-accent);
-  clip: rect(24px, 550px, 90px, 0);
-  animation: glitch-anim-2 3s infinite linear alternate-reverse;
-}
-
-.nf-code::after {
-  left: -2px;
-  text-shadow: -2px 0 var(--nf-secondary);
-  clip: rect(85px, 550px, 140px, 0);
-  animation: glitch-anim 2.5s infinite linear alternate-reverse;
-}
-
-/* --- Message Box --- */
-.nf-message-box {
-  background: var(--nf-glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.05);
-  padding: 40px;
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.icon-badge {
-  width: 60px; height: 60px;
-  margin: 0 auto 20px;
-  background: rgba(130, 87, 229, 0.1);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid rgba(130, 87, 229, 0.3);
-}
-
-.nf-icon {
-  font-size: 30px;
-  color: var(--nf-primary);
-}
-
-.nf-title {
-  font-size: 2rem;
-  color: #fff;
-  margin-bottom: 12px;
-  font-weight: 700;
-}
-
-.nf-description {
-  color: #a8a8b3;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 32px;
-}
-
-/* Button */
-.nf-btn-home {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--nf-primary);
-  color: #fff;
-  text-decoration: none;
-  padding: 14px 32px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 20px rgba(130, 87, 229, 0.4);
-}
-
-.nf-btn-home:hover {
-  background: #996DFF;
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(130, 87, 229, 0.6);
-}
-
-/* --- Animations --- */
-@keyframes glitch-anim {
-  0% { clip: rect(10px, 9999px, 31px, 0); }
-  20% { clip: rect(75px, 9999px, 80px, 0); }
-  40% { clip: rect(20px, 9999px, 60px, 0); }
-  60% { clip: rect(90px, 9999px, 95px, 0); }
-  80% { clip: rect(50px, 9999px, 55px, 0); }
-  100% { clip: rect(5px, 9999px, 15px, 0); }
-}
-
-@keyframes glitch-anim-2 {
-  0% { clip: rect(65px, 9999px, 100px, 0); }
-  20% { clip: rect(15px, 9999px, 45px, 0); }
-  40% { clip: rect(5px, 9999px, 25px, 0); }
-  60% { clip: rect(80px, 9999px, 90px, 0); }
-  80% { clip: rect(30px, 9999px, 60px, 0); }
-  100% { clip: rect(55px, 9999px, 75px, 0); }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.spin-slow {
-  animation: spin 10s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .nf-code { font-size: 6rem; }
-  .nf-message-box { padding: 30px 20px; }
-  .nf-title { font-size: 1.5rem; }
-}
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;900&display=swap');
+   
+   :root {
+     --star-nf-bg: #000000;
+     --star-nf-primary: #ffffff; /* Branco assumindo o lugar do Roxo */
+     --star-nf-secondary: #aaaaaa; /* Cinza claro para o glitch */
+     --star-nf-accent: #555555; /* Cinza escuro para o glitch */
+     --star-nf-text: #888888;
+     --star-nf-surface: #0a0a0a;
+     --star-nf-border: #333333;
+   }
+   
+   .star-nf-wrapper {
+     min-height: 100vh;
+     background-color: var(--star-nf-bg);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     position: relative;
+     overflow: hidden;
+     font-family: 'Inter', sans-serif;
+   }
+   
+   /* --- Efeito de Fundo (Grade de Radar) --- */
+   .star-nf-grid-overlay {
+     position: absolute;
+     top: 0; left: 0; width: 100%; height: 100%;
+     background-image: 
+       linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+       linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+     background-size: 40px 40px;
+     pointer-events: none;
+     z-index: 0;
+   }
+   
+   /* --- Conteúdo --- */
+   .star-nf-content {
+     position: relative;
+     z-index: 10;
+     text-align: center;
+     max-width: 600px;
+     padding: 20px;
+     width: 100%;
+   }
+   
+   /* --- EFEITO GLITCH 404 --- */
+   .star-nf-glitch-container {
+     position: relative;
+     margin-bottom: 20px;
+   }
+   
+   .star-nf-code {
+     font-size: 10rem;
+     font-weight: 900;
+     color: var(--star-nf-primary);
+     letter-spacing: -10px;
+     position: relative;
+     display: inline-block;
+     margin: 0;
+     line-height: 1;
+     font-family: 'JetBrains Mono', monospace;
+   }
+   
+   .star-nf-code::before,
+   .star-nf-code::after {
+     content: attr(data-text);
+     position: absolute;
+     top: 0; left: 0;
+     width: 100%; height: 100%;
+     background: var(--star-nf-bg);
+   }
+   
+   .star-nf-code::before {
+     left: 3px;
+     text-shadow: -2px 0 var(--star-nf-accent);
+     clip: rect(24px, 550px, 90px, 0);
+     animation: star-glitch-anim-2 3s infinite linear alternate-reverse;
+   }
+   
+   .star-nf-code::after {
+     left: -3px;
+     text-shadow: -2px 0 var(--star-nf-secondary);
+     clip: rect(85px, 550px, 140px, 0);
+     animation: star-glitch-anim 2.5s infinite linear alternate-reverse;
+   }
+   
+   /* --- Caixa de Mensagem --- */
+   .star-nf-message-box {
+     background: var(--star-nf-surface);
+     border: 1px solid var(--star-nf-border);
+     padding: 40px;
+     border-radius: 2px; /* Cantos quadrados e técnicos */
+     box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+     animation: star-fadeInUp 0.8s ease-out;
+   }
+   
+   .star-nf-icon-badge {
+     width: 60px; height: 60px;
+     margin: 0 auto 20px;
+     background: var(--star-nf-bg);
+     border-radius: 2px;
+     display: flex; align-items: center; justify-content: center;
+     border: 1px solid var(--star-nf-border);
+   }
+   
+   .star-nf-icon {
+     font-size: 30px;
+     color: var(--star-nf-primary);
+   }
+   
+   .star-nf-title {
+     font-size: 1.5rem;
+     color: var(--star-nf-primary);
+     margin-bottom: 12px;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+   }
+   
+   .star-nf-description {
+     color: var(--star-nf-text);
+     font-size: 0.95rem;
+     line-height: 1.6;
+     margin-bottom: 25px;
+   }
+   
+   /* Falso Terminal de Erro */
+   .star-404-terminal-error {
+     background: var(--star-nf-bg);
+     border: 1px dashed var(--star-nf-border);
+     padding: 12px;
+     color: var(--star-nf-text);
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.8rem;
+     margin-bottom: 30px;
+     text-align: left;
+   }
+   
+   .star-404-terminal-error .prompt {
+     color: var(--star-nf-primary);
+     margin-right: 8px;
+   }
+   
+   /* Botão de Retorno */
+   .star-nf-btn-home {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 10px;
+     background: var(--star-nf-primary);
+     color: var(--star-nf-bg);
+     text-decoration: none;
+     padding: 14px 32px;
+     border-radius: 2px;
+     font-weight: 700;
+     font-size: 0.85rem;
+     transition: all 0.3s ease;
+     text-transform: uppercase;
+     letter-spacing: 1.5px;
+     width: 100%;
+   }
+   
+   .star-nf-btn-home:hover {
+     background: transparent;
+     color: var(--star-nf-primary);
+     box-shadow: inset 0 0 0 1px var(--star-nf-primary);
+   }
+   
+   /* --- Animações do Glitch --- */
+   @keyframes star-glitch-anim {
+     0% { clip: rect(10px, 9999px, 31px, 0); }
+     20% { clip: rect(75px, 9999px, 80px, 0); }
+     40% { clip: rect(20px, 9999px, 60px, 0); }
+     60% { clip: rect(90px, 9999px, 95px, 0); }
+     80% { clip: rect(50px, 9999px, 55px, 0); }
+     100% { clip: rect(5px, 9999px, 15px, 0); }
+   }
+   
+   @keyframes star-glitch-anim-2 {
+     0% { clip: rect(65px, 9999px, 100px, 0); }
+     20% { clip: rect(15px, 9999px, 45px, 0); }
+     40% { clip: rect(5px, 9999px, 25px, 0); }
+     60% { clip: rect(80px, 9999px, 90px, 0); }
+     80% { clip: rect(30px, 9999px, 60px, 0); }
+     100% { clip: rect(55px, 9999px, 75px, 0); }
+   }
+   
+   @keyframes star-fadeInUp {
+     from { opacity: 0; transform: translateY(20px); }
+     to { opacity: 1; transform: translateY(0); }
+   }
+   
+   /* Responsividade */
+   @media (max-width: 768px) {
+     .star-nf-code { font-size: 6rem; }
+     .star-nf-message-box { padding: 30px 20px; }
+     .star-nf-title { font-size: 1.2rem; }
+   }
