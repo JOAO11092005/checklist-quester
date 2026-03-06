@@ -1,5 +1,5 @@
 /* =========================================
-   REGISTER PAGE - STARLINK / AEROSPACE THEME
+   FORGOT PASSWORD - STARLINK / AEROSPACE THEME
    ========================================= */
    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -13,6 +13,12 @@
      --font-body: 'Inter', sans-serif;
    }
    
+   * { 
+     box-sizing: border-box; 
+     margin: 0; 
+     padding: 0;
+   }
+   
    .login-master-wrapper {
      display: flex;
      min-height: 100vh;
@@ -20,6 +26,14 @@
      font-family: var(--font-body);
      overflow: hidden;
      color: var(--text-main);
+   }
+   
+   .login-content-box {
+     display: flex;
+     width: 100%;
+     height: 100vh;
+     max-width: none;
+     background: var(--bg-pure);
    }
    
    /* --- LADO ESQUERDO (VISUAL) --- */
@@ -79,32 +93,7 @@
      color: var(--text-muted);
      line-height: 1.6;
      max-width: 480px;
-     margin-bottom: 40px;
      font-weight: 300;
-   }
-   
-   .feature-grid {
-     display: flex;
-     gap: 20px;
-   }
-   
-   .feature-item {
-     display: flex;
-     align-items: center;
-     gap: 10px;
-     color: var(--text-main);
-     font-weight: 400;
-     font-size: 0.85rem;
-     padding: 10px 16px;
-     border: 1px solid var(--border-subtle);
-     background: rgba(0,0,0,0.6);
-     text-transform: uppercase;
-     letter-spacing: 1px;
-   }
-   
-   .f-icon { 
-     color: var(--text-main); 
-     font-size: 1.2rem;
    }
    
    /* --- LADO DIREITO (FORM) --- */
@@ -119,7 +108,12 @@
    
    .glass-form-container {
      width: 100%;
-     max-width: 460px; /* Um pouco mais largo no registro para o row-split caber bem */
+     max-width: 420px;
+   }
+   
+   .form-header {
+     margin-bottom: 40px;
+     text-align: left;
    }
    
    .auth-icon-wrapper {
@@ -145,18 +139,16 @@
    
    .form-header p {
      color: var(--text-muted);
-     margin-bottom: 40px;
      font-weight: 300;
      font-size: 0.95rem;
    }
    
-   /* Inputs */
-   .tech-input-group {
+   /* --- Inputs --- */
+   .cyber-input-group {
      margin-bottom: 24px;
-     width: 100%;
    }
    
-   .tech-input-group label {
+   .cyber-input-group label {
      font-size: 0.75rem;
      font-weight: 500;
      color: var(--text-muted);
@@ -190,7 +182,7 @@
      color: var(--text-main);
    }
    
-   .input-wrapper input {
+   .cyber-input-group input {
      width: 100%;
      background: transparent;
      border: none;
@@ -201,17 +193,32 @@
      font-family: var(--font-body);
    }
    
-   /* Split Row para senhas lado a lado */
-   .form-row-split {
+   /* --- Caixa de Informação Rígida --- */
+   .info-box-recovery {
      display: flex;
-     align-items: center;
-     justify-content: center;
-     gap: 16px;
-     width: 100%;
+     align-items: flex-start;
+     gap: 12px;
+     padding: 16px;
+     border: 1px solid var(--border-subtle);
+     background: var(--bg-surface);
+     margin-bottom: 24px;
    }
    
-   /* Botão */
-   .login-button-tech {
+   .info-box-recovery svg {
+     color: var(--text-main);
+     flex-shrink: 0;
+     margin-top: 2px;
+   }
+   
+   .info-box-recovery p {
+     font-size: 0.85rem;
+     color: var(--text-muted);
+     line-height: 1.4;
+     margin: 0;
+   }
+   
+   /* --- Botão Principal --- */
+   .login-button-cyber {
      width: 100%;
      padding: 18px;
      background: var(--bg-pure);
@@ -227,52 +234,67 @@
      justify-content: center;
      gap: 12px;
      transition: all 0.3s ease;
-     margin-top: 10px;
+     margin-top: 20px;
+     min-height: 56px;
    }
    
-   .login-button-tech:hover:not(:disabled) {
+   .login-button-cyber:hover:not(:disabled) {
      border-color: var(--text-main);
      background: rgba(255, 255, 255, 0.05);
    }
    
-   .login-button-tech:disabled {
+   .login-button-cyber:disabled {
      color: #555;
      border-color: #222;
      cursor: not-allowed;
    }
    
+   /* Loading Dots */
+   .loading-dots {
+     display: flex;
+     gap: 6px;
+   }
+   .loading-dots span {
+     width: 6px;
+     height: 6px;
+     background-color: currentColor;
+     border-radius: 50%;
+     animation: pulse-op 1s infinite alternate;
+   }
+   .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+   .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+   
+   @keyframes pulse-op {
+     0% { opacity: 0.2; }
+     100% { opacity: 1; }
+   }
+   
+   /* --- Rodapé --- */
    .auth-footer {
      margin-top: 40px;
-     text-align: center;
-     font-size: 0.85rem;
-     color: var(--text-muted);
+     text-align: left;
      border-top: 1px solid var(--border-subtle);
      padding-top: 20px;
    }
    
-   .auth-footer a {
-     color: var(--text-main);
+   .back-to-login {
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+     color: var(--text-muted);
      text-decoration: none;
-     margin-left: 5px;
-     border-bottom: 1px solid transparent;
-     transition: border-color 0.2s ease;
+     font-size: 0.85rem;
+     transition: color 0.2s ease;
    }
    
-   .auth-footer a:hover {
-     border-color: var(--text-main);
+   .back-to-login:hover {
+     color: var(--text-main);
    }
    
-   /* Responsivo */
+   /* --- Mobile Responsivo --- */
    @media (max-width: 900px) {
      .login-visual-panel { display: none; }
-     .login-form-panel { flex: 1; padding: 20px; }
+     .login-form-panel { flex: 1; padding: 30px; }
      .desktop-logo { display: none; }
      .mobile-logo { display: flex; }
-   }
-   
-   @media (max-width: 600px) {
-     .form-row-split {
-       flex-direction: column;
-       gap: 0;
-     }
    }

@@ -7,12 +7,11 @@ import {
   IoMailOutline, 
   IoLockClosedOutline, 
   IoArrowForward, 
-  IoHardwareChipOutline,
   IoFingerPrintOutline,
   IoLayersOutline,
   IoPulseOutline
 } from 'react-icons/io5';
-
+import Logo from '../../assets/images/Logo'; // Importando a Logo Oficial
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -43,6 +42,7 @@ const LoginPage = () => {
   return (
     <div className="login-master-wrapper">
 
+      {/* --- LADO ESQUERDO: PAINEL VISUAL (DESKTOP) --- */}
       <div className="login-visual-panel">
         <div className="video-viewport">
           <video autoPlay loop muted playsInline className="main-video">
@@ -52,13 +52,10 @@ const LoginPage = () => {
         </div>
 
         <div className="visual-overlay-text">
-          <div className="system-badge">
-            
+          {/* Logo exibida na tela grande */}
+          <div className="login-logo-wrapper desktop-logo">
+            <Logo />
           </div>
-
-          <h1 className="tech-title">
-            Curses Telegran
-          </h1>
 
           <p className="typing-effect">
             A plataforma definitiva de engenharia de software. Conteúdo estruturado, 
@@ -78,9 +75,15 @@ const LoginPage = () => {
         </div>
       </div>
 
+      {/* --- LADO DIREITO: FORMULÁRIO DE ACESSO --- */}
       <div className="login-form-panel">
         <div className="glass-form-container">
           <header className="form-header">
+            {/* Logo exibida apenas no Mobile */}
+            <div className="login-logo-wrapper mobile-logo">
+              <Logo />
+            </div>
+
             <div className="auth-icon-wrapper">
               <IoFingerPrintOutline />
             </div>

@@ -1,0 +1,173 @@
+/* =========================================================
+   BASE E PAINÉIS (AEROSPACE THEME)
+   ========================================================= */
+   .admin-section {
+    color: #e5e7eb;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .admin-card {
+    background: #050505;
+    border: 1px solid #1f1f23;
+    border-radius: 2px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  }
+  
+  .admin-card.border-warning { border-top: 3px solid #f39c12; }
+  .admin-card.border-success { border-top: 3px solid #005288; } /* Azul SpaceX */
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 5px;
+  }
+  
+  .header-icon { font-size: 1.5rem; }
+  .text-warning { color: #f39c12; }
+  .text-success { color: #00d2ff; }
+  
+  .admin-card h3 {
+    margin: 0;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+  }
+  
+  .card-subtitle {
+    color: #6b7280;
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* =========================================================
+     LISTA DE OPERADORES
+     ========================================================= */
+  .admin-list {
+    list-style: none;
+    padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  
+  .operator-row {
+    background: #0a0a0c;
+    border: 1px solid #1f1f23;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2px;
+  }
+  
+  .operator-row.column-layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  
+  .operator-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px dashed #222;
+    padding-bottom: 15px;
+  }
+  
+  .operator-info { display: flex; flex-direction: column; gap: 4px; }
+  .operator-info strong { font-size: 1.1rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+  .operator-info small { color: #888; font-family: monospace; font-size: 0.85rem; }
+  
+  .empty-state {
+    padding: 20px; text-align: center; color: #444; font-family: monospace;
+    border: 1px dashed #222; text-transform: uppercase;
+  }
+  
+  /* =========================================================
+     PAINEL DE CONTROLE (ROTA E CREDENCIAL)
+     ========================================================= */
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  
+  .control-panel {
+    display: flex;
+    align-items: center;
+    background: #000000;
+    border: 1px solid #1f1f23;
+    padding: 8px 12px;
+    border-radius: 2px;
+    gap: 10px;
+  }
+  
+  .control-label {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.8rem; color: #888; font-family: monospace;
+    letter-spacing: 1px; min-width: 50px;
+  }
+  
+  /* Inputs Cibernéticos / Industriais */
+  .cyber-input {
+    flex: 1;
+    background: transparent;
+    color: #00d2ff;
+    border: none;
+    font-family: monospace;
+    font-size: 0.9rem;
+    outline: none;
+    width: 100%;
+  }
+  .cyber-input:focus { color: #fff; }
+  .cyber-input option { background: #000; color: #fff; }
+  
+  /* =========================================================
+     BOTÕES DE AÇÃO
+     ========================================================= */
+  .item-actions { display: flex; gap: 10px; }
+  
+  .btn-save {
+    display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #000;
+    border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 2px;
+  }
+  .btn-save:hover { background: #ccc; }
+  
+  .btn-delete {
+    display: inline-flex; align-items: center; gap: 6px; background: transparent; color: #ff3333;
+    border: 1px solid #ff3333; padding: 8px 16px; font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 2px;
+  }
+  .btn-delete:hover { background: #ff3333; color: #fff; }
+  
+  .btn-danger-outline {
+    background: transparent; color: #ff3333; border: 1px solid #ff3333;
+    padding: 6px 12px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px;
+    cursor: pointer; height: fit-content; border-radius: 2px;
+  }
+  .btn-danger-outline:hover { background: rgba(255, 51, 51, 0.1); }
+  
+  /* Botão de Salvar Key Específico */
+  .btn-update-key {
+    background: rgba(0, 210, 255, 0.1); color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.3);
+    padding: 6px 10px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border-radius: 2px; transition: 0.2s;
+  }
+  .btn-update-key:hover { background: #00d2ff; color: #000; }
+  
+  .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Responsivo para Telas Menores */
+  @media (max-width: 768px) {
+    .controls-grid { grid-template-columns: 1fr; }
+  }

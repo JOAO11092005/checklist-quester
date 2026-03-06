@@ -1,0 +1,160 @@
+/* =========================================
+   CHAT MOBILE - AEROSPACE / SPACEX THEME
+   (Importe este arquivo no ChatPage.jsx: import './ChatMobile.css';)
+   ========================================= */
+
+   @media (max-width: 768px) {
+    /* --- CONTAINER E ALTURA --- */
+    .star-chat-wrapper {
+      /* Usa dvh (dynamic viewport height) para lidar com a barra de endereços do celular que sobe e desce */
+      height: calc(100dvh - 70px); 
+      max-height: calc(100dvh - 70px);
+    }
+  
+    .star-chat-panel {
+      border-left: none; /* Remove borda lateral que rouba espaço */
+    }
+  
+    /* --- HEADER MAIS COMPACTO --- */
+    .star-chat-header {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 12px 15px;
+      gap: 12px;
+    }
+  
+    .star-chat-header-meta {
+      width: 100%;
+      justify-content: space-between; /* Espalha os ícones */
+      gap: 10px;
+      padding: 8px;
+    }
+  
+    /* Esconde o texto "X Mensagens" para ganhar espaço */
+    .star-chat-header-meta span {
+      display: none; 
+    }
+  
+    .star-chat-search-box input {
+      width: 130px; /* Reduz tamanho da barra de busca */
+    }
+  
+    /* --- ÁREA DE MENSAGENS --- */
+    .star-chat-messages {
+      padding: 15px 10px; /* Menos margem lateral */
+      gap: 25px; /* Mais espaço entre mensagens para os botões caberem */
+    }
+  
+    .star-chat-msg-group {
+      max-width: 95%; /* Usa quase toda a tela */
+    }
+  
+    .star-chat-avatar-frame {
+      display: none; /* Oculta avatares grandes no mobile */
+    }
+  
+    .star-chat-avatar-spacer {
+      display: none;
+    }
+  
+    /* --- BUBBLES E TEXTOS --- */
+    .star-chat-bubble {
+      font-size: 0.9rem;
+      padding: 10px 14px;
+    }
+  
+    .star-chat-media-iframe, 
+    .star-chat-media-audio {
+      max-width: 100%; /* Garante que vídeos e áudios não vazem da tela */
+    }
+  
+    /* --- MENU DE AÇÕES (CORREÇÃO CRÍTICA PARA TOUCH) --- */
+    /* No celular não tem "hover", então deixamos o menu sempre visível embaixo da mensagem */
+    .msg-action-menu {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      position: absolute;
+      top: auto;
+      bottom: -28px; /* Joga para debaixo da bolha */
+      right: 0;
+      background: transparent;
+      box-shadow: none;
+      gap: 12px;
+      padding: 0;
+    }
+  
+    .star-chat-msg-group.is-me .msg-action-menu {
+      right: 0;
+      left: auto;
+    }
+  
+    .msg-action-menu button {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 1rem;
+      backdrop-filter: blur(4px);
+    }
+  
+    /* --- ÁREA DE INPUT E TECLADO --- */
+    .star-chat-input-area {
+      padding: 12px 10px;
+    }
+  
+    .star-chat-input-capsule {
+      padding: 8px 10px;
+    }
+  
+    .star-chat-tools {
+      margin-right: 8px;
+      padding-right: 8px;
+      gap: 8px;
+    }
+  
+    .star-chat-main-input {
+      font-size: 0.9rem; /* Evita zoom automático do iOS ao focar no input */
+    }
+  
+    .star-chat-send-btn {
+      margin-left: 8px;
+    }
+  
+    /* --- MENUS FLUTUANTES (EMOJIS, GIFS E MENÇÕES) --- */
+    .star-chat-picker-floater {
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      bottom: 100%;
+      border-radius: 10px 10px 0 0; /* Arredonda o topo para parecer uma gaveta do celular */
+      border-bottom: none;
+    }
+  
+    .star-chat-gif-picker {
+      width: 100vw !important; /* Força 100% da tela */
+      box-sizing: border-box;
+    }
+  
+    /* Ajusta o painel de marcação (@) */
+    .star-chat-mention-menu {
+      left: 0;
+      width: 100vw;
+      box-sizing: border-box;
+    }
+  
+    /* --- MODAIS DE PERFIL E AJUDA --- */
+    .star-chat-modal-content {
+      width: 95%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+  
+    .profile-card-header {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .profile-card-stats {
+      grid-template-columns: 1fr; /* Empilha XP e Nível */
+    }
+  }

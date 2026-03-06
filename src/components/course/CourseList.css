@@ -14,3 +14,85 @@
   color: #888;
   padding: 3rem;
 }
+/* src/components/course/CourseList.css */
+
+.course-list-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-arrow {
+  display: none; /* Escondido por padrão no Desktop */
+}
+
+.course-list {
+  display: grid;
+  /* Grade fluida para Desktop */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.no-courses-message {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: #555;
+  padding: 3rem;
+  letter-spacing: 2px;
+}
+
+/* =========================================
+   MOBILE - MODO PLATAFORMA DE STREAMING
+   ========================================= */
+@media (max-width: 768px) {
+  .course-list-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Exibe os botões de seta no mobile */
+  .scroll-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid #333;
+    color: #fff;
+    width: 35px;
+    height: 70px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 1.5rem;
+    backdrop-filter: blur(5px);
+  }
+
+  .scroll-arrow.left { left: 0; border-left: none; }
+  .scroll-arrow.right { right: 0; border-right: none; }
+
+  .scroll-arrow:active { background: #333; }
+
+  /* Transforma a grade em linha com scroll horizontal */
+  .course-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Efeito "imã" ao rolar */
+    scroll-behavior: smooth;
+    gap: 1rem;
+    padding: 1rem 35px; /* Espaço nas laterais para as setas não cobrirem os cards */
+    
+    /* Esconde a barra de rolagem visualmente, mas mantém a função */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .course-list::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+}

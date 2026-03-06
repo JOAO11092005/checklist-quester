@@ -1,34 +1,102 @@
-/* Estilo Base do Card */
-.Toastify__toast {
-  border-radius: 12px !important;
-  background: rgba(18, 18, 20, 0.95) !important;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #fff !important;
-  font-weight: 500;
-}
-
-/* Erro (Login Incorreto) - Rosa Neon */
-.toast-error-custom {
-  border-bottom: 3px solid #ff0055 !important;
-  box-shadow: 0 4px 20px rgba(255, 0, 85, 0.2);
-}
-
-.Toastify__progress-bar--error {
-  background: #ff0055 !important;
-}
-
-/* Sucesso - Verde Neon */
-.toast-success-custom {
-  border-bottom: 3px solid #04d361 !important;
-  box-shadow: 0 4px 20px rgba(4, 211, 97, 0.2);
-}
-
-.Toastify__progress-bar--success {
-  background: #04d361 !important;
-}
-
-/* Ícone de erro */
-.Toastify__toast--error svg {
-  fill: #ff0055 !important;
-}
+/* =========================================
+   BASE DO CARD: PAINEL DE TELEMETRIA
+   ========================================= */
+   .Toastify__toast {
+    border-radius: 4px !important; /* Bordas retas industriais */
+    background: #000000 !important; /* Espaço profundo */
+    background-image: radial-gradient(circle at top right, #111827, #000000);
+    border: 1px solid #333 !important;
+    color: #e5e7eb !important;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    overflow: hidden; 
+    position: relative;
+  }
+  
+  .Toastify__toast-body {
+    text-transform: uppercase;
+    font-weight: 500;
+    align-items: center;
+  }
+  
+  /* =========================================
+     TAMANHO E AJUSTE DOS SEUS ÍCONES
+     ========================================= */
+  .toast-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    /* Descomente a linha abaixo se os ícones baixados forem pretos e sumirem no fundo */
+    /* filter: invert(1); */ 
+  }
+  
+  /* =========================================
+     BARRA DE PROGRESSO: LINHA DE SINAL
+     ========================================= */
+  .Toastify__progress-bar {
+    height: 2px !important; 
+  }
+  
+  /* Sucesso - Terra (Azul SpaceX) */
+  .toast-spacex-success {
+    border-left: 4px solid #005288 !important;
+  }
+  .Toastify__progress-bar--success {
+    background: #005288 !important;
+    box-shadow: 0 0 10px #005288;
+  }
+  
+  /* Erro - Alerta Crítico (Vermelho Intenso) */
+  .toast-spacex-error {
+    border-left: 4px solid #ff3333 !important;
+  }
+  .Toastify__progress-bar--error {
+    background: #ff3333 !important;
+    box-shadow: 0 0 10px #ff3333;
+  }
+  
+  /* Info - Satélite (Branco Puro) */
+  .toast-spacex-info {
+    border-left: 4px solid #ffffff !important;
+  }
+  .Toastify__progress-bar--info {
+    background: #ffffff !important;
+    box-shadow: 0 0 10px #ffffff;
+  }
+  
+  /* =========================================
+     ANIMAÇÃO: PONTO DE LUZ EM ÓRBITA
+     ========================================= */
+  .Toastify__toast::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: -10px;
+    width: 3px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+    animation: orbit 4s linear infinite;
+    opacity: 0;
+    z-index: 0;
+  }
+  
+  @keyframes orbit {
+    0% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1; 
+    }
+    85% {
+      opacity: 1; 
+    }
+    100% {
+      transform: translateX(-400px); 
+      opacity: 0; 
+    }
+  }

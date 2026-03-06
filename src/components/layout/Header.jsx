@@ -1,34 +1,41 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { auth, db } from '../../firebase/config'; // Adicionado db aqui
+import { auth, db } from '../../firebase/config'; 
 import { signOut } from 'firebase/auth';
-import { collection, query, where, onSnapshot } from 'firebase/firestore'; // Imports do Firestore
+import { collection, query, where, onSnapshot } from 'firebase/firestore'; 
 import { 
   IoSearch, 
   IoNotificationsOutline, 
-  IoMenu, 
-  IoClose, 
   IoPersonOutline, 
   IoLogOutOutline, 
   IoHeartOutline, 
-  IoTrophyOutline 
+  IoTrophyOutline,
+  IoServerOutline,
+  IoStatsChartOutline, // Ícone para Telemetria
+  IoMapOutline,        // Ícone para Rotas
+  IoChatbubblesOutline // Ícone para Comunicação
 } from 'react-icons/io5';
+import Logo from '../../assets/images/Logo'; // Importando sua logo Nexora Orbital
 import userAvatarPlaceholder from '../../assets/images/user-avatar.png'; 
 import './Header.css';
 
+const ADMIN_EMAILS = [
+  "joao@gmail.com",
+  "joaopaulonevesbatista@gmail.com",
+  "joaopaulonevesbatista20@gmail.com"
+];
+
 const Header = () => {
   const { currentUser } = useAuth();
-  const [isMenuOpen, setMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0); // Estado para guardar qtd de e-mails
+  const [unreadCount, setUnreadCount] = useState(0); 
   const profileDropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Alias de email do usuário (ex: joao@devweb.com)
+  const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
   const myDevEmail = currentUser?.email ? `${currentUser.email.split('@')[0].toLowerCase()}@devweb.com` : '';
 
-  // Fecha dropdown ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
@@ -39,32 +46,27 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Busca emails não lidos em TEMPO REAL
   useEffect(() => {
     if (!myDevEmail) return;
-
-    // Procura na caixa de entrada e-mails que são PARA mim e que estão como read: false
     const qUnread = query(
       collection(db, 'emails'), 
       where('to', '==', myDevEmail),
       where('read', '==', false)
     );
-
     const unsubscribe = onSnapshot(qUnread, (snapshot) => {
       setUnreadCount(snapshot.docs.length);
     }, (error) => {
-      console.error("Erro ao buscar notificações: ", error);
+      console.error("Erro na estatisticas de notificações: ", error);
     });
-
     return () => unsubscribe();
   }, [myDevEmail]);
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate('/home');
+      navigate('/');
     } catch (error) {
-      console.error("Erro ao desconectar", error);
+      console.error("Erro ao encerrar sessão", error);
     }
   };
 
@@ -72,13 +74,13 @@ const Header = () => {
     <header className="header-tech">
       <div className="header-content">
 
-        {/* Lado Esquerdo: Logo */}
+        {/* LADO ESQUERDO: LOGO ORBITAL NEXORA */}
         <div className="header-left">
-          <Link to="/home" className="logo-brand">
-           <img src="https://curseduca-app.s3.us-east-1.amazonaws.com/7df80179-8a9f-4c82-bc55-8acd1166a599/4b99c838.png" alt="DevQuest" className="logo" /> 
+          <Link to="/home" className="logo-container-link">
+            <Logo className="logo-spacex" />
           </Link>
 
-          {/* Navegação Desktop */}
+          {/* NAVEGAÇÃO DESKTOP (Escondida em Mobile via CSS) */}
           <nav className="desktop-nav">
             <NavLink to="/estatistica" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
               TELEMETRIA
@@ -89,23 +91,25 @@ const Header = () => {
             <NavLink to="/duvidas" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
               COMUNICAÇÃO
             </NavLink>
+            
+            {isAdmin && (
+              <NavLink to="/admin" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ color: '#00d2ff', fontWeight: 'bold' }}>
+                <IoServerOutline style={{ marginRight: '5px' }} /> ADMIN
+              </NavLink>
+            )}
           </nav>
         </div>
 
-        {/* Lado Direito: Ações */}
+        {/* LADO DIREITO: AÇÕES E PERFIL */}
         <div className="header-right">
 
-          {/* Busca e Notificações */}
           <div className="action-icons">
             <NavLink to="/search" className="icon-link">
-              <button className="icon-btn" title="Buscar no Banco de Dados">
-                <IoSearch />
-              </button>
+              <button className="icon-btn" title="Busca de Dados"><IoSearch /></button>
             </NavLink>
             <NavLink to="/notificacao" className="icon-link">
-              <button className="icon-btn notification-btn" title="Alertas de Sistema">
+              <button className="icon-btn notification-btn" title="Alertas">
                 <IoNotificationsOutline />
-                {/* Se houver e-mails não lidos, exibe o Badge numérico */}
                 {unreadCount > 0 && (
                   <span className="notification-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>
                 )}
@@ -115,7 +119,6 @@ const Header = () => {
 
           <div className="separator-vertical"></div>
 
-          {/* Perfil do Usuário */}
           {currentUser ? (
             <div className="profile-wrapper" ref={profileDropdownRef}>
               <button 
@@ -124,21 +127,36 @@ const Header = () => {
               >
                 <img 
                   src={currentUser.photoURL || userAvatarPlaceholder} 
-                  alt="Avatar Operador" 
+                  alt="Avatar" 
                   className="user-avatar" 
                 />
                 <span className="user-name-short">{currentUser.displayName?.split(' ')[0] || 'OP-01'}</span>
               </button>
 
-              {/* Dropdown Técnico */}
+              {/* DROPDOWN TÉCNICO (Mobile Adaptive) */}
               <div className={`dropdown-menu-tech ${isProfileDropdownOpen ? 'open' : ''}`}>
                 <div className="dropdown-header">
-                  <span className="user-full-name">{currentUser.displayName || 'OPERADOR NÃO IDENTIFICADO'}</span>
+                  <span className="user-full-name">{currentUser.displayName || 'OPERADOR'}</span>
                   <span className="user-email">{myDevEmail || currentUser.email}</span>
                 </div>
 
                 <div className="dropdown-divider" />
 
+                {/* LINKS EXCLUSIVOS PARA MOBILE (Aparecem apenas via CSS) */}
+                <div className="mobile-only-nav">
+                  <Link to="/estatistica" className="dropdown-item">
+                    <IoStatsChartOutline /> ESTATISTICAS
+                  </Link>
+                  <Link to="/trilhas" className="dropdown-item">
+                    <IoMapOutline /> ROTAS
+                  </Link>
+                  <Link to="/duvidas" className="dropdown-item">
+                    <IoChatbubblesOutline /> COMUNICAÇÃO
+                  </Link>
+                  <div className="dropdown-divider" />
+                </div>
+
+                {/* LINKS PADRÃO */}
                 <Link to="/perfil" className="dropdown-item">
                   <IoPersonOutline /> DADOS DO OPERADOR
                 </Link>
@@ -146,8 +164,17 @@ const Header = () => {
                   <IoTrophyOutline /> CLASSIFICAÇÃO
                 </Link>
                 <Link to="/curtidas" className="dropdown-item">
-                  <IoHeartOutline /> PAINEL DE FAVORITOS
+                  <IoHeartOutline /> FAVORITOS
                 </Link>
+
+                {isAdmin && (
+                  <>
+                    <div className="dropdown-divider" />
+                    <Link to="/admin" className="dropdown-item admin-highlight">
+                      <IoServerOutline /> ADMIN PANEL
+                    </Link>
+                  </>
+                )}
 
                 <div className="dropdown-divider" />
 
@@ -157,13 +184,8 @@ const Header = () => {
               </div>
             </div>
           ) : (
-            <Link to="/login" className="login-btn-tech">CONECTAR</Link>
+            <Link to="/" className="login-btn-tech">CONECTAR</Link>
           )}
-
-          {/* Mobile Toggle */}
-          <button className="mobile-toggle" onClick={() => setMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <IoClose /> : <IoMenu />}
-          </button>
         </div>
       </div>
     </header>

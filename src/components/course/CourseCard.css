@@ -1,10 +1,8 @@
-/* =========================================
-   COURSE CARD - STARLINK / AEROSPACE THEME
-   ========================================= */
+/* src/components/course/CourseCard.css */
 :root {
   --card-bg: #000000;
   --card-surface: #0a0a0a;
-  --border-subtle: #333333;
+  --border-subtle: #1f1f23;
   --text-main: #ffffff;
   --text-muted: #888888;
 }
@@ -14,28 +12,24 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 320px;
-  min-height: 480px; /* Substitui o antigo height: 650px para melhor responsividade */
   background-color: var(--card-bg);
-  border-radius: 2px; /* Bordas retas */
+  border-radius: 2px;
   overflow: hidden;
   text-decoration: none;
   border: 1px solid var(--border-subtle);
   transition: all 0.3s ease;
 }
 
-/* Efeito de Hover Seco e Técnico */
 .course-card-tech:hover {
   transform: translateY(-5px);
   border-color: var(--text-main);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
 }
 
-/* Container da Imagem */
 .card-image-wrapper {
   position: relative;
   width: 100%;
-  height: 380px; 
+  height: 250px; /* Reduzido um pouco para caber melhor na tela inteira do celular */
   overflow: hidden;
   border-bottom: 1px solid var(--border-subtle);
 }
@@ -44,18 +38,15 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Imagem cinza e escura por padrão */
   filter: grayscale(100%) contrast(1.2) brightness(0.6);
   transition: all 0.5s ease;
 }
 
 .course-card-tech:hover .card-image-tech {
   transform: scale(1.05);
-  /* Revela as cores originais ao passar o mouse */
   filter: grayscale(0%) contrast(1.1) brightness(0.9); 
 }
 
-/* Badge Técnico ("ONLINE") sobre a imagem */
 .card-status-badge {
   position: absolute;
   top: 15px;
@@ -63,6 +54,7 @@
   background: var(--text-main);
   color: var(--card-bg);
   padding: 4px 8px;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 2px;
@@ -72,13 +64,12 @@
 .card-overlay-tech {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, var(--card-bg) 0%, transparent 40%);
+  background: linear-gradient(to top, var(--card-bg) 0%, transparent 60%);
   pointer-events: none;
 }
 
-/* Informações do Card */
 .card-info-tech {
-  padding: 25px 20px;
+  padding: 20px;
   background: var(--card-bg);
   flex-grow: 1;
   display: flex;
@@ -86,13 +77,13 @@
 }
 
 .card-tag-tech {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   color: var(--text-muted);
   font-weight: 600;
   letter-spacing: 2px;
-  margin-bottom: 12px;
-  font-family: monospace; /* Dá um toque de terminal de comando */
+  margin-bottom: 10px;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .card-title-tech {
@@ -105,39 +96,44 @@
   letter-spacing: 1px;
 }
 
-/* Rodapé do Card */
 .card-footer-tech {
   margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   transition: color 0.3s ease;
   padding-top: 15px;
   border-top: 1px dashed var(--border-subtle);
 }
 
 .footer-icon {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .course-card-tech:hover .card-footer-tech {
   color: var(--text-main);
-  border-top-style: solid; /* A linha pontilhada vira sólida */
+  border-top-style: solid;
 }
 
 .course-card-tech:hover .footer-icon {
   transform: translateX(5px);
 }
 
-/* Ajuste para telas menores */
-@media (max-width: 600px) {
+/* =========================================
+   MOBILE - MODO CARROSSEL (TRAVAR LARGURA)
+   ========================================= */
+@media (max-width: 768px) {
   .course-card-tech {
-    max-width: 100%;
+    /* Define o tamanho exato de cada card no mobile para não serem esmagados */
+    flex: 0 0 260px; 
+    max-width: 260px;
+    scroll-snap-align: center; /* O card sempre para alinhado ao centro */
   }
 }

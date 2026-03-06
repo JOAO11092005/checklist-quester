@@ -56,7 +56,7 @@ const RankingPage = () => {
             const lessonsCount = Object.keys(progressDoc.data().lessons || {}).length;
             return {
               id: userId,
-              displayName: userData.displayName || 'OP. DESCONHECIDO',
+              displayName: userData.displayName || 'DEV. DESCONHECIDO',
               photoURL: userData.photoURL,
               score: lessonsCount,
               xp: lessonsCount * 150,
@@ -110,9 +110,9 @@ const RankingPage = () => {
         {/* TOP 3 - ARQUITETURA DE HARDWARE */}
         <section className="star-rk-top-section">
           <div className="star-rk-top-grid">
-            {topThree[1] && <TopCard user={topThree[1]} pos="second" icon={<IoHardwareChipOutline />} title="[LEAD.OP]" />}
-            {topThree[0] && <TopCard user={topThree[0]} pos="first" icon={<IoShieldCheckmarkOutline />} title="[MASTER.OP]" />}
-            {topThree[2] && <TopCard user={topThree[2]} pos="third" icon={<IoAnalyticsOutline />} title="[SENIOR.OP]" />}
+            {topThree[1] && <TopCard user={topThree[1]} pos="second" icon={<IoHardwareChipOutline />} title="[LEAD.DEV]" />}
+            {topThree[0] && <TopCard user={topThree[0]} pos="first" icon={<IoShieldCheckmarkOutline />} title="[MASTER.DEV]" />}
+            {topThree[2] && <TopCard user={topThree[2]} pos="third" icon={<IoAnalyticsOutline />} title="[SENIOR.DEV]" />}
           </div>
         </section>
 
@@ -175,7 +175,7 @@ const TopCard = ({ user, pos, icon, title }) => (
     <div className="star-rk-card-inner">
       <div className="star-rk-rank-icon">{icon}</div>
       <div className="star-rk-avatar-wrapper">
-        <img src={user.photoURL || userAvatarPlaceholder} alt="Operator" />
+        <img src={user.photoURL || userAvatarPlaceholder} alt="Developer" />
         <div className="star-rk-number-tag">{pos === 'first' ? '01' : pos === 'second' ? '02' : '03'}</div>
       </div>
       <div className="star-rk-card-info">

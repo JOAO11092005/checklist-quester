@@ -4,14 +4,24 @@ import { db } from '../../firebase/config';
 import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext';
 import Loader from '../../components/common/Loader';
-import { IoRocketOutline, IoTerminalOutline, IoLayersOutline } from 'react-icons/io5';
+import { IoTerminalOutline, IoLayersOutline } from 'react-icons/io5';
 import './HomePage.css';
 
 const HomePage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasAccessKey, setHasAccessKey] = useState(false);
+  const [showVideo, setShowVideo] = useState(false); // Estado do Vídeo
   const { currentUser } = useAuth();
+
+  // Temporizador: Liga o vídeo após 4 segundos (4000ms)
+  useEffect(() => {
+    const videoTimer = setTimeout(() => {
+      setShowVideo(true);
+    }, 4000);
+    
+    return () => clearTimeout(videoTimer); // Limpa o timer se o componente desmontar
+  }, []);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -57,17 +67,34 @@ const HomePage = () => {
 
   return (
     <div className="home-master-container">
-      {/* Grid Técnico de Fundo */}
+      {/* Grid Técnico de Fundo da página inteira */}
       <div className="home-tech-grid"></div>
 
       {/* --- HERO SECTION --- */}
-      <header className={`home-hero ${hasAccessKey ? 'hero-premium' : 'hero-standard'}`}>
+      <header className="home-hero">
+        
+        {/* Camada 1: Imagem Estática Inicial (Some suavemente quando o vídeo entra) */}
+        <div className={`hero-media-layer hero-bg-image ${hasAccessKey ? 'premium-bg' : 'standard-bg'} ${showVideo ? 'media-hidden' : 'media-visible'}`}></div>
+
+        {/* Camada 2: Vídeo do Vimeo (Aparece após 4 segundos) */}
+        <div className={`hero-media-layer hero-bg-video ${showVideo ? 'media-visible' : 'media-hidden'}`}>
+          {/* Só renderiza o iframe se já deu o tempo, poupando processamento no load inicial */}
+          {showVideo && (
+            <iframe
+              src="https://player.vimeo.com/video/1092215058?muted=1&autoplay=1&dnt=1&loop=1&background=1&app_id=122963"
+              allow="autoplay; fullscreen; picture-in-picture"
+              frameBorder="0"
+              title="Background Video"
+            ></iframe>
+          )}
+        </div>
+
+        {/* Camada 3: Overlay (A Mágica da Legibilidade e Estética) */}
         <div className="hero-overlay"></div>
+
+        {/* Camada 4: Conteúdo de Texto */}
         <div className="hero-main-content">
-          <div className="hero-badge">
-            {hasAccessKey ? <IoLayersOutline /> : <IoTerminalOutline />}
-            {hasAccessKey ? 'NÍVEL DE ACESSO: MÁXIMO' : 'SISTEMA INICIALIZADO'}
-          </div>
+         
 
           <h1 className="hero-display-title">
             {hasAccessKey ? (
@@ -86,7 +113,7 @@ const HomePage = () => {
           {!hasAccessKey && (
             <div className="hero-actions">
               <a href="#cursos" className="btn-hero-tech">
-                INICIAR EXECUÇÃO <IoTerminalOutline style={{ marginLeft: '8px' }} />
+                INICIAR EXECUÇÃO 
               </a>
             </div>
           )}

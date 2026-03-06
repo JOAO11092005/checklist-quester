@@ -3,58 +3,52 @@ import { useNavigate, Link } from 'react-router-dom';
 import { auth, db } from '../../firebase/config'; 
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore'; 
-import { toast } from 'react-toastify';
+import { notify } from '../../utils/toast'; 
+
 import { 
   IoPersonOutline, 
   IoMailOutline, 
   IoLockClosedOutline, 
-  IoKeyOutline, 
   IoArrowForward,
-  IoHardwareChipOutline,
   IoShieldCheckmarkOutline,
   IoCodeSlashOutline
 } from 'react-icons/io5';
 
-// Mantendo o CSS unificado do estilo Starlink
-import './LoginPage.css'; 
+import Logo from '../../assets/images/Logo'; // ✅ Importando a Logo Oficial
+import './RegisterPage.css'; // ✅ Atualizado para o CSS correto
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // URL do vídeo de fundo (Mesmo do Login para transição suave)
   const videoUrl = "https://canvaz.scdn.co/upload/artist/3gi5McAv9c0qTjJ5jSmbL0/video/960374af57804d6f96f3c86233c90983.cnvs.mp4";
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    accessKey: '', 
     password: '',
     confirmPassword: ''
   });
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const { name, email, accessKey, password, confirmPassword } = formData;
+    const { name, email, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {
-      return toast.error('Protocolo de segurança: As senhas não coincidem.');
+      return notify.error('Protocolo de segurança: As senhas não coincidem.');
     }
 
     if (password.length < 6) {
-        return toast.warn('A chave de acesso deve conter no mínimo 6 caracteres.');
+        return notify.info('A senha deve conter no mínimo 6 caracteres.');
     }
 
     setLoading(true);
     try {
-      // 1. Criar Usuário na Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Atualizar Perfil
       await updateProfile(user, { displayName: name });
 
-      // 3. Salvar no Firestore (Users)
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         displayName: name,
@@ -62,11 +56,9 @@ const RegisterPage = () => {
         photoURL: "",
         role: "Estudante",
         createdAt: serverTimestamp(),
-        accessKey: accessKey || "Free_Tier",
-        status: "Active"
+        status: "Pending" 
       });
 
-      // 4. Iniciar documento de progresso
       await setDoc(doc(db, "progress", user.uid), {
         lessons: {},
         xp: 0,
@@ -74,15 +66,15 @@ const RegisterPage = () => {
         lastLogin: serverTimestamp()
       });
 
-      toast.success(`Identidade confirmada. Operador ${name} registrado.`);
-      navigate('/dashboard');
+      notify.success(`Identidade criada com sucesso.`);
+      navigate('/request-invite');
 
     } catch (error) {
       console.error(error);
       if (error.code === 'auth/email-already-in-use') {
-        toast.error('Este e-mail já possui um registro no banco de dados.');
+        notify.error('Este e-mail já possui um registro no banco de dados.');
       } else {
-        toast.error('Falha na criação do registro. Verifique a conexão e tente novamente.');
+        notify.error('Falha na criação do registro. Verifique a conexão e tente novamente.');
       }
     } finally {
       setLoading(false);
@@ -91,7 +83,8 @@ const RegisterPage = () => {
 
   return (
     <div className="login-master-wrapper">
-
+      
+      {/* --- LADO ESQUERDO: PAINEL VISUAL --- */}
       <div className="login-visual-panel">
         <div className="video-viewport">
            <video autoPlay loop muted playsInline className="main-video">
@@ -101,11 +94,10 @@ const RegisterPage = () => {
         </div>
 
         <div className="visual-overlay-text">
-          <div className="system-badge">
-            <IoHardwareChipOutline /> INICIALIZAÇÃO DE SISTEMA
+          {/* Logo Desktop */}
+          <div className="login-logo-wrapper desktop-logo">
+            <Logo />
           </div>
-
-          <h1 className="tech-title">REGISTRO DE OPERADOR</h1>
 
           <p className="typing-effect">
             Acesso restrito à arquitetura de ensino avançada. Forneça seus dados 
@@ -125,19 +117,23 @@ const RegisterPage = () => {
         </div>
       </div>
 
+      {/* --- LADO DIREITO: FORMULÁRIO --- */}
       <div className="login-form-panel">
         <div className="glass-form-container">
           <header className="form-header">
+            {/* Logo Mobile */}
+            <div className="login-logo-wrapper mobile-logo">
+              <Logo />
+            </div>
+
             <div className="auth-icon-wrapper">
                <IoPersonOutline /> 
             </div>
             <h2>Nova Identidade</h2>
-            <p>Preencha os parâmetros para gerar sua credencial.</p>
+            <p>Preencha os parâmetros para gerar sua conta.</p>
           </header>
 
           <form onSubmit={handleRegister} className="auth-form">
-
-            {/* Nome */}
             <div className="tech-input-group">
               <label>Identificação de Operador (Nome)</label>
               <div className="input-wrapper">
@@ -152,7 +148,6 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* Email */}
             <div className="tech-input-group">
               <label>Endereço de Comunicação (E-mail)</label>
               <div className="input-wrapper">
@@ -167,24 +162,9 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* Chave de Acesso */}
-            <div className="tech-input-group">
-              <label>Código de Convite (Opcional)</label>
-              <div className="input-wrapper">
-                <IoKeyOutline className="input-icon" />
-                <input 
-                  type="text" 
-                  placeholder="Insira a chave de autorização"
-                  value={formData.accessKey}
-                  onChange={(e) => setFormData({...formData, accessKey: e.target.value})}
-                />
-              </div>
-            </div>
-
-            {/* Senhas (Split Row) */}
             <div className="form-row-split">
               <div className="tech-input-group">
-                <label>Chave de Acesso</label>
+                <label>Chave Segurança</label>
                 <div className="input-wrapper">
                   <IoLockClosedOutline className="input-icon" />
                   <input 
@@ -216,7 +196,7 @@ const RegisterPage = () => {
               {loading ? (
                 <span>PROCESSANDO...</span>
               ) : (
-                <>GERAR CREDENCIAL <IoArrowForward /></>
+                <>GERAR CONTA <IoArrowForward /></>
               )}
             </button>
           </form>
@@ -226,7 +206,6 @@ const RegisterPage = () => {
           </footer>
         </div>
       </div>
-
     </div>
   );
 };

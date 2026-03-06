@@ -18,7 +18,7 @@ const Dashboard = () => {
     totalLessons: 0,
     xp: 0,
     level: 1,
-    displayName: 'OPERADOR'
+    displayName: 'DESENVOLVEDOR'
   });
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +41,7 @@ const Dashboard = () => {
           totalLessons: lessonsCount,
           xp: lessonsCount * 150,
           level: Math.floor(lessonsCount / 3) + 1,
-          displayName: userDoc.data()?.displayName || 'OPERADOR'
+          displayName: userDoc.data()?.displayName || 'DESENVOLVEDOR'
         });
       } finally {
         setLoading(false);
@@ -63,7 +63,7 @@ const Dashboard = () => {
         <header className="hub-hero">
           <div className="hero-content">
             <span className="hero-tag">STATUS: CONECTADO</span>
-            <h1>OP: {stats.displayName.split(' ')[0].toUpperCase()}</h1>
+            <h1>DEV: {stats.displayName.split(' ')[0].toUpperCase()}</h1>
             <p>Sistemas nominais. Sua rota de aprendizado está operando com eficiência máxima.</p>
           </div>
           <div className="hero-stats-quick">
@@ -105,7 +105,7 @@ const Dashboard = () => {
                     labelStyle={{ color: '#888' }}
                   />
                   <Area 
-                    type="step" /* Alterado de monotone para step para um visual mais duro/tecnológico */
+                    type="step" 
                     dataKey="xp" 
                     stroke="#ffffff" 
                     strokeWidth={2} 

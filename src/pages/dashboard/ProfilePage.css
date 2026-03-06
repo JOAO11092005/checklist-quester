@@ -1,23 +1,24 @@
 /* =========================================
-   PROFILE PAGE - STARLINK / AEROSPACE THEME
-   (Isolado com prefixo .star-pf-)
+   PROFILE PAGE - STARLINK / SPACEX THEME
    ========================================= */
    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
    
    :root {
      --star-pf-bg: #000000;
-     --star-pf-surface: #0a0a0a;
-     --star-pf-border: #333333;
-     --star-pf-text-main: #ffffff;
-     --star-pf-text-dim: #888888;
-     --star-pf-accent: #ffffff;
-     --star-pf-input-bg: #050505;
+     --star-pf-surface: #050505;
+     --star-pf-border: #1f1f23;
+     --star-pf-text-main: #e5e7eb;
+     --star-pf-text-dim: #6b7280;
+     --star-pf-accent-blue: #00d2ff;
+     --star-pf-accent-warning: #f39c12;
+     --star-pf-accent-green: #04d361;
    }
    
    .star-pf-wrapper {
-     min-height: 100vh;
+     min-height: calc(100vh - 80px);
      background-color: var(--star-pf-bg);
+     background-image: radial-gradient(circle at top right, #0a0a0c, #000000);
      display: flex;
      justify-content: center;
      align-items: flex-start;
@@ -26,303 +27,203 @@
      color: var(--star-pf-text-main);
    }
    
-   /* Loading */
+   /* --- Loading (Radar Espacial) --- */
    .star-pf-loading {
      height: 100vh;
-     display: flex; 
-     flex-direction: column;
-     align-items: center; 
-     justify-content: center;
-     background: var(--star-pf-bg);
-     color: var(--star-pf-text-dim);
-     font-family: 'JetBrains Mono', monospace;
-     letter-spacing: 2px;
-     font-size: 0.85rem;
+     display: flex; flex-direction: column; align-items: center; justify-content: center;
+     background: var(--star-pf-bg); color: var(--star-pf-accent-blue);
+     font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; font-size: 0.85rem;
    }
    
    .star-pf-spinner {
-     width: 40px; height: 40px;
-     border: 1px dashed var(--star-pf-text-dim);
-     border-top: 1px solid var(--star-pf-accent);
+     width: 50px; height: 50px;
+     border: 2px dashed var(--star-pf-border);
+     border-top: 2px solid var(--star-pf-accent-blue);
      border-radius: 50%;
-     animation: star-pf-spin 1s linear infinite;
+     animation: star-pf-spin 1.5s linear infinite;
      margin-bottom: 20px;
    }
    
    @keyframes star-pf-spin { 100% { transform: rotate(360deg); } }
    
-   /* --- Card Principal --- */
+   /* --- Card Principal (Painel de Dossiê) --- */
    .star-pf-card {
-     width: 100%;
-     max-width: 700px;
+     width: 100%; max-width: 750px;
      background: var(--star-pf-surface);
      border: 1px solid var(--star-pf-border);
-     border-radius: 2px; /* Corte tecnológico duro */
-     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+     border-top: 3px solid var(--star-pf-accent-blue); /* Linha de Telemetria */
+     border-radius: 2px;
+     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9);
+     animation: fadeIn 0.4s ease-out;
    }
    
    /* --- Header Section --- */
    .star-pf-header {
-     display: flex;
-     align-items: center;
-     gap: 30px;
-     padding: 40px;
+     display: flex; align-items: center; gap: 30px;
+     padding: 40px; background: #08080a;
      border-bottom: 1px solid var(--star-pf-border);
-     background: repeating-linear-gradient(
-       -45deg,
-       rgba(255,255,255,0.01),
-       rgba(255,255,255,0.01) 2px,
-       transparent 2px,
-       transparent 8px
-     );
    }
    
-   .star-pf-avatar-section {
-     position: relative;
-   }
-   
-   /* O "Target" substitui o anel brilhante */
+   /* O Avatar vira um alvo de mira (Target) */
    .star-pf-avatar-target {
-     padding: 8px;
+     width: 110px; height: 110px;
+     padding: 6px;
      border: 1px solid var(--star-pf-border);
      position: relative;
+     transition: all 0.3s ease;
    }
    
-   /* Marcadores de "mira" nos cantos */
    .star-pf-avatar-target::before, .star-pf-avatar-target::after {
-     content: ''; position: absolute; width: 10px; height: 10px; border: 2px solid var(--star-pf-accent);
+     content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid var(--star-pf-accent-blue);
    }
    .star-pf-avatar-target::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
    .star-pf-avatar-target::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
    
+   /* Pulso visual enquanto a imagem sobe pro Cloudinary */
+   .uploading-pulse {
+     border-color: var(--star-pf-accent-blue);
+     animation: pulseGlow 1.5s infinite alternate;
+   }
+   
+   @keyframes pulseGlow {
+     from { box-shadow: 0 0 5px rgba(0, 210, 255, 0.2); }
+     to { box-shadow: 0 0 20px rgba(0, 210, 255, 0.8); }
+   }
+   
    .star-pf-img {
-     width: 100px;
-     height: 100px;
+     width: 100%; height: 100%;
      object-fit: cover;
-     display: block;
-     background-color: var(--star-pf-bg);
-     filter: grayscale(100%); /* Mantém o visual técnico */
+     background-color: #000;
+     filter: grayscale(80%) contrast(1.2); /* Aspecto de câmera de segurança/satélite */
      transition: filter 0.3s;
    }
    
-   .star-pf-card:hover .star-pf-img {
-     filter: grayscale(0%);
-   }
+   .star-pf-card:hover .star-pf-img { filter: grayscale(0%) contrast(1); }
    
    .star-pf-avatar-hint {
-     position: absolute;
-     bottom: -15px; left: 50%;
-     transform: translateX(-50%);
-     background: var(--star-pf-bg);
-     border: 1px solid var(--star-pf-accent);
-     color: var(--star-pf-accent);
-     font-size: 0.65rem;
-     padding: 4px 8px;
-     display: flex; align-items: center; gap: 4px;
-     font-family: 'JetBrains Mono', monospace;
-     white-space: nowrap;
+     position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+     background: var(--star-pf-bg); border: 1px solid var(--star-pf-accent-blue);
+     color: var(--star-pf-accent-blue); font-size: 0.65rem; padding: 4px 10px;
+     display: flex; align-items: center; gap: 6px;
+     font-family: 'JetBrains Mono', monospace; white-space: nowrap;
    }
    
+   /* Títulos */
    .star-pf-title-block { flex: 1; }
    
    .star-pf-overline {
-     font-size: 0.7rem;
-     color: var(--star-pf-text-dim);
-     font-family: 'JetBrains Mono', monospace;
-     letter-spacing: 2px;
-     display: block;
-     margin-bottom: 5px;
+     font-size: 0.75rem; color: var(--star-pf-text-dim);
+     font-family: 'JetBrains Mono', monospace; letter-spacing: 2px;
+     margin-bottom: 5px; display: block;
    }
    
    .star-pf-title-block h1 {
-     font-size: 1.8rem;
-     font-weight: 600;
-     margin: 0 0 10px 0;
-     text-transform: uppercase;
-     letter-spacing: 1px;
+     font-size: 1.8rem; font-weight: 700; color: #fff;
+     margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px;
    }
    
    .star-pf-badge {
-     display: inline-block;
-     background: var(--star-pf-accent);
-     color: var(--star-pf-bg);
-     padding: 4px 10px;
-     font-size: 0.7rem;
-     font-weight: 700;
-     font-family: 'JetBrains Mono', monospace;
-     letter-spacing: 1px;
+     display: inline-block; background: rgba(4, 211, 97, 0.05); color: var(--star-pf-accent-green);
+     border: 1px solid rgba(4, 211, 97, 0.3); padding: 4px 10px; font-size: 0.75rem;
+     font-weight: 700; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;
    }
    
-   /* --- Body Section --- */
-   .star-pf-body {
-     padding: 40px;
-   }
+   /* --- Body Section & Grid --- */
+   .star-pf-body { padding: 40px; }
    
-   /* MODO VIEW: Stats Grid */
-   .star-pf-stats-grid {
-     display: flex;
-     flex-direction: column;
-     gap: 15px;
-     margin-bottom: 40px;
-   }
+   .star-pf-stats-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
    
    .star-pf-stat-box {
-     display: flex;
-     align-items: center;
-     gap: 20px;
-     background: var(--star-pf-bg);
-     border: 1px solid var(--star-pf-border);
-     padding: 20px;
+     display: flex; align-items: center; gap: 20px;
+     background: #000; border: 1px solid var(--star-pf-border);
+     padding: 20px; border-radius: 2px;
    }
    
-   .star-pf-icon {
-     font-size: 1.5rem;
-     color: var(--star-pf-text-dim);
-   }
+   .star-pf-icon { font-size: 1.5rem; color: var(--star-pf-text-dim); }
    
-   .star-pf-stat-data {
-     display: flex;
-     flex-direction: column;
-     gap: 4px;
-   }
+   .star-pf-stat-data { display: flex; flex-direction: column; gap: 4px; }
    
    .star-pf-stat-data small {
-     font-size: 0.65rem;
-     color: var(--star-pf-text-dim);
-     font-family: 'JetBrains Mono', monospace;
-     letter-spacing: 1.5px;
+     font-size: 0.7rem; color: var(--star-pf-text-dim);
+     font-family: 'JetBrains Mono', monospace; letter-spacing: 1.5px;
    }
    
-   .star-pf-stat-data span {
-     font-size: 0.95rem;
-     color: var(--star-pf-text-main);
-     font-weight: 500;
-   }
+   .star-pf-stat-data span { font-size: 1rem; color: var(--star-pf-text-main); font-weight: 500; }
    
-   .highlight-box {
-     border-left: 3px solid var(--star-pf-accent);
-   }
+   .highlight-box { border-left: 3px solid var(--star-pf-accent-warning); }
+   .highlight-box .star-pf-icon { color: var(--star-pf-accent-warning); }
+   .clearance-text { font-family: 'JetBrains Mono', monospace; color: var(--star-pf-accent-warning) !important; font-weight: bold; }
    
-   .highlight-box .star-pf-icon {
-     color: var(--star-pf-accent);
-   }
+   /* --- Modo Edição (Formulários Militares) --- */
+   .star-pf-form-grid { display: flex; flex-direction: column; gap: 24px; margin-bottom: 40px; }
    
-   /* MODO EDIT: Form Grid */
-   .star-pf-form-grid {
-     display: flex;
-     flex-direction: column;
-     gap: 24px;
-     margin-bottom: 40px;
-   }
-   
-   .star-pf-input-group {
-     display: flex; flex-direction: column; gap: 8px;
-   }
+   .star-pf-input-group { display: flex; flex-direction: column; gap: 8px; }
    
    .star-pf-input-group label {
-     color: var(--star-pf-text-dim);
-     font-size: 0.75rem;
-     font-weight: 600;
-     font-family: 'JetBrains Mono', monospace;
-     letter-spacing: 1px;
+     color: var(--star-pf-text-dim); font-size: 0.8rem; font-weight: 600;
+     font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;
      display: flex; align-items: center; gap: 8px;
    }
    
-   .star-pf-input-group input {
-     background: var(--star-pf-input-bg);
-     border: 1px solid var(--star-pf-border);
-     padding: 14px 16px;
-     border-radius: 0; /* Corte reto */
-     color: var(--star-pf-text-main);
-     font-size: 0.95rem;
-     outline: none;
-     font-family: 'Inter', sans-serif;
+   .star-pf-input-group input[type="text"] {
+     background: #000; border: 1px solid var(--star-pf-border);
+     padding: 14px 16px; border-radius: 2px; color: #fff;
+     font-size: 0.95rem; outline: none; font-family: 'JetBrains Mono', monospace;
      transition: all 0.2s;
    }
    
-   .star-pf-input-group input:focus {
-     border-color: var(--star-pf-accent);
-     background: var(--star-pf-surface);
+   .star-pf-input-group input[type="text"]:focus { border-color: var(--star-pf-accent-blue); }
+   
+   .star-pf-input-group.disabled input { color: #555; cursor: not-allowed; border-style: dashed; }
+   
+   /* Área especial do Cloudinary Upload */
+   .star-pf-upload-controls {
+     display: flex; align-items: center; gap: 15px; width: 100%;
    }
    
-   .star-pf-input-group.disabled input {
-     color: var(--star-pf-text-dim);
-     cursor: not-allowed;
-     border-style: dashed;
+   .star-pf-btn-upload {
+     background: transparent; color: var(--star-pf-accent-blue);
+     border: 1px solid var(--star-pf-accent-blue); padding: 13px 20px;
+     font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: bold;
+     cursor: pointer; display: flex; align-items: center; gap: 8px;
+     transition: 0.2s; white-space: nowrap; border-radius: 2px;
    }
    
-   .star-pf-helper {
-     font-size: 0.7rem; color: #555; font-family: 'JetBrains Mono', monospace;
-   }
+   .star-pf-btn-upload:hover { background: rgba(0, 210, 255, 0.1); }
    
-   /* Botões Globais (Ação e Formulário) */
+   .upload-divider { font-family: monospace; color: #555; font-size: 0.8rem; }
+   
+   .url-input { flex: 1; }
+   
+   /* --- Botões de Ação (Comando e Abortar) --- */
    .star-pf-action-row, .star-pf-footer-actions {
-     display: flex;
-     justify-content: flex-end;
-     gap: 16px;
-   }
-   
-   .star-pf-footer-actions {
-     padding-top: 30px;
-     border-top: 1px solid var(--star-pf-border);
+     display: flex; justify-content: flex-end; gap: 15px; padding-top: 20px; border-top: 1px dashed var(--star-pf-border);
    }
    
    .star-pf-btn-primary {
-     background: var(--star-pf-accent);
-     color: var(--star-pf-bg);
-     border: 1px solid var(--star-pf-accent);
-     padding: 12px 24px;
-     font-weight: 700;
-     font-size: 0.8rem;
-     text-transform: uppercase;
-     letter-spacing: 1.5px;
-     cursor: pointer;
-     display: flex; align-items: center; gap: 8px;
-     transition: all 0.2s;
+     background: #fff; color: #000; border: none; padding: 12px 24px;
+     font-weight: 700; font-size: 0.85rem; text-transform: uppercase;
+     letter-spacing: 1.5px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+     border-radius: 2px; transition: 0.2s;
    }
-   
-   .star-pf-btn-primary:hover:not(:disabled) {
-     background: transparent;
-     color: var(--star-pf-accent);
-   }
-   
+   .star-pf-btn-primary:hover:not(:disabled) { background: #ccc; }
    .star-pf-btn-primary:disabled { opacity: 0.5; cursor: wait; }
    
    .star-pf-btn-ghost {
-     background: transparent;
-     color: var(--star-pf-text-dim);
-     border: 1px solid var(--star-pf-border);
-     padding: 12px 24px;
-     font-weight: 600;
-     font-size: 0.8rem;
-     text-transform: uppercase;
-     letter-spacing: 1.5px;
-     cursor: pointer;
-     display: flex; align-items: center; gap: 8px;
-     transition: all 0.2s;
+     background: transparent; color: #ff3333; border: 1px solid #ff3333;
+     padding: 12px 24px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase;
+     letter-spacing: 1.5px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+     border-radius: 2px; transition: 0.2s;
    }
+   .star-pf-btn-ghost:hover { background: #ff3333; color: #fff; }
    
-   .star-pf-btn-ghost:hover {
-     border-color: var(--star-pf-text-main);
-     color: var(--star-pf-text-main);
-   }
+   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
    
    /* Responsivo */
-   @media (max-width: 600px) {
-     .star-pf-header {
-       flex-direction: column;
-       text-align: center;
-       padding: 30px 20px;
-     }
-     
-     .star-pf-body { padding: 30px 20px; }
-     
-     .star-pf-action-row, .star-pf-footer-actions { 
-       flex-direction: column; 
-     }
-     
-     .star-pf-btn-primary, .star-pf-btn-ghost { 
-       justify-content: center; 
-       width: 100%; 
-     }
+   @media (max-width: 768px) {
+     .star-pf-header { flex-direction: column; text-align: center; }
+     .star-pf-upload-controls { flex-direction: column; align-items: stretch; }
+     .upload-divider { display: none; }
+     .star-pf-action-row, .star-pf-footer-actions { flex-direction: column; }
+     .star-pf-btn-primary, .star-pf-btn-ghost { justify-content: center; }
    }

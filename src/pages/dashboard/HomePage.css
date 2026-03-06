@@ -20,11 +20,10 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* Fundo Grid Técnico (substitui as partículas coloridas) */
 .home-tech-grid {
   position: absolute;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
@@ -35,51 +34,105 @@
 /* --- HERO SECTION --- */
 .home-hero {
   position: relative;
-  height: 65vh;
-  min-height: 500px;
+  height: 70vh;
+  min-height: 550px;
   display: flex;
   align-items: center;
   padding: 0 8%;
   z-index: 2;
   border-bottom: 1px solid var(--border-subtle);
   background-color: var(--bg-pure);
+  overflow: hidden;
+  /* Mantém o vídeo contido aqui */
 }
 
+/* --- CAMADAS DE MÍDIA (IMAGEM E VÍDEO) --- */
+.hero-media-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transition: opacity 2s ease-in-out;
+  /* Fade cruzado de 2 segundos super suave */
+}
 
-/* --- FUNDOS ORIGINAIS COM FILTRO TÉCNICO --- */
-.hero-standard {
-  background-color: #000000; /* Fundo preto para o modo de mesclagem */
+.media-visible {
+  opacity: 1;
+}
+
+.media-hidden {
+  opacity: 0;
+}
+
+/* Camada da Imagem Estática */
+.hero-bg-image {
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: luminosity;
+  filter: grayscale(100%) contrast(1.1);
+  /* Puxa para a paleta da SpaceX */
+}
+
+.standard-bg {
   background-image: url('https://cdn.areademembros.com/files/instancia_3760/image/KMviLJ89quCpIRGPpsCskf0slMD4XUH2yA63Rb0d.jpg');
-  background-size: cover;
-  background-position: center;
-  background-blend-mode: luminosity; /* Converte a imagem para Preto e Branco */
 }
 
-.hero-premium {
-  background-color: #000000;
+.premium-bg {
   background-image: url('https://i.pinimg.com/originals/90/70/32/9070324cdfc07c68d60eed0c39e77573.gif');
-  background-size: cover;
-  background-position: center;
-  background-blend-mode: luminosity; /* Converte o GIF animado para Preto e Branco */
 }
 
+/* Camada do Vídeo Vimeo */
+.hero-bg-video iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw;
+  /* Hack para manter 16:9 sempre cobrindo a tela */
+  min-height: 100vh;
+  min-width: 177.77vh;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: grayscale(100%) contrast(1.2);
+  /* Deixa o vídeo casar com a estética preto e branco */
+}
+
+/* --- THE ULTIMATE OVERLAY --- */
 .hero-overlay {
   position: absolute;
   inset: 0;
-  /* Gradiente mais forte para escurecer as imagens e dar foco ao texto */
-  background: linear-gradient(to right, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.7) 60%, transparent 100%),
-              linear-gradient(to top, rgba(0,0,0,1) 5%, transparent 40%);
+  z-index: 1;
+  background:
+    /* Vinheta escura nas bordas da tela inteira */
+    radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.85) 100%),
+    /* Sombreamento forte e sólido na esquerda para o texto ficar 100% legível */
+    linear-gradient(90deg, #000000 5%, rgba(0, 0, 0, 0.8) 40%, transparent 100%),
+    /* Sombreamento na base para mesclar suave com o conteúdo de baixo */
+    linear-gradient(0deg, #000000 0%, transparent 20%);
 }
 
+/* Efeito sutil de Scanlines (linhas de monitor antigo/dashboard industrial) */
+.hero-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 4px);
+  pointer-events: none;
+}
+
+/* --- CONTEÚDO DO HERO --- */
 .hero-main-content {
   position: relative;
-  z-index: 3;
+  z-index: 2;
   max-width: 800px;
-  animation: slideUp 0.6s ease-out;
+  animation: slideUp 1s ease-out;
 }
 
 .hero-badge {
-  display: none;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   background: transparent;
@@ -87,6 +140,7 @@
   padding: 6px 14px;
   border-radius: 2px;
   font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace, sans-serif;
   font-weight: 600;
   letter-spacing: 2px;
   color: var(--text-main);
@@ -103,7 +157,7 @@
 }
 
 .text-highlight {
-  color: var(--text-muted); /* Em vez de gradiente colorido, usamos contraste de cinza e branco */
+  color: var(--text-muted);
 }
 
 .hero-description {
@@ -115,7 +169,6 @@
   max-width: 600px;
 }
 
-/* Botão Hero - Estilo Terminal / Starlink */
 .btn-hero-tech {
   display: inline-flex;
   align-items: center;
@@ -137,6 +190,8 @@
   color: var(--text-main);
 }
 
+/* ... Resto do seu CSS (home-content, section-header, etc) se mantém igual ... */
+
 /* --- CONTEÚDO / LISTA DE CURSOS --- */
 .home-content {
   padding: 60px 8%;
@@ -148,7 +203,7 @@
 .section-header {
   margin-bottom: 50px;
   display: flex;
-  align-items: flex-end; /* Alinha o texto na base com a linha */
+  align-items: flex-end;
   gap: 30px;
 }
 
@@ -172,15 +227,13 @@
   flex: 1;
   height: 1px;
   background: var(--border-subtle);
-  margin-bottom: 8px; /* Levanta a linha para alinhar com o texto */
+  margin-bottom: 8px;
 }
 
-/* Grid de Cursos */
 .courses-grid-wrapper {
   animation: fadeIn 0.8s ease-out;
 }
 
-/* Estado Vazio */
 .empty-state-card {
   background: var(--bg-surface);
   border: 1px dashed var(--border-subtle);
@@ -194,28 +247,39 @@
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
-/* Responsividade */
 @media (max-width: 900px) {
   .home-hero {
     padding: 0 5%;
     height: auto;
     min-height: 80vh;
-    text-align: left;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding-bottom: 80px;
   }
 
   .hero-overlay {
-    background: linear-gradient(to right, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.6) 100%),
-                linear-gradient(to top, rgba(0,0,0,1) 5%, transparent 40%);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
   }
 
   .section-header {

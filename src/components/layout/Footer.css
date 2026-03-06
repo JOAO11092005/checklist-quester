@@ -1,20 +1,21 @@
 /* =========================================
-   FOOTER - STARLINK / AEROSPACE THEME
+   FOOTER - ACADEMY-X / STARLINK THEME
    ========================================= */
-   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
    :root {
-     --bg-pure: #000000;
-     --bg-surface: #0a0a0a;
-     --border-subtle: #333333;
-     --text-main: #ffffff;
-     --text-muted: #888888;
+     --ft-bg-pure: #000000;
+     --ft-bg-surface: #050505;
+     --ft-border: #1f1f23;
+     --ft-text-main: #ffffff;
+     --ft-text-muted: #6b7280;
+     --ft-accent: #00d2ff;
    }
    
    .main-footer-tech {
-     background-color: var(--bg-pure);
-     border-top: 1px solid var(--border-subtle);
-     padding: 40px 24px;
+     background-color: var(--ft-bg-pure);
+     border-top: 1px solid var(--ft-border);
+     padding: 50px 24px 40px;
      position: relative;
      overflow: hidden;
      font-family: 'Inter', sans-serif;
@@ -23,23 +24,42 @@
    .footer-content {
      display: flex;
      justify-content: space-between;
-     align-items: flex-start;
-     max-width: 1200px;
+     align-items: flex-end; /* Alinha tudo pela base */
+     max-width: 1400px;
      margin: 0 auto;
      flex-wrap: wrap;
-     gap: 30px;
+     gap: 40px;
+   }
+   
+   /* --- LOGO NO RODAPÉ --- */
+   .footer-logo-wrapper {
+     height: 20px; /* Bem pequena e técnica */
+     margin-bottom: 20px;
+     opacity: 0.8;
+     transition: opacity 0.3s ease;
+   }
+   
+   .footer-logo-wrapper:hover {
+     opacity: 1;
+   }
+   
+   .footer-logo-svg {
+     height: 100%;
+     width: auto;
+     display: block;
    }
    
    /* --- Tipografia e Info --- */
    .footer-info {
      display: flex;
      flex-direction: column;
-     gap: 12px;
+     gap: 8px;
    }
    
    .footer-info p {
-     color: var(--text-muted);
-     font-size: 0.75rem;
+     color: var(--ft-text-muted);
+     font-family: 'JetBrains Mono', monospace; /* Fonte de máquina para o footer */
+     font-size: 0.65rem;
      line-height: 1.6;
      margin: 0;
      letter-spacing: 1.5px;
@@ -47,17 +67,17 @@
    
    /* Destaque no nome da marca */
    .highlight-tech {
-     color: var(--text-main);
-     font-weight: 600;
+     color: #888;
+     font-weight: 700;
      letter-spacing: 2px;
    }
    
    .powered-by {
-     font-size: 0.7rem !important;
-     color: var(--text-muted) !important;
+     font-size: 0.6rem !important;
+     color: #555 !important;
      display: flex;
      align-items: center;
-     margin-top: 8px;
+     margin-top: 5px;
      letter-spacing: 2px;
    }
    
@@ -66,7 +86,7 @@
      display: flex;
      flex-direction: column;
      align-items: flex-end;
-     gap: 20px;
+     gap: 25px;
    }
    
    .social-icons-tech {
@@ -78,43 +98,43 @@
      display: flex;
      align-items: center;
      justify-content: center;
-     width: 40px;
-     height: 40px;
+     width: 36px;
+     height: 36px;
      background-color: transparent;
-     border: 1px solid var(--border-subtle);
-     border-radius: 2px; /* Cantos quadrados tecnológicos */
-     color: var(--text-muted);
-     font-size: 1.2rem;
+     border: 1px solid var(--ft-border);
+     border-radius: 2px; /* Cantos industriais quadrados */
+     color: var(--ft-text-muted);
+     font-size: 1rem;
      transition: all 0.2s ease;
    }
    
    .social-icons-tech a:hover {
-     background-color: var(--text-main);
-     color: var(--bg-pure);
-     border-color: var(--text-main);
-     transform: translateY(-2px);
+     background-color: rgba(255, 255, 255, 0.05);
+     color: var(--ft-text-main);
+     border-color: #444;
    }
    
    .footer-nav-tech {
      display: flex;
-     gap: 24px;
+     gap: 30px;
    }
    
    .footer-nav-tech a {
-     color: var(--text-muted);
-     font-size: 0.75rem;
-     font-weight: 500;
+     color: var(--ft-text-muted);
+     font-family: 'JetBrains Mono', monospace;
+     font-size: 0.65rem;
+     font-weight: 600;
      text-decoration: none;
-     letter-spacing: 1.5px;
+     letter-spacing: 2px;
      transition: color 0.2s ease;
      position: relative;
+     text-transform: uppercase;
    }
    
    .footer-nav-tech a:hover {
-     color: var(--text-main);
+     color: var(--ft-text-main);
    }
    
-   /* Linha de marcação seca (sem animação suave, aparece instantaneamente) */
    .footer-nav-tech a::after {
      content: '';
      position: absolute;
@@ -123,10 +143,11 @@
      bottom: -4px;
      left: 0;
      background-color: transparent;
+     transition: background-color 0.2s ease;
    }
    
    .footer-nav-tech a:hover::after {
-     background-color: var(--text-main);
+     background-color: var(--ft-text-main);
    }
    
    .mobile-break {
@@ -139,6 +160,15 @@
        flex-direction: column;
        align-items: center;
        text-align: center;
+       gap: 30px;
+     }
+   
+     .footer-info {
+       align-items: center;
+     }
+   
+     .footer-logo-wrapper {
+       margin-bottom: 15px;
      }
    
      .footer-links-container {
@@ -146,10 +176,6 @@
        width: 100%;
      }
    
-     .social-icons-tech {
-       margin-bottom: 15px;
-     }
-     
      .footer-nav-tech {
        flex-direction: column;
        gap: 15px;

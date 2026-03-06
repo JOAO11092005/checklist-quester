@@ -14,7 +14,7 @@
    }
    
    .header-tech {
-     height: 64px; /* Mais fino, estilo barra de navegação de software nativo */
+     height: 64px;
      background-color: var(--hd-bg-pure);
      border-bottom: 1px solid var(--hd-border);
      position: sticky;
@@ -23,14 +23,6 @@
      width: 100%;
      font-family: 'Inter', sans-serif;
    }
-   
-   .logo {
-     width: 140px;
-     filter: grayscale(100%) contrast(1.2); 
-     transition: opacity 0.2s ease;
-   }
-   
-   .logo:hover { opacity: 0.8; }
    
    .header-content {
      max-width: 1600px;
@@ -49,17 +41,11 @@
      gap: 40px;
    }
    
-   .logo-brand {
-     text-decoration: none;
-     display: flex;
-     align-items: center;
-   }
-   
    /* Menu Desktop */
    .desktop-nav {
      display: flex;
      gap: 24px;
-     height: 64px; /* Preenche a altura para o hover pegar a barra inteira */
+     height: 64px;
    }
    
    .nav-link {
@@ -77,8 +63,9 @@
      height: 100%;
    }
    
-   .nav-link:hover { color: var(--hd-text-main); }
-   .nav-link.active { color: var(--hd-text-main); }
+   .nav-link:hover, .nav-link.active {
+     color: var(--hd-text-main);
+   }
    
    /* Linha indicadora Ativa */
    .nav-link.active::after {
@@ -116,7 +103,7 @@
      font-size: 1.3rem;
      cursor: pointer;
      padding: 8px;
-     border-radius: 2px; /* Canto reto/industrial */
+     border-radius: 2px;
      display: flex;
      align-items: center;
      justify-content: center;
@@ -130,12 +117,12 @@
      background: rgba(255, 255, 255, 0.05);
    }
    
-   /* Badge Numérico (Substituindo o antigo ponto) */
+   /* Badge Numérico */
    .notification-badge {
      position: absolute;
      top: 2px;
      right: 2px;
-     background-color: var(--hd-danger); /* Vermelho crítico SpaceX */
+     background-color: var(--hd-danger);
      color: #fff;
      font-family: 'JetBrains Mono', monospace;
      font-size: 0.55rem;
@@ -144,7 +131,7 @@
      border-radius: 2px;
      min-width: 16px;
      text-align: center;
-     border: 1px solid var(--hd-bg-pure); /* Cria um espaço entre o ícone e o badge */
+     border: 1px solid var(--hd-bg-pure);
      pointer-events: none;
    }
    
@@ -268,6 +255,8 @@
    
    .dropdown-item svg { font-size: 1.1rem; }
    
+   .admin-highlight { color: #00d2ff !important; }
+   
    /* Logout */
    .logout-item:hover {
      background: rgba(255, 51, 51, 0.05);
@@ -275,7 +264,7 @@
      border-left-color: var(--hd-danger);
    }
    
-   /* Botão de Login (Quando deslogado) */
+   /* Botão de Login */
    .login-btn-tech {
      padding: 8px 20px;
      background: var(--hd-text-main);
@@ -289,27 +278,52 @@
      border-radius: 2px;
      transition: all 0.2s ease;
    }
-   
    .login-btn-tech:hover { background: #cccccc; }
    
-   /* Mobile Toggle */
-   .mobile-toggle {
-     display: none;
-     background: transparent;
-     border: 1px solid var(--hd-border);
-     border-radius: 2px;
-     color: var(--hd-text-main);
-     font-size: 1.5rem;
-     padding: 6px;
-     cursor: pointer;
-     transition: background 0.2s ease;
+   /* --- DROPDOWN MOBILE LOGIC --- */
+   .mobile-only-nav {
+     display: none; /* Escondido no Desktop */
    }
-   
-   .mobile-toggle:hover { background: rgba(255,255,255,0.05); }
    
    /* --- Responsividade --- */
    @media (max-width: 900px) {
-     .desktop-nav, .user-name-short, .separator-vertical { display: none; }
-     .mobile-toggle { display: none; }
-     .header-content { padding: 0 16px; }
+     .desktop-nav {
+       display: none; /* Esconde menu horizontal */
+     }
+   
+     .mobile-only-nav {
+       display: block; /* Revela links no dropdown */
+     }
+   
+     .user-name-short {
+       display: none; /* Esconde nome ao lado do avatar para caber na tela */
+     }
+   
+     .separator-vertical {
+       display: none;
+     }
+   
+     .header-left {
+       flex: 1;
+     }
+   
+     .header-content { 
+       padding: 0 16px; 
+     }
    }
+/* =========================================
+   FORÇAR O TAMANHO DA LOGO ORBITAL SVG
+   (Correção de sinal de vídeo)
+   ========================================= */
+   .logo-container-link {
+    display: flex;
+    align-items: center;
+    height: 45px; /* Define a altura exata da logo na barra */
+    text-decoration: none;
+  }
+  
+  .logo-spacex {
+    height: 100%;
+    width: 220px; /* Força a largura para o texto e o ícone caberem nítidos */
+    display: block;
+  }

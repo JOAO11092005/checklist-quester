@@ -3,6 +3,8 @@ import { useAuth } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { FaGithub, FaLinkedin, FaDiscord, FaHeart } from 'react-icons/fa'; 
+// Importe a logo. Ajuste o caminho se necessário (ex: '../../assets/Logo' ou '../../assets/images/Logo')
+import Logo from '../../assets/images/Logo'; 
 import './Footer.css';
 
 const Footer = () => {
@@ -35,23 +37,30 @@ const Footer = () => {
     <footer className="main-footer-tech">
       <div className="footer-content">
         
-        {/* Seção da Esquerda: Copyright e Marca */}
+        {/* Seção da Esquerda: Logo, Copyright e Marca */}
         <div className="footer-info">
+          
+          {/* A LOGO PEQUENA NO CANTO */}
+          <div className="footer-logo-wrapper">
+            {/* Passamos uma cor cinza para ficar discreta no rodapé */}
+            <Logo className="footer-logo-svg" color="#666666" accentColor="white" />
+          </div>
+
           {hasAccessKey ? (
             <p>
-              COPYRIGHT © {currentYear} <span className="highlight-tech">DEVSTREAM SYSTEMS</span>.
+              COPYRIGHT © {currentYear} <span className="highlight-tech">ACADEMY-X</span>.
               <br className="mobile-break" /> TODOS OS DIREITOS RESERVADOS.
             </p>
           ) : (
             <p>
-              COPYRIGHT © {currentYear} <span className="highlight-tech">DEV EM DOBRO</span>.
+              COPYRIGHT © {currentYear} <span className="highlight-tech">ACADEMY-X PRO</span>.
               <br className="mobile-break" /> TODOS OS DIREITOS RESERVADOS.
             </p>
           )}
           
           {hasAccessKey && (
              <p className="powered-by">
-               CODIFICADO COM <FaHeart size={12} color="#ffffff" style={{ margin: '0 5px' }} /> POR VOCÊ
+             
              </p>
           )}
         </div>
@@ -60,13 +69,13 @@ const Footer = () => {
         <div className="footer-links-container">
           {hasAccessKey && (
             <div className="social-icons-tech">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              {/* <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <FaGithub />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <FaLinkedin />
-              </a>
-              <a href="https://discord.com" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+              </a> */}
+              <a href="https://discord.com/channels/@me/892802267659505784" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                 <FaDiscord />
               </a>
             </div>
