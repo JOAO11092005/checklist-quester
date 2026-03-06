@@ -11,17 +11,38 @@ const HomePage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasAccessKey, setHasAccessKey] = useState(false);
-  const [showVideo, setShowVideo] = useState(false); // Estado do Vídeo
+  const [showVideo, setShowVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(false); // Estado para detectar celular
   const { currentUser } = useAuth();
 
-  // Temporizador: Liga o vídeo após 4 segundos (4000ms)
+  // GIF para o fundo Mobile
+  const mobileGifUrl = "https://user-images.githubusercontent.com/81328619/213875785-400ae517-156b-4aca-a787-bac75d84c393.gif";
+
+  // Verifica o tamanho da tela na montagem e no redimensionamento
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Executa a primeira vez
+    checkMobile();
+    
+    // Adiciona listener para caso o usuário redimensione a janela (Desktop) ou vire o celular
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Temporizador do Vídeo (Só roda se NÃO for mobile)
+  useEffect(() => {
+    if (isMobile) return; // Se for celular, aborta o timer do vídeo
+
     const videoTimer = setTimeout(() => {
       setShowVideo(true);
     }, 4000);
     
-    return () => clearTimeout(videoTimer); // Limpa o timer se o componente desmontar
-  }, []);
+    return () => clearTimeout(videoTimer);
+  }, [isMobile]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -67,35 +88,44 @@ const HomePage = () => {
 
   return (
     <div className="home-master-container">
-      {/* Grid Técnico de Fundo da página inteira */}
       <div className="home-tech-grid"></div>
 
       {/* --- HERO SECTION --- */}
       <header className="home-hero">
         
-        {/* Camada 1: Imagem Estática Inicial (Some suavemente quando o vídeo entra) */}
-        <div className={`hero-media-layer hero-bg-image ${hasAccessKey ? 'premium-bg' : 'standard-bg'} ${showVideo ? 'media-hidden' : 'media-visible'}`}></div>
+        {/* Lógica Renderização Mobile vs Desktop */}
+        {isMobile ? (
+          /* CAMADA MOBILE: Carrega o GIF com filtro técnico em loop infinito */
+          <div className="hero-media-layer media-visible">
+            <img 
+              src={mobileGifUrl} 
+              alt="System Data Flow" 
+              className="hero-mobile-gif" 
+            />
+          </div>
+        ) : (
+          /* CAMADAS DESKTOP: Imagem estática seguida pelo Vídeo do Vimeo */
+          <>
+            <div className={`hero-media-layer hero-bg-image ${hasAccessKey ? 'premium-bg' : 'standard-bg'} ${showVideo ? 'media-hidden' : 'media-visible'}`}></div>
 
-        {/* Camada 2: Vídeo do Vimeo (Aparece após 4 segundos) */}
-        <div className={`hero-media-layer hero-bg-video ${showVideo ? 'media-visible' : 'media-hidden'}`}>
-          {/* Só renderiza o iframe se já deu o tempo, poupando processamento no load inicial */}
-          {showVideo && (
-            <iframe
-              src="https://player.vimeo.com/video/1092215058?muted=1&autoplay=1&dnt=1&loop=1&background=1&app_id=122963"
-              allow="autoplay; fullscreen; picture-in-picture"
-              frameBorder="0"
-              title="Background Video"
-            ></iframe>
-          )}
-        </div>
+            <div className={`hero-media-layer hero-bg-video ${showVideo ? 'media-visible' : 'media-hidden'}`}>
+              {showVideo && (
+                <iframe
+                  src="https://player.vimeo.com/video/1092215058?muted=1&autoplay=1&dnt=1&loop=1&background=1&app_id=122963"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  frameBorder="0"
+                  title="Background Video"
+                ></iframe>
+              )}
+            </div>
+          </>
+        )}
 
         {/* Camada 3: Overlay (A Mágica da Legibilidade e Estética) */}
         <div className="hero-overlay"></div>
 
         {/* Camada 4: Conteúdo de Texto */}
         <div className="hero-main-content">
-         
-
           <h1 className="hero-display-title">
             {hasAccessKey ? (
               <>AMBIENTE DE <br/><span className="text-highlight">ALTA PERFORMANCE</span></>

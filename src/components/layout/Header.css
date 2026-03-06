@@ -82,7 +82,7 @@
    .header-right {
      display: flex;
      align-items: center;
-     gap: 20px;
+     gap: 10px;
    }
    
    .action-icons {
@@ -151,7 +151,7 @@
      align-items: center;
      gap: 12px;
      cursor: pointer;
-     padding: 4px 12px 4px 4px;
+     padding: 5px;
      border-radius: 2px;
      transition: all 0.2s;
    }
