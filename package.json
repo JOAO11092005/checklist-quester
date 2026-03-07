@@ -15,7 +15,6 @@
     "@google-cloud/firestore": "^7.11.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
-    "@vitejs/plugin-react": "^4.3.1",
     "canvas-confetti": "^1.9.4",
     "concurrently": "^8.2.2",
     "date-fns": "^3.6.0",
@@ -34,14 +33,14 @@
     "react-router-dom": "^6.24.1",
     "react-toastify": "^10.0.5",
     "recharts": "^3.6.0",
-    "styled-components": "^6.3.11",
-    "vite": "^5.3.3"
+    "styled-components": "^6.3.11"
   },
   "engines": {
     "node": "22.x"
   },
   "devDependencies": {
-    "vite": "5.4.21"
+    "@vitejs/plugin-react": "^5.1.4",
+    "vite": "^7.3.1"
   },
   "pnpm": {
     "supportedArchitectures": {
