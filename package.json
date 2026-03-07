@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@9.15.4",
- "scripts": {
+  "scripts": {
     "dev": "vite",
     "build": "npm i -D @rollup/rollup-linux-x64-gnu --legacy-peer-deps && vite build",
     "preview": "vite preview"
@@ -33,17 +33,25 @@
     "react-router-dom": "^6.24.1",
     "react-toastify": "^10.0.5",
     "recharts": "^3.6.0",
+    "styled-components": "^6.3.11",
     "vite": "^5.3.3"
   },
   "engines": {
     "node": "22.x"
   },
   "devDependencies": {
-  "vite": "5.4.21"
-  },"pnpm": {
+    "vite": "5.4.21"
+  },
+  "pnpm": {
     "supportedArchitectures": {
-      "os": ["current", "linux"],
-      "cpu": ["current", "x64"]
+      "os": [
+        "current",
+        "linux"
+      ],
+      "cpu": [
+        "current",
+        "x64"
+      ]
     }
   }
 }
