@@ -40,5 +40,10 @@
   },
   "devDependencies": {
   "vite": "5.4.21"
+  },"pnpm": {
+    "supportedArchitectures": {
+      "os": ["current", "linux"],
+      "cpu": ["current", "x64"]
+    }
   }
 }
