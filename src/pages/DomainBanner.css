@@ -1,0 +1,109 @@
+.space-banner {
+    position: relative;
+    width: 100%;
+    background: rgba(10, 11, 16, 0.85); /* Fundo escuro translúcido */
+    backdrop-filter: blur(12px); /* Efeito vidro */
+    border-bottom: 1px solid rgba(0, 240, 255, 0.3); /* Linha inferior neon */
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); /* Brilho vazado */
+    color: #fff;
+    z-index: 9999;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  
+  .space-banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 24px;
+  }
+  
+  .space-glow-text {
+    color: #00f0ff;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.5px;
+  }
+  
+  .pulse-icon {
+    animation: pulse-glow 2s infinite;
+  }
+  
+  .space-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .btn-warp {
+    background: linear-gradient(45deg, #00f0ff, #0066ff);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+  
+  .btn-warp:hover {
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.9);
+    transform: translateY(-2px);
+    color: #fff;
+  }
+  
+  .btn-stay {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #aaa;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+  }
+  
+  .btn-stay:hover {
+    border-color: #fff;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .btn-close {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+  }
+  
+  .btn-close:hover {
+    color: #fff;
+  }
+  
+  @keyframes pulse-glow {
+    0% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); text-shadow: 0 0 12px #00f0ff; }
+    100% { opacity: 0.7; transform: scale(1); }
+  }
+  
+  /* Responsividade para celular */
+  @media (max-width: 768px) {
+    .space-banner-content {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }

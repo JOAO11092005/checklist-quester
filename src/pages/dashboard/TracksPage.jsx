@@ -1,18 +1,17 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { db } from '../../firebase/config';
-import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { useAuth } from '../../context/AuthContext';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { 
   IoRocketOutline, IoCheckmarkCircle, IoLockClosed, 
-  IoTerminalOutline, IoHardwareChipOutline, IoMedalOutline,
-  IoPlanetOutline, IoEarthOutline, IoEyeOutline 
+  IoHardwareChipOutline, IoMedalOutline, IoChevronBack, IoChevronForward,
+  IoEyeOutline, IoEarthOutline, IoPlanetOutline, IoServerOutline, IoSyncOutline,
+  IoScanOutline
 } from 'react-icons/io5';
 import Loader from '../../components/common/Loader';
 import './TracksPage.css';
 
-// Lista de administradores
 const ADMIN_EMAILS = [
   "joao@gmail.com",
   "joaopaulonevesbatista@gmail.com",
@@ -21,203 +20,309 @@ const ADMIN_EMAILS = [
 
 const TracksPage = () => {
   const { currentUser } = useAuth();
-  const { userId } = useParams(); // Pega o ID do usuário da URL, se existir
-  const [loading, setLoading] = useState(true);
+  const { userId } = useParams();
+  
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [backgroundLoading, setBackgroundLoading] = useState(false);
+  
   const [userRank, setUserRank] = useState('CADETE (INICIANTE)');
   const [userXP, setUserXP] = useState(0);
-  const [userTrack, setUserTrack] = useState('FRONT-END'); 
-  const [roadmap, setRoadmap] = useState([]);
-  const [viewingUser, setViewingUser] = useState(null); // Armazena dados do usuário visualizado
+  const [missions, setMissions] = useState([]); 
+  const [currentSlide, setCurrentSlide] = useState(0); 
+  const [viewingUser, setViewingUser] = useState(null);
 
   const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
   const targetUserId = isAdmin && userId ? userId : currentUser?.uid;
 
-  // Redireciona se um não-admin tentar ver a trilha de outro
+  const xpAccumulator = useRef(0);
+  const indexAccumulator = useRef(0);
+
   if (!isAdmin && userId && userId !== currentUser?.uid) {
     return <Navigate to="/trilhas" replace />;
   }
 
   useEffect(() => {
-    const fetchRoadmapAndProgress = async () => {
-      if (!targetUserId) return;
-      setLoading(true);
+    let isMounted = true;
 
+    const fetchProgressively = async () => {
+      if (!targetUserId) return;
+      
       try {
-        // Busca os dados do usuário que está sendo visualizado
-        const viewingUserRef = doc(db, 'users', targetUserId);
-        const viewingUserSnap = await getDoc(viewingUserRef);
-        if (viewingUserSnap.exists()) {
+        const [viewingUserSnap, progressSnap, coursesSnap] = await Promise.all([
+          getDoc(doc(db, 'users', targetUserId)),
+          getDoc(doc(db, 'progress', targetUserId)),
+          getDocs(collection(db, 'cursos'))
+        ]);
+
+        if (viewingUserSnap.exists() && isMounted) {
           setViewingUser(viewingUserSnap.data());
         }
 
-        const progressRef = doc(db, 'progress', targetUserId);
-        const progressSnap = await getDoc(progressRef);
-        const pData = progressSnap.exists() ? progressSnap.data() : {};
-        const completedLessons = pData.lessons || {};
+        const completedLessons = progressSnap.exists() ? progressSnap.data().lessons || {} : {};
 
-        const lessonsCount = Object.keys(completedLessons).filter(k => completedLessons[k] === true).length;
-        const xp = lessonsCount * 150;
-        setUserXP(xp);
+        let trackData = coursesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-        // Lógica de Rank
-        if (xp < 1500) setUserRank('CADETE (INICIANTE)');
-        else if (xp < 5000) setUserRank('DESENVOLVEDOR JÚNIOR');
-        else if (xp < 12000) setUserRank('DESENVOLVEDOR PLENO');
-        else if (xp < 25000) setUserRank('DESENVOLVEDOR SÊNIOR');
-        else setUserRank('ARQUITETO DE SOFTWARE');
+        trackData.sort((a, b) => {
+          const typeA = (a.tipo || '').toUpperCase();
+          const typeB = (b.tipo || '').toUpperCase();
+          const weightA = typeA.includes('FRONT') ? 1 : typeA.includes('BACK') ? 2 : 3;
+          const weightB = typeB.includes('FRONT') ? 1 : typeB.includes('BACK') ? 2 : 3;
+          if (weightA !== weightB) return weightA - weightB;
+          return (a.ordem || 0) - (b.ordem || 0);
+        });
 
-        let currentTrack = 'FRONT-END';
-        if (viewingUserSnap.exists() && viewingUserSnap.data().track) {
-          currentTrack = viewingUserSnap.data().track.toUpperCase();
-        }
-        setUserTrack(currentTrack);
+        let loadedMissions = [];
+        xpAccumulator.current = 0;
+        indexAccumulator.current = 0;
 
-        const q = query(collection(db, 'cursos'), where('tipo', '==', currentTrack));
-        const coursesSnap = await getDocs(q);
-        let trackData = [];
+        for (let i = 0; i < trackData.length; i++) {
+          const course = trackData[i];
+          const isBackend = (course.tipo || '').toUpperCase().includes('BACK');
+          
+          const modulesSnap = await getDocs(collection(db, 'cursos', course.id, 'modulos'));
+          let modulesData = modulesSnap.docs.map(m => ({ id: m.id, ...m.data() }));
+          modulesData.sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
 
-        for (const courseDoc of coursesSnap.docs) {
-          const courseInfo = { id: courseDoc.id, ...courseDoc.data() };
-          const modulesSnap = await getDocs(collection(db, 'cursos', courseDoc.id, 'modulos'));
-          const modulesList = modulesSnap.docs.map(m => ({ id: m.id, ...m.data() }));
-          trackData.push({ ...courseInfo, modules: modulesList });
-        }
+          const processedModules = await Promise.all(
+            modulesData.map(async (mod) => {
+              const aulasSnap = await getDocs(collection(db, 'cursos', course.id, 'modulos', mod.id, 'aulas'));
+              const totalAulas = aulasSnap.docs.length;
+              let aulasConcluidasNoModulo = 0;
+              
+              aulasSnap.docs.forEach(a => {
+                if (completedLessons[a.id]) aulasConcluidasNoModulo++;
+              });
+              
+              const isModuleCompleted = totalAulas > 0 && aulasConcluidasNoModulo >= totalAulas;
+              return { ...mod, totalAulas, isModuleCompleted };
+            })
+          );
 
-        trackData.sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
-        setRoadmap(trackData);
+          processedModules.forEach(mod => {
+            indexAccumulator.current++;
+            if (mod.isModuleCompleted) xpAccumulator.current += 500;
+            
+            loadedMissions.push({
+              ...mod,
+              courseId: course.id,
+              courseTitle: course.titulo,
+              isBackend,
+              globalIndex: indexAccumulator.current,
+              requiredXP: (indexAccumulator.current - 1) * 500,
+              completionXP: indexAccumulator.current * 500
+            });
+          });
+
+          if (isMounted) {
+            setMissions([...loadedMissions]); 
+            setUserXP(xpAccumulator.current);
+            
+            const currentXP = xpAccumulator.current;
+            if (currentXP < 1500) setUserRank('CADETE (INICIANTE)');
+            else if (currentXP < 5000) setUserRank('DESENVOLVEDOR JÚNIOR');
+            else if (currentXP < 12000) setUserRank('DESENVOLVEDOR PLENO');
+            else if (currentXP < 25000) setUserRank('DESENVOLVEDOR SÊNIOR');
+            else setUserRank('ARQUITETO DE SOFTWARE (FULL-STACK)');
+
+            if (i === 0) {
+              setInitialLoading(false);
+              if (trackData.length > 1) setBackgroundLoading(true); 
+            }
+          }
+        } 
+
+        if (isMounted) setBackgroundLoading(false);
 
       } catch (error) {
         console.error("Erro ao carregar telemetria:", error);
-      } finally {
-        setLoading(false);
+        if (isMounted) setInitialLoading(false);
       }
     };
 
-    fetchRoadmapAndProgress();
+    fetchProgressively();
+
+    return () => { isMounted = false; };
   }, [targetUserId]);
 
-  if (loading) return <Loader title="CALCULANDO ROTA ORBITAL..." />;
+  const nextSlide = () => {
+    if (currentSlide < missions.length) setCurrentSlide(prev => prev + 1);
+  };
 
-  let tempGlobalIndex = 0;
-  const processedRoadmap = roadmap.map(course => {
-    return {
-      ...course,
-      modules: course.modules.map(mod => {
-        tempGlobalIndex++;
-        return {
-          ...mod,
-          globalIndex: tempGlobalIndex,
-          requiredXP: (tempGlobalIndex - 1) * 500,
-          completionXP: tempGlobalIndex * 500
-        };
-      })
-    };
-  });
+  const prevSlide = () => {
+    if (currentSlide > 0) setCurrentSlide(prev => prev - 1);
+  };
 
-  const reversedRoadmap = [...processedRoadmap].reverse();
+  if (initialLoading) return <Loader title="INICIANDO SISTEMAS VITAIS..." />;
+
+  const isFinalPlatform = currentSlide === missions.length && !backgroundLoading;
 
   return (
-    <div className="star-track-container">
-      <div className="star-track-stars"></div>
+    <div className="sci-fi-theme-container">
+      {/* BACKGROUND EFFECTS */}
+      <div className="space-bg-layer"></div>
+      <div className="planet-bg-layer"></div>
 
-      {/* --- ADMIN VIEW HEADER --- */}
       {isAdmin && viewingUser && (
-        <div className="admin-view-header">
-          <IoEyeOutline /> Você está visualizando a trilha de: <span className="admin-view-email">{viewingUser.email}</span>
+        <div className="admin-telemetry-bar">
+          <IoEyeOutline /> TELEMETRIA: <span>{viewingUser.email}</span>
         </div>
       )}
 
-      {/* --- DASHBOARD HEADER --- */}
-      <div className="star-track-header">
-        <div className="track-header-content">
-          <div className="track-user-info">
-            <div className="track-icon-wrapper">
-              <IoTerminalOutline size={32} color="#00d2ff" />
-            </div>
-            <div>
-              <h1 className="track-title">TRILHA: {userTrack}</h1>
-              <p className="track-subtitle">PLANO DE CARREIRA E DESENVOLVIMENTO</p>
-            </div>
+      {/* HEADER DA MISSÃO */}
+      <header className="mission-header">
+        <div className="mission-title-area">
+          <div className="tech-radar-icon">
+            <IoScanOutline className="scan-spin" />
           </div>
-          <div className="track-stats-panel">
-            <div className="stat-box">
-              <span className="stat-label">PATENTE ATUAL</span>
-              <span className="stat-value rank-value"><IoMedalOutline style={{ marginRight: '5px' }}/> {userRank}</span>
-            </div>
-            <div className="stat-box">
-              <span className="stat-label">TELEMETRIA (XP)</span>
-              <span className="stat-value xp-value">{userXP.toLocaleString()} XP</span>
-            </div>
+          <div>
+            <h1>DIÁRIO DE BORDO: FULL-STACK</h1>
+            <p>SISTEMA DE PROGRESSÃO ORBITAL 
+              {backgroundLoading && (
+                <span className="background-loader-badge">
+                  <IoSyncOutline className="spin-icon" /> SINCRONIZANDO
+                </span>
+              )}
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* --- ROADMAP --- */}
-      <div className="roadmap-super-container">
-        <div className="space-station-top">
-          <IoPlanetOutline className="satellite-icon" />
-          <h2>ESTAÇÃO ORBITAL SÊNIOR</h2>
-          <p>Seu objetivo final</p>
+        <div className="mission-stats-area">
+          <div className="stat-card rank-card">
+            <span className="stat-label">PATENTE</span>
+            <span className="stat-value"><IoMedalOutline /> {userRank}</span>
+          </div>
+          <div className="stat-card xp-card">
+            <span className="stat-label">ENERGIA (XP)</span>
+            <span className="stat-value">{userXP.toLocaleString()} XP</span>
+          </div>
         </div>
+      </header>
 
-        <div className="roadmap-timeline">
-          <div className="timeline-center-line"></div>
-          {reversedRoadmap.length === 0 ? (
-            <div className="empty-track">NENHUMA ROTA ENCONTRADA PARA ESTA TRILHA.</div>
-          ) : (
-            reversedRoadmap.map((course, index) => {
-              const courseDisplayIndex = roadmap.length - index;
-              const reversedModules = [...course.modules].reverse();
+      {/* CARROSSEL HERO DE MISSÕES */}
+      <div className="hero-carousel-wrapper">
+        <button 
+          className={`carousel-btn prev-btn ${currentSlide === 0 ? 'disabled' : ''}`} 
+          onClick={prevSlide} disabled={currentSlide === 0}
+        >
+          <IoChevronBack />
+        </button>
+
+        <div className="carousel-viewport">
+          <div 
+            className="carousel-track" 
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {missions.map((mission, index) => {
+              const isUnlocked = userXP >= mission.requiredXP;
+              const isCompleted = mission.isModuleCompleted;
+              const isActive = isUnlocked && !isCompleted;
+
               return (
-                <div key={course.id} className="course-section">
-                  <div className="course-milestone-center">
-                    <div className="milestone-badge">
-                      <IoRocketOutline size={20} />
-                      MISSÃO {courseDisplayIndex}: {course.titulo}
+                <div className="carousel-slide" key={mission.id}>
+                  <div className={`sci-fi-panel ${isCompleted ? 'completed' : isActive ? 'active' : 'locked'}`}>
+                    
+                    <div className="panel-image-section">
+                      <div className="hologram-overlay"></div>
+                      <img src={mission.imagemUrl || 'https://via.placeholder.com/800x400'} alt={mission.titulo} />
+                      <div className="mission-badge">
+                        MISSÃO {mission.globalIndex}: {mission.isBackend ? 'BACK-END' : 'FRONT-END'}
+                      </div>
+                      <div className="status-circle">
+                        {isCompleted ? <IoCheckmarkCircle /> : isActive ? <IoRocketOutline /> : <IoLockClosed />}
+                      </div>
                     </div>
-                  </div>
-                  <div className="modules-grid-centered">
-                    {reversedModules.map((mod) => {
-                      const isCompleted = userXP >= mod.completionXP;
-                      const isActive = userXP >= mod.requiredXP && userXP < mod.completionXP;
-                      return (
-                        <div key={mod.id} className={`timeline-node ${isCompleted ? 'completed' : isActive ? 'active' : 'locked'}`}>
-                          <div className="node-connector-dot">
-                            {isCompleted ? <IoCheckmarkCircle /> : isActive ? <IoHardwareChipOutline /> : <IoLockClosed />}
+
+                    <div className="panel-content-section">
+                      <div className="tech-decor-line"></div>
+                      <h2 className="mission-course-title">
+                        {mission.isBackend ? <IoServerOutline/> : <IoHardwareChipOutline/>} {mission.courseTitle}
+                      </h2>
+                      <h3 className="mission-module-title">{mission.titulo}</h3>
+                      
+                      <div className="mission-action-area">
+                        {isCompleted ? (
+                          <div className="btn-sci-fi btn-success">
+                            MISSÃO CONCLUÍDA ({mission.totalAulas} AULAS)
                           </div>
-                          <div className="node-card">
-                            <img src={mod.imagemUrl || 'https://via.placeholder.com/300x150'} alt={mod.titulo} className="node-image" />
-                            <div className="node-content">
-                              <span className="node-badge">MÓDULO {mod.globalIndex}</span>
-                              <h3 className="node-title">{mod.titulo}</h3>
-                              {isCompleted ? (
-                                <span className="node-status text-completed">CONCLUÍDO</span>
-                              ) : isActive ? (
-                                <Link to={`/cursos/${course.id}/modulos/${mod.id}`} className="node-btn-acessar">
-                                  ACESSAR MÓDULO
-                                </Link>
-                              ) : (
-                                <span className="node-status text-locked">REQUER {mod.requiredXP} XP</span>
-                              )}
-                            </div>
+                        ) : isActive ? (
+                          <Link to={`/cursos/${mission.courseId}/modulos/${mission.id}`} className="btn-sci-fi btn-launch">
+                            INICIAR MISSÃO
+                          </Link>
+                        ) : (
+                          <div className="btn-sci-fi btn-locked">
+                            SISTEMA BLOQUEADO (REQUER {mission.requiredXP} XP)
                           </div>
-                        </div>
-                      );
-                    })}
+                        )}
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               );
-            })
-          )}
+            })}
+
+            {/* SLIDE FINAL */}
+            {!backgroundLoading && (
+              <div className="carousel-slide">
+                 <div className="sci-fi-panel final-platform">
+                    <div className="final-platform-content">
+                      <div className="hologram-ring">
+                        <IoPlanetOutline className="huge-planet-icon" />
+                      </div>
+                      <h2>ESTAÇÃO ORBITAL ALCANÇADA</h2>
+                      <p>Sequência de treinamento Full-Stack finalizada com sucesso. Status: Operacional.</p>
+                      <div className="final-stats">
+                        <span>XP TOTAL: {userXP}</span>
+                        <span className="divisor">|</span>
+                        <span>PATENTE: {userRank}</span>
+                      </div>
+                    </div>
+                 </div>
+              </div>
+            )}
+
+          </div>
         </div>
 
-        <div className="earth-base-bottom">
-          <div className="earth-glow"></div>
-          <IoEarthOutline className="earth-icon" />
-          <h2>BASE TERRESTRE</h2>
-          <p>Ponto de Partida</p>
-        </div>
+        <button 
+          className={`carousel-btn next-btn ${isFinalPlatform ? 'disabled' : ''}`} 
+          onClick={nextSlide} disabled={isFinalPlatform || (currentSlide === missions.length - 1 && backgroundLoading)}
+        >
+          <IoChevronForward />
+        </button>
       </div>
+      
+      {/* LINHA DO TEMPO ORBITAL (BOTTOM) */}
+      <div className="orbital-timeline">
+        {missions.map((mission, idx) => {
+           const isUnlocked = userXP >= mission.requiredXP;
+           const isCompleted = mission.isModuleCompleted;
+           return (
+            <React.Fragment key={idx}>
+              <div 
+                className={`timeline-node ${currentSlide === idx ? 'current' : ''} ${isCompleted ? 'completed' : isUnlocked ? 'unlocked' : ''}`}
+                onClick={() => setCurrentSlide(idx)}
+                title={mission.titulo}
+              >
+                <div className="node-core"></div>
+              </div>
+              {/* Conector entre os nós */}
+              <div className={`timeline-connector ${isCompleted ? 'completed' : ''}`}></div>
+            </React.Fragment>
+          )
+        })}
+        {/* Nó final da estação */}
+        {!backgroundLoading && (
+          <div 
+            className={`timeline-node final-node ${currentSlide === missions.length ? 'current' : ''}`}
+            onClick={() => setCurrentSlide(missions.length)}
+            title="Estação Orbital"
+          >
+            <div className="node-core"></div>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 };

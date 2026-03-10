@@ -1,266 +1,203 @@
-/* =========================================
-   DASHBOARD - STARLINK / AEROSPACE THEME
-   ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* IMPORTAÇÃO DE FONTE TÉCNICA */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap');
 
-:root {
-  --bg-pure: #000000;
-  --bg-surface: #0a0a0a;
-  --border-subtle: #333333;
-  --text-main: #ffffff;
-  --text-muted: #888888;
-}
-
-.hub-wrapper {
-  background: var(--bg-pure);
-  min-height: 100vh;
-  color: var(--text-main);
+.starlink-terminal {
+  background-color: #030407; /* Preto ultra profundo */
+  color: #e2e8f0;
   font-family: 'Inter', sans-serif;
-  position: relative;
-  padding-top: 40px; /* Espaçamento do Header Global */
-}
-
-/* Efeito de overlay (Grid Técnico Fino) */
-.hub-overlay {
-  position: fixed;
-  inset: 0;
+  min-height: 100vh;
+  padding: 2rem;
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
+    radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
 }
 
-.hub-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px 40px;
-  position: relative;
-  z-index: 1;
+/* CARREGAMENTO E ERRO */
+.system-loader, .system-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #030407;
+  color: #00e5ff;
+  font-family: 'Fira Code', monospace;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
 }
 
-/* Hero Section (Boas Vindas) */
-.hub-hero {
+.spin-slow { animation: spin 4s linear infinite; }
+.pulse-cyan { filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.6)); }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* CABEÇALHO */
+.terminal-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 40px;
-  border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 30px;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
-.hero-tag {
-  color: var(--text-main);
-  background-color: rgba(255,255,255,0.1);
-  border: 1px solid var(--border-subtle);
-  padding: 4px 10px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  display: inline-block;
-  margin-bottom: 15px;
-  border-radius: 2px;
-}
-
-.hub-hero h1 { 
-  font-size: 3rem; 
-  font-weight: 700; 
-  margin-bottom: 10px;
-  letter-spacing: -1px;
-}
-
-.hub-hero p { 
-  color: var(--text-muted); 
-  font-weight: 300;
-}
-
-.hero-stats-quick { 
-  display: flex; 
-  gap: 50px; 
-}
-
-.q-stat { 
-  display: flex; 
-  flex-direction: column; 
-}
-
-.q-label { 
-  font-size: 0.7rem; 
-  color: var(--text-muted); 
-  font-weight: 500; 
-  letter-spacing: 2px;
-}
-
-.q-value { 
-  font-size: 2rem; 
-  font-weight: 700; 
-  color: var(--text-main); 
-}
-
-/* Grid de Cards */
-.hub-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 24px;
-}
-
-/* Cards (Painéis) */
-.hub-card {
-  background: var(--bg-pure);
-  border: 1px solid var(--border-subtle);
-  border-radius: 2px; /* Bordas técnicas retas */
-  padding: 30px;
-  transition: border-color 0.3s ease;
-  position: relative;
-}
-
-/* Efeito de hover high-tech nas bordas */
-.hub-card:hover {
-  border-color: var(--text-main);
-}
-
-.chart-main { grid-row: span 2; }
-
-.card-header {
+.header-brand {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  gap: 12px;
 }
 
-.header-title { 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
+.header-brand h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  margin: 0;
 }
 
-.header-title h3 { 
-  font-size: 1rem; 
-  font-weight: 500;
-  text-transform: uppercase; 
-  letter-spacing: 1px; 
+.status-ok { color: #00ffaa; text-shadow: 0 0 8px rgba(0, 255, 170, 0.5); }
+
+.user-identification { text-align: right; font-family: 'Fira Code', monospace; }
+.user-id { font-size: 0.9rem; color: #a0aec0; margin: 0 0 4px 0; }
+.user-rank { font-size: 1rem; color: #00e5ff; font-weight: 600; margin: 0; }
+
+/* MÉTRICAS (TELEMETRIA) */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.header-sub { 
-  font-size: 0.75rem; 
-  color: var(--text-muted); 
-  letter-spacing: 1px;
-}
-
-/* Status da Missão / Progresso */
-.status-content { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 25px; 
-}
-
-.status-item {
+.telemetry-card {
+  background: rgba(15, 17, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(10px);
 }
 
-.status-item span {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.v-highlight { 
-  font-size: 2.5rem; 
-  color: var(--text-main); 
-  font-weight: 700; 
-  line-height: 1;
-}
-
-/* Barra de progresso crua/sólida */
-.hub-progress-bar {
-  height: 6px;
-  background: var(--border-subtle);
-  border-radius: 0;
-  margin: 5px 0 10px;
-  width: 100%;
-}
-
-.hub-progress-bar .fill {
-  height: 100%;
-  background: var(--text-main);
-}
-
-.status-item small {
-  color: var(--text-main);
-  font-weight: 600;
+.t-label {
+  font-size: 0.75rem;
+  font-family: 'Fira Code', monospace;
+  color: #718096;
+  margin-bottom: 0.5rem;
   letter-spacing: 1px;
 }
 
-/* Botão de Ação "Ghost" */
-.hub-action-btn {
-  background: transparent;
-  color: var(--text-main);
-  border: 1px solid var(--text-main);
-  padding: 16px;
-  border-radius: 2px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.3s ease;
+.t-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
 }
 
-.hub-action-btn:hover {
-  background: var(--text-main);
-  color: var(--bg-pure);
-}
+.t-unit { font-size: 0.9rem; color: #4a5568; font-weight: 400; }
+.cyan-glow { text-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
+.text-green { color: #00ffaa; }
+.text-red { color: #ff3333; }
+.flex-align { display: flex; align-items: center; gap: 8px; font-size: 1.2rem; }
 
-/* Badges / Distintivos */
-.badge-grid {
+/* ÁREA PRINCIPAL E PAINÉIS */
+.main-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 1fr; /* Dividido meio a meio para telas grandes */
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .main-grid { grid-template-columns: 1fr; }
+}
+
+.glass-panel {
+  background: rgba(15, 17, 26, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 1.5rem;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  color: #00e5ff;
+}
+
+.panel-title h2 {
+  font-size: 1rem;
+  font-family: 'Fira Code', monospace;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* BARRA DE PROGRESSO */
+.progress-track { margin-bottom: 1.5rem; }
+.progress-bar-bg {
+  height: 6px;
+  background: #1a202c;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0055ff, #00e5ff);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  transition: width 1s ease-in-out;
+}
+
+/* MEDALHAS / NODES */
+.badges-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Custom Scrollbar */
+.badges-grid::-webkit-scrollbar { width: 6px; }
+.badges-grid::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+.badges-grid::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: 3px; }
+
+.badge-node {
+  display: flex;
+  align-items: flex-start;
   gap: 15px;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #333;
+  transition: all 0.2s ease;
 }
 
-.badge-item {
-  aspect-ratio: 1/1;
-  background: var(--bg-pure);
-  border: 1px solid var(--border-subtle);
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--border-subtle);
-  transition: all 0.3s ease;
-}
+.badge-node.offline { opacity: 0.5; filter: grayscale(100%); }
+.badge-node.online { border-left-color: #00e5ff; background: rgba(0, 229, 255, 0.02); }
+.badge-node.online:hover { border-color: rgba(0, 229, 255, 0.3); transform: translateX(5px); }
 
-.badge-item.active {
-  border-color: var(--text-main);
-  color: var(--bg-pure);
-  background: var(--text-main); /* Fundo branco, ícone preto vazado */
-}
+/* Cores por Raridade */
+.badge-node.online.legendary { border-left-color: #fbbf24; }
+.badge-node.online.mythic { border-left-color: #b83280; }
 
-/* Loader Inicial */
-.hub-loader {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--bg-pure);
-  color: var(--text-main);
-  font-weight: 500;
-  letter-spacing: 4px;
+.node-icon {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 4px;
 }
+.badge-node.online .node-icon { color: #00e5ff; }
 
-/* Responsivo */
-@media (max-width: 900px) {
-  .hub-grid { grid-template-columns: 1fr; }
-  .hub-hero { flex-direction: column; align-items: flex-start; gap: 30px; }
-  .hero-stats-quick { width: 100%; justify-content: space-between; }
+.node-info h4 { margin: 0 0 4px 0; font-size: 1rem; color: #fff; }
+.node-info p { margin: 0 0 8px 0; font-size: 0.85rem; color: #a0aec0; }
+.node-status {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: #718096;
 }
+.badge-node.online .node-status { color: #00ffaa; }

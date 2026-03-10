@@ -6,6 +6,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/ToastCustom.css'; 
 
+// 👇 NOVO IMPORT DA BARRA ESPACIAL AQUI
+import DomainBanner from './pages/DomainBanner.jsx'; 
+
 // Importe suas páginas e componentes de Autenticação
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
@@ -27,7 +30,7 @@ import SearchPage from './pages/dashboard/SearchPage.jsx';
 import NotificationsPage from './pages/dashboard/NotificationsPage.jsx';
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 
-// 👇 CAMINHO ATUALIZADO AQUI (apontando para a nova pasta 'admin')
+// Importando o Admin
 import AdminPanel from './pages/components/AdminPanel.jsx'; 
 
 // Importe os Layouts e Proteções
@@ -71,11 +74,11 @@ const router = createBrowserRouter([
           { path: '/duvidas', element: <ChatPage /> },
           { path: '/curtidas', element: <LikedLessonsPage /> },
           { path: '/trilhas' , element: <Caminho />},
-          { path: '/trilhas/:userId', element: <Caminho /> }, // Rota para admin ver trilha de usuário específico
+          { path: '/trilhas/:userId', element: <Caminho /> }, 
           { path: '/search', element: <SearchPage />},
           { path: '/notificacao', element: <NotificationsPage />},
           { path: '/estatistica', element: <Dashboard />},
-          { path: '/admin', element: <AdminPanel />}, // Rota ADMIN mantida, apenas a importação lá em cima mudou!
+          { path: '/admin', element: <AdminPanel />}, 
         ],
       },
     ],
@@ -89,6 +92,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
+      {/* 👇 BARRA COLOCADA AQUI (Fica no topo de tudo, fora das rotas) */}
+      <DomainBanner />
+
       <RouterProvider router={router} />
 
       {/* Container customizado para o estilo Dark/Elite */}
